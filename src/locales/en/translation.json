@@ -1,0 +1,33 @@
+{
+  "header": {
+    "home": "Home",
+    "login": "Login",
+    "register": "Register",
+    "required": "Required",
+    "vi": "Vietnamese",
+    "en": "English",
+    "chooseLanguage": "Language"
+  },
+  "footer": {
+    "supportMe": "Support Me",
+    "subscribe": "Subscribe For My Youtube Channel",
+    "contact": "Contact",
+    "copyright": "Copyright MASTER NAM 2024. All rights reserved."
+  },
+  "form": {
+    "register": "Register",
+    "username": "username",
+    "email": "email",
+    "password": "password",
+    "phone": "phone",
+    "avatar": "avatar",
+    "address": "address",
+    "dragImage": "Drag and drop a file or select add Image",
+    "remove": "Remove",
+    "uploadedImage": "Uploaded Image",
+    "forgotPassword": "Forgot Your Password?"
+  },
+  "validationError": {
+    "imagetype": "Only accept image file!"
+  }
+}

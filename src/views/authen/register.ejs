@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <script src="/js/jquery.js"></script>
+  <script src="/js/bootstrap.js"></script>
+  <link rel="stylesheet" href="/css/login.css">
+  <link rel="stylesheet" href="/css/register.css">
+  <link rel="icon" type="image/x-icon" href="/icon/icon-cinema.ico">
+  <title>NAMCINEMA | <%- i18n.t('header.register') %></title>
+</head>
+
+<body>
+  <%- include('../header') %>
+
+    <div class="login-form">
+      <form method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="_csrf" value="<%- csrfToken %>" />
+        <h1><%- i18n.t('header.register') %></h1>
+        <div class="content">
+          <div class="input-field">
+            <input type="text" placeholder="<%- i18n.t('form.username') %> (<%- i18n.t('form.required') %>)" required
+              autocomplete="nope" pattern="^.{1,24}$" name="username" min="1" max="24"
+              value="<%- user && user.username ? user.username : '' %>">
+          </div>
+
+          <div class="input-field">
+            <input type="email" placeholder="<%- i18n.t('form.email') %> (<%- i18n.t('form.required') %>)" required
+              autocomplete="nope" name="email" value="<%- user && user.email ? user.email : '' %>">
+          </div>
+
+          <div class="input-field">
+            <input type="password" placeholder="<%- i18n.t('form.password') %> (<%- i18n.t('form.required') %>)"
+              required autocomplete="new-password" name="password" pattern="^.{8,24}$" min="8" max="24"
+              value="<%- user && user.password ? user.password : '' %>">
+          </div>
+
+          <div class="input-field">
+            <input type="text" placeholder="<%- i18n.t('form.phone') %>" autocomplete="nope"
+              pattern="^0[1-9][0-9]{8,9}$" min="10" max="11" name="phone"
+              value="<%- user && user.phone ? user.phone : '' %>">
+          </div>
+
+          <div class="input-field">
+            <input type="text" placeholder="<%- i18n.t('form.address') %>" autocomplete="nope" pattern="^.{50,100}$"
+              min="50" max="100" name="address" value="<%- user && user.address ? user.address : '' %>">
+          </div>
+
+          <div class="file-upload">
+            <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">
+              <%- i18n.t('form.avatar') %></button>
+
+            <div class="image-upload-wrap">
+              <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" name="avatar" />
+              <div class="drag-text">
+                <h3><%- i18n.t('form.dragImage') %></h3>
+              </div>
+            </div>
+            <div class="file-upload-content">
+              <img class="file-upload-image" src="#" alt="your image" />
+              <div class="image-title-wrap">
+                <button type="button" onclick="removeUpload()" class="remove-image"><%- i18n.t('form.remove') %> <span
+                      class="image-title"><%- i18n.t('form.uploadedImage') %></span></button>
+              </div>
+            </div>
+          </div>
+
+          <a href="#" class="link"><%- i18n.t('form.forgotPassword') %></a>
+        </div>
+        <div class="action">
+          <a href="./login" class="btn btn-light btn-custom"><%- i18n.t('header.login') %></a>
+          <button><%- i18n.t('header.register') %></button>
+        </div>
+      </form>
+    </div>
+
+    <%- include('../footer') %>
+      <script src="/js/register.js"></script>
+</body>
+
+</html>

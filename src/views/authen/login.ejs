@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <script src="/js/jquery.js"></script>
+  <script src="/js/bootstrap.js"></script>
+  <link rel="stylesheet" href="/css/login.css">
+  <link rel="icon" type="image/x-icon" href="/icon/icon-cinema.ico">
+  <title>NAMCINEMA | <%- i18n.t('header.login') %></title>
+</head>
+
+<body>
+  <%- include('../header') %>
+
+    <div class="login-form">
+      <form>
+        <h1><%- i18n.t('header.login') %></h1>
+        <div class="content">
+          <div class="input-field">
+            <input type="email" placeholder="<%- i18n.t('form.email') %>" autocomplete="nope">
+          </div>
+          <div class="input-field">
+            <input type="password" placeholder="<%- i18n.t('form.password') %>" autocomplete="new-password">
+          </div>
+          <a href="#" class="link"><%- i18n.t('form.forgotPassword') %></a>
+        </div>
+        <div class="action">
+          <a href="./register" class="btn btn-light btn-custom"><%- i18n.t('header.register') %></a>
+          <button><%- i18n.t('header.login') %></button>
+        </div>
+      </form>
+    </div>
+
+    <%- include('../footer') %>
+</body>
+
+</html>
