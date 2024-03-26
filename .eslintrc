@@ -1,0 +1,11 @@
+{
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+  "plugins": ["prettier"],
+  "rules": {
+    // Tắt các quy tắc mà Prettier đã xử lý
+    "prettier/prettier": "error",
+    // Đảm bảo quy tắc eslint tương thích với Prettier
+    "semi": ["error", "always"],
+    "quotes": ["error", "single"]
+  }
+}
