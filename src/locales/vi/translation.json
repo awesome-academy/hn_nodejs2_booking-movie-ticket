@@ -1,0 +1,32 @@
+{
+  "header": {
+    "home": "Trang chủ",
+    "login": "Đăng nhập",
+    "register": "Đăng kí",
+    "vi": "Tiếng Việt",
+    "en": "Tiếng Anh",
+    "chooseLanguage": "Ngôn ngữ"
+  },
+  "form": {
+    "required": "Bắt buộc",
+    "username": "Tên người dùng",
+    "email": "Địa chỉ email",
+    "password": "Mật khẩu",
+    "phone": "Số điện thoại",
+    "address": "Địa chỉ",
+    "avatar": "Ảnh đại diện",
+    "dragImage": "Kéo và thả tệp hoặc chọn thêm hình ảnh",
+    "remove": "Gỡ",
+    "uploadedImage": "Ảnh đã được tải",
+    "forgotPassword": "Bạn quên mật khẩu?"
+  },
+  "footer": {
+    "supportMe": "Hỗ trợ tôi",
+    "subscribe": "Đăng kí kênh Youtube của tôi",
+    "contact": "Liên hệ",
+    "copyright": "Bản quyền MASTER NAM 2024. Mọi bản quyền được bảo vệ."
+  },
+  "validationError": {
+    "imagetype": "Chỉ chấp nhận tệp ảnh!"
+  }
+}
