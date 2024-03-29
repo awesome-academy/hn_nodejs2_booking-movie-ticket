@@ -3,12 +3,17 @@
     "home": "Home",
     "login": "Login",
     "register": "Register",
-    "required": "Required",
+    "logout": "Logout",
     "vi": "Vietnamese",
     "en": "English",
     "chooseLanguage": "Language",
     "forgotPassword": "Forgot Password",
-    "resetPassword": "Reset password"
+    "resetPassword": "Reset password",
+    "newMoviesShown": "New Movies Shown",
+    "hotMoives": "Hot Movies",
+    "allMovies": "All Movies",
+    "historyOrder": "History Order",
+    "personalInfo": "Personal Info"
   },
   "footer": {
     "supportMe": "Support Me",
@@ -38,11 +43,16 @@
     "emailNotExists": "Email is not exists",
     "passwordInCorrect": "Password is incorrect",
     "invalidEmailOrPassword": "Invalid email or password",
-    "confirmPasswordNoMatch": "The re-entered password does not match"
+    "confirmPasswordNoMatch": "The re-entered password does not match",
+    "invalidFormatInt": "Invalid Format Integr"
   },
   "sweetalert": {
     "notify": "Notify",
     "forgotPasswordNoti": "We have sent you an email to reset your password.Please check your email",
     "resetPasswordNoti": "You have successfully changed your password!"
+  },
+  "movie": {
+    "detail": "Detail",
+    "byTicket": "By ticket"
   }
 }

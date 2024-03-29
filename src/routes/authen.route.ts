@@ -69,5 +69,10 @@ export class AuthenRoute extends BaseRoute {
       csrfProtection,
       this.authenController.putResetPasswordForm.bind(this.authenController),
     );
+
+    this.router.get(
+      '/logout',
+      this.authenController.logout.bind(this.authenController),
+    );
   }
 }

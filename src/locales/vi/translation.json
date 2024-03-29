@@ -3,11 +3,17 @@
     "home": "Trang chủ",
     "login": "Đăng nhập",
     "register": "Đăng kí",
+    "logout": "Đăng xuất",
     "vi": "Tiếng Việt",
     "en": "Tiếng Anh",
     "chooseLanguage": "Ngôn ngữ",
     "forgotPassword": "Quên mật khẩu",
-    "resetPassword": "Đặt lại mật khẩu"
+    "resetPassword": "Đặt lại mật khẩu",
+    "newMoviesShown": "Phim Mới Chiếu",
+    "hotMoives": "Phim Hot",
+    "allMovies": "Tất cả các phim",
+    "historyOrder": "Lịch sử mua vé",
+    "personalInfo": "Thông tin cá nhân"
   },
   "form": {
     "required": "Bắt buộc",
@@ -36,11 +42,17 @@
     "emailNotExists": "Địa chỉ email không tồn tại",
     "passwordInCorrect": "Mật khẩu không chính xác",
     "invalidEmailOrPassword": "Email hoặc mật khẩu không chính xác",
-    "confirmPasswordNoMatch": "Mật khẩu nhập lại không khớp"
+    "confirmPasswordNoMatch": "Mật khẩu nhập lại không khớp",
+    "invalidFormatInt": "Định dạng số nguyên không đúng"
   },
   "sweetalert": {
     "notify": "Thông báo",
     "forgotPasswordNoti": "Chúng tôi đã gửi email để bạn đặt lại mật khẩu.Vui lòng kiểm tra email của bạn!",
-    "resetPasswordNoti": "Bạn đã thay đổi mật khẩu thành công!"
+    "resetPasswordNoti": "Bạn đã thay đổi mật khẩu thành công!",
+    "passwordInCorrect": "Mật khẩu không chính xác"
+  },
+  "movie": {
+    "detail": "Chi tiết",
+    "byTicket": "Mua vé"
   }
 }

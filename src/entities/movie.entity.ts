@@ -1,7 +1,14 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { Review } from './review.entity';
 import { Schedule } from './schedule.entity';
+import { Category } from './category.entity';
 
 @Entity({ name: 'movie' })
 export class Movie extends BaseEntity {
@@ -22,6 +29,9 @@ export class Movie extends BaseEntity {
 
   @Column({ name: 'end_date_showing', type: 'date' })
   endDateShowing: Date;
+
+  @Column({ name: 'age_limit', type: 'int', nullable: true })
+  ageLimit: number;
 
   @Column({
     name: 'large_imgurl',
@@ -60,4 +70,7 @@ export class Movie extends BaseEntity {
 
   @OneToMany(() => Schedule, (schedule) => schedule.movie)
   schedules: Schedule[];
+
+  @ManyToMany(() => Category, (category) => category.movies)
+  categories: Category[];
 }

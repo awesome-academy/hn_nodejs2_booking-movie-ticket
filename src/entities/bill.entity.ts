@@ -32,6 +32,9 @@ export class Bill extends BaseEntity {
   @Column({ name: 'bank_code', type: 'varchar', length: 255 })
   bankCode: string;
 
+  @Column({ name: 'bank_tran_no', type: 'varchar', length: 255 })
+  bankTranNo: string;
+
   @Column({ name: 'pay_time', type: 'datetime' })
   payTime: string;
 
