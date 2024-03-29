@@ -1,0 +1,17 @@
+<div class="pagination-wapper" aria-label="...">
+  <ul class="pagination">
+    <li class="page-item<%- prevPage ? '' : ' disabled' %>">
+      <a href="<%- prevPage ? `?page=${prevPage}` : '' %>" class="page-link"><%- i18n.t('pagination.previous') %></a>
+    </li>
+
+    <% for (let i = startNode; i <= endNode; i++) { %>
+      <li class="page-item<%- page == i ? ' active' : '' %>" aria-current="page">
+        <a href="?page=<%- i %>" class="page-link"><%- i %></a>
+      </li>
+    <% } %>
+    
+    <li class="page-item<%- nextPage ? '' : ' disabled' %>">
+      <a href="<%- nextPage ? `?page=${nextPage}` : '' %>" class="page-link"><%- i18n.t('pagination.next') %></a>
+    </li>
+  </ul>
+</div>

@@ -1,7 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 import { catchError } from '../decoratos/catcherror.decorators';
 import { Request, Response, NextFunction } from 'express-serve-static-core';
-import { MoreThan } from 'typeorm';
 import { MovieService } from '../services/movie.service';
 
 @injectable()
@@ -20,6 +19,7 @@ export class HomeController {
     res.render('home', {
       newestFilms,
       hotFilms,
+      activeHeader: 'home',
     });
   }
 }

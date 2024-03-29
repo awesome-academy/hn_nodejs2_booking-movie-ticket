@@ -3,6 +3,12 @@ import { MovieRepository } from '../repositories/movie.repository';
 import { Movie } from '../entities/movie.entity';
 import { MoreThan } from 'typeorm';
 import { ScheduleRepository } from '../repositories/schedule.repository';
+import {
+  paginations,
+  Pagination,
+  PaginationConfig,
+} from '../pagination/pagination';
+import { AllMoviesPagination } from '../constant/pagination.constant';
 
 @injectable()
 export class MovieService {
@@ -43,5 +49,17 @@ export class MovieService {
       .getMany();
 
     return hotFilms;
+  }
+
+  public async getMoivesWithPagination(
+    page: number,
+  ): Promise<Pagination<Movie>> {
+    const queryBuilder = this.movieRepository.createQueryBuilder('movie');
+    const pagination: Pagination<Movie> = await paginations<Movie>(
+      page,
+      AllMoviesPagination,
+      queryBuilder,
+    );
+    return pagination;
   }
 }
