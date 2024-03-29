@@ -27,6 +27,10 @@
     "copyright": "Bản quyền MASTER NAM 2024. Mọi bản quyền được bảo vệ."
   },
   "validationError": {
-    "imagetype": "Chỉ chấp nhận tệp ảnh!"
+    "imagetype": "Chỉ chấp nhận tệp ảnh!",
+    "uniqueEmail": "Địa chỉ email đã tồn tại!",
+    "emailNotExists": "Địa chỉ email không tồn tại",
+    "passwordInCorrect": "Mật khẩu không chính xác",
+    "invalidEmailOrPassword": "Email hoặc mật khẩu không chính xác"
   }
 }
