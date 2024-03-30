@@ -5,7 +5,9 @@
     "register": "Đăng kí",
     "vi": "Tiếng Việt",
     "en": "Tiếng Anh",
-    "chooseLanguage": "Ngôn ngữ"
+    "chooseLanguage": "Ngôn ngữ",
+    "forgotPassword": "Quên mật khẩu",
+    "resetPassword": "Đặt lại mật khẩu"
   },
   "form": {
     "required": "Bắt buộc",
@@ -18,7 +20,9 @@
     "dragImage": "Kéo và thả tệp hoặc chọn thêm hình ảnh",
     "remove": "Gỡ",
     "uploadedImage": "Ảnh đã được tải",
-    "forgotPassword": "Bạn quên mật khẩu?"
+    "forgotPassword": "Bạn quên mật khẩu?",
+    "send": "Gửi",
+    "confirmPassword": "Nhập lại mật khẩu"
   },
   "footer": {
     "supportMe": "Hỗ trợ tôi",
@@ -31,6 +35,12 @@
     "uniqueEmail": "Địa chỉ email đã tồn tại!",
     "emailNotExists": "Địa chỉ email không tồn tại",
     "passwordInCorrect": "Mật khẩu không chính xác",
-    "invalidEmailOrPassword": "Email hoặc mật khẩu không chính xác"
+    "invalidEmailOrPassword": "Email hoặc mật khẩu không chính xác",
+    "confirmPasswordNoMatch": "Mật khẩu nhập lại không khớp"
+  },
+  "sweetalert": {
+    "notify": "Thông báo",
+    "forgotPasswordNoti": "Chúng tôi đã gửi email để bạn đặt lại mật khẩu.Vui lòng kiểm tra email của bạn!",
+    "resetPasswordNoti": "Bạn đã thay đổi mật khẩu thành công!"
   }
 }

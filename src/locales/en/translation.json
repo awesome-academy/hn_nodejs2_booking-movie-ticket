@@ -6,7 +6,9 @@
     "required": "Required",
     "vi": "Vietnamese",
     "en": "English",
-    "chooseLanguage": "Language"
+    "chooseLanguage": "Language",
+    "forgotPassword": "Forgot Password",
+    "resetPassword": "Reset password"
   },
   "footer": {
     "supportMe": "Support Me",
@@ -26,13 +28,21 @@
     "dragImage": "Drag and drop a file or select add Image",
     "remove": "Remove",
     "uploadedImage": "Uploaded Image",
-    "forgotPassword": "Forgot Your Password?"
+    "forgotPassword": "Forgot Your Password?",
+    "send": "Send",
+    "confirmPassword": "Confirm Password"
   },
   "validationError": {
     "imagetype": "Only accept image file!",
     "uniqueEmail": "Email is exists!",
     "emailNotExists": "Email is not exists",
     "passwordInCorrect": "Password is incorrect",
-    "invalidEmailOrPassword": "Invalid email or password"
+    "invalidEmailOrPassword": "Invalid email or password",
+    "confirmPasswordNoMatch": "The re-entered password does not match"
+  },
+  "sweetalert": {
+    "notify": "Notify",
+    "forgotPasswordNoti": "We have sent you an email to reset your password.Please check your email",
+    "resetPasswordNoti": "You have successfully changed your password!"
   }
 }
