@@ -3,6 +3,12 @@ import * as dotenv from 'dotenv';
 import { AppEnvironmentConfig } from '../enum/app.environment.config.enum';
 dotenv.config();
 
+import {
+  initializeTransactionalContext,
+  addTransactionalDataSource,
+  StorageDriver,
+} from 'typeorm-transactional';
+
 console.log(
   process.env.DB_HOST,
   +process.env.DB_PORT,
@@ -50,3 +56,8 @@ switch (process.env.NODE_ENV) {
 }
 
 export const AppDataSource = new DataSource(dataBaseConfig);
+
+initializeTransactionalContext({
+  storageDriver: StorageDriver.ASYNC_LOCAL_STORAGE,
+});
+addTransactionalDataSource(AppDataSource);

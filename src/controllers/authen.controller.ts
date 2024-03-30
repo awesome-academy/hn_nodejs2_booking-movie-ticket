@@ -12,6 +12,8 @@ import { checkImageType } from '../security/image.check';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
+import { sendMail } from '../utils/sendmail';
+import { Transactional } from 'typeorm-transactional';
 
 @injectable()
 export class AuthenController {
@@ -66,6 +68,7 @@ export class AuthenController {
   }
 
   @catchError()
+  @Transactional()
   public async postRegisterForm(
     req: Request,
     res: Response,
@@ -122,7 +125,23 @@ export class AuthenController {
           req.file.buffer,
           (err) => {},
         ),
-        await this.userRepository.save(user),
+        this.userRepository.save(user),
+        sendMail({
+          email: user.email,
+          subject: 'Thank for register account in MAMCINEMA',
+          templatePath: path.join(
+            __dirname,
+            '..',
+            'views/mail/mail.thankfor.register.ejs',
+          ),
+          context: {
+            email: user.email,
+            username: user.username,
+            password: usersRegisterDto.password,
+            phone: user.phone || 'None',
+            address: user.address || 'None',
+          },
+        }),
       ]);
     } else {
       await this.userRepository.save(user);

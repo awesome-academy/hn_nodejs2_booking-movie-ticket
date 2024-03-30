@@ -18,12 +18,14 @@ import { RootRoute } from './routes';
 import { StatusEnum } from './enum/status.enum';
 import methodOverride from 'method-override';
 import cors from 'cors';
-
-const app = express();
-const host = process.env.HOST;
-const port = +process.env.PORT;
+import { initializeTransactionalContext } from 'typeorm-transactional';
 
 async function main() {
+  initializeTransactionalContext();
+  const app = express();
+  const host = process.env.HOST;
+  const port = +process.env.PORT;
+
   try {
     await AppDataSource.initialize();
   } catch (err) {
