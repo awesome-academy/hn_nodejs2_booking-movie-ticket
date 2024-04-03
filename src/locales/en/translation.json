@@ -16,6 +16,7 @@
   },
   "form": {
     "register": "Register",
+    "required": "Required",
     "username": "username",
     "email": "email",
     "password": "password",
@@ -28,6 +29,10 @@
     "forgotPassword": "Forgot Your Password?"
   },
   "validationError": {
-    "imagetype": "Only accept image file!"
+    "imagetype": "Only accept image file!",
+    "uniqueEmail": "Email is exists!",
+    "emailNotExists": "Email is not exists",
+    "passwordInCorrect": "Password is incorrect",
+    "invalidEmailOrPassword": "Invalid email or password"
   }
 }

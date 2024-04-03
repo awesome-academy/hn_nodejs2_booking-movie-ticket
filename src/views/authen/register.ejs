@@ -9,6 +9,7 @@
   <script src="/js/bootstrap.js"></script>
   <link rel="stylesheet" href="/css/login.css">
   <link rel="stylesheet" href="/css/register.css">
+  <link rel="stylesheet" href="/css/form.error.css">
   <link rel="icon" type="image/x-icon" href="/icon/icon-cinema.ico">
   <title>NAMCINEMA | <%- i18n.t('header.register') %></title>
 </head>
@@ -67,13 +68,20 @@
               </div>
             </div>
           </div>
-
+          
           <a href="#" class="link"><%- i18n.t('form.forgotPassword') %></a>
+          <% if (errors) { %>
+            <br/><br/>
+            <% for (let i = 0; i < errors.length; i++) { %>  
+              <div class="error-detail"><%- errors[i].message %></div>
+            <% } %>
+          <% } %>
         </div>
         <div class="action">
           <a href="./login" class="btn btn-light btn-custom"><%- i18n.t('header.login') %></a>
           <button><%- i18n.t('header.register') %></button>
         </div>
+
       </form>
     </div>
 

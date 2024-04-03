@@ -42,6 +42,12 @@ async function main() {
   // PUT, DELETE method
   app.use(methodOverride('_method'));
 
+  // Middleware set header X-Frame-Options against click jacking
+  app.use((req, res, next) => {
+    res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+    next();
+  });
+
   await i18next
     .use(i18nextBackend)
     .use(i18nextMiddleware.LanguageDetector)
@@ -68,7 +74,17 @@ async function main() {
 
   // Use cookie-parser middleware
   app.use(cookieParser('keyboard cat'));
-  app.use(session({ secret: undefined, cookie: { maxAge: 60000 } }));
+  // session middleware config
+  app.use(
+    session({
+      secret: process.env.SESSION_SECRET_KEY,
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        maxAge: 24 * 60 * 60 * 1000,
+      },
+    }),
+  );
   app.use(flash());
 
   // Set view engine
@@ -103,10 +119,16 @@ async function main() {
           content: `${err.message}`,
         });
         break;
+      case StatusEnum.FORBIDDEN:
+        res.render('error/error', {
+          title: 'Error 403',
+          content: `${err.message}`,
+        });
+        break;
       default: // error when render view
         console.log('>> error:', err);
         res.render('error', {
-          stackTrace: err.stack,
+          stackTrace: err.stack || err.message,
         });
     }
   });

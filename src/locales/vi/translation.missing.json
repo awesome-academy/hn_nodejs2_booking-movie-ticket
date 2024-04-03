@@ -1,0 +1,35 @@
+{
+  "common": {
+    "home": "common.home"
+  },
+  "header": {
+    "home": "header.home",
+    "login": "header.login",
+    "register": "header.register",
+    "chooseLanguage": "header.chooseLanguage",
+    "vi": "header.vi",
+    "en": "header.en"
+  },
+  "form": {
+    "username": "form.username",
+    "required": "form.required",
+    "email": "form.email",
+    "password": "form.password",
+    "phone": "form.phone",
+    "address": "form.address",
+    "avatar": "form.avatar",
+    "dragImage": "form.dragImage",
+    "remove": "form.remove",
+    "uploadedImage": "form.uploadedImage",
+    "forgotPassword": "form.forgotPassword"
+  },
+  "validation": {
+    "uniqueEmail": "validation.uniqueEmail"
+  },
+  "footer": {
+    "supportMe": "footer.supportMe",
+    "subscribe": "footer.subscribe",
+    "contact": "footer.contact",
+    "copyright": "footer.copyright"
+  }
+}

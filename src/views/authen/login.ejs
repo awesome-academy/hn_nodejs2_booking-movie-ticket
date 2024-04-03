@@ -8,6 +8,7 @@
   <script src="/js/jquery.js"></script>
   <script src="/js/bootstrap.js"></script>
   <link rel="stylesheet" href="/css/login.css">
+  <link rel="stylesheet" href="/css/form.error.css">
   <link rel="icon" type="image/x-icon" href="/icon/icon-cinema.ico">
   <title>NAMCINEMA | <%- i18n.t('header.login') %></title>
 </head>
@@ -16,16 +17,26 @@
   <%- include('../header') %>
 
     <div class="login-form">
-      <form>
+      <form method="POST">
+        <input type="hidden" name="_csrf" value="<%- csrfToken %>" />
         <h1><%- i18n.t('header.login') %></h1>
         <div class="content">
           <div class="input-field">
-            <input type="email" placeholder="<%- i18n.t('form.email') %>" autocomplete="nope">
+            <input type="email" name="email" placeholder="<%- i18n.t('form.email') %>" autocomplete="nope"
+            value="<%- user && user.email ? user.email : '' %>">
           </div>
           <div class="input-field">
-            <input type="password" placeholder="<%- i18n.t('form.password') %>" autocomplete="new-password">
+            <input type="password" name="password" placeholder="<%- i18n.t('form.password') %>" autocomplete="new-password"
+            value="<%- user && user.password ? user.password : '' %>">
           </div>
           <a href="#" class="link"><%- i18n.t('form.forgotPassword') %></a>
+
+          <% if (errors) { %>
+            <br/><br/>
+            <% for (let i = 0; i < errors.length; i++) { %>  
+              <div class="error-detail"><%- errors[i].message %></div>
+            <% } %>
+          <% } %>
         </div>
         <div class="action">
           <a href="./register" class="btn btn-light btn-custom"><%- i18n.t('header.register') %></a>

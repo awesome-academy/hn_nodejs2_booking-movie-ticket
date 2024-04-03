@@ -9,7 +9,7 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn({ name: 'id', type: 'int' })
   id: number;
 
-  @Column({ name: 'email', type: 'varchar', length: 255 })
+  @Column({ name: 'email', type: 'varchar', length: 255, unique: true })
   email: string;
 
   @Column({ name: 'username', type: 'varchar', length: 255 })
