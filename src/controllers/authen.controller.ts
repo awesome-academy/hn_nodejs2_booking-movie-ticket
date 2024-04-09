@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 import { UserRepository } from '../repositories/user.repository';
 import { Request, Response, NextFunction } from 'express-serve-static-core';
-import { UsersRegisterDto } from '../dtos/authen/authen.dto';
+import { UsersRegisterDto } from '../dtos/authen/register.dto';
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
 import { User } from '../entities/user.entity';
@@ -14,6 +14,10 @@ import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
 import { sendMail } from '../utils/sendmail';
 import { Transactional } from 'typeorm-transactional';
+import { ForgotPasswordDto } from '../dtos/authen/forgot.password';
+import { Base64URL } from '../security/base64url';
+import { Sha256 } from '../security/sha256';
+import { ResetPasswordDto } from '../dtos/authen/reset.password.dto';
 
 @injectable()
 export class AuthenController {
@@ -22,14 +26,10 @@ export class AuthenController {
     private readonly userRepository: UserRepository,
   ) {}
 
-  private async findUserByEmail(email: string): Promise<User> {
-    return await this.userRepository.findOneBy({ email });
-  }
-
   @catchError()
   public async getLoginForm(req: Request, res: Response, next: NextFunction) {
     res.render('authen/login', {
-      user: { ...req.body },
+      user: null,
       errors: null,
       csrfToken: req.csrfToken(),
     });
@@ -37,8 +37,10 @@ export class AuthenController {
 
   @catchError()
   public async postLoginForm(req: Request, res: Response, next: NextFunction) {
-    const user: User = await this.findUserByEmail(req.body.email);
-    if (!user || !Bcrypt.compare(req.body.password, user.password)) {
+    const user: User = await this.userRepository.findOneBy({
+      email: req.body.email,
+    });
+    if (!user) {
       res.render('authen/login', {
         errors: [new Error(req.t('validationError.invalidEmailOrPassword'))],
         csrfToken: req.csrfToken(),
@@ -93,7 +95,11 @@ export class AuthenController {
       role: 'USER',
     });
 
-    if (await this.findUserByEmail(user.email)) {
+    if (
+      await this.userRepository.findOneBy({
+        email: req.body.email,
+      })
+    ) {
       validationErrors.push(new Error(req.t('validationError.uniqueEmail')));
     }
 
@@ -148,5 +154,126 @@ export class AuthenController {
     }
 
     res.send('<h1 style="color: red;">Register Success</h1>');
+  }
+
+  @catchError()
+  public async getForgotPasswordForm(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    res.render('authen/forgot-password', {
+      email: null,
+      errors: null,
+      csrfToken: req.csrfToken(),
+    });
+  }
+
+  @catchError()
+  public async postForgotPasswordForm(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    const forgotPasswordDto = plainToClass(ForgotPasswordDto, req.body);
+    const validationErrors = convertToArrayError(
+      await validate(forgotPasswordDto),
+    );
+
+    const userExists = await this.userRepository.exists({
+      where: { email: forgotPasswordDto.email },
+    });
+
+    if (!userExists) {
+      validationErrors.push(new Error(req.t('validationError.emailNotExists')));
+    }
+
+    if (validationErrors.length) {
+      res.render('authen/forgot-password', {
+        email: forgotPasswordDto.email,
+        errors: validationErrors,
+        csrfToken: req.csrfToken(),
+      });
+      return;
+    }
+
+    const timer = new Date().getTime().toString();
+    const header = `${Base64URL.urlEncode(forgotPasswordDto.email)}.${Base64URL.urlEncode(timer)}`;
+    const signature = Sha256.hash(
+      `${header}${Base64URL.urlEncode(process.env.FORGOT_PASSWORD_SECRET)}`,
+    );
+    const token = `${header}.${signature}`;
+    const url = `${process.env.PROTOCOL}://${process.env.HOST}:${process.env.PORT}/authen/reset-password/${token}`;
+    await sendMail({
+      email: forgotPasswordDto.email,
+      subject: 'Reset your password',
+      context: { email: forgotPasswordDto.email, url },
+      templatePath: path.join(
+        __dirname,
+        '..',
+        'views/mail/mail.reset.password.ejs',
+      ),
+    });
+
+    res.render('authen/forgot-password', {
+      email: forgotPasswordDto.email,
+      errors: null,
+      csrfToken: req.csrfToken(),
+    });
+  }
+
+  @catchError()
+  public async getResetPasswordForm(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    res.render('authen/reset-password', {
+      dto: null,
+      errors: null,
+      csrfToken: req.csrfToken(),
+    });
+  }
+
+  @catchError()
+  @Transactional()
+  public async putResetPasswordForm(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    const resetPasswordDto = plainToClass(ResetPasswordDto, req.body);
+    const validationErrors = convertToArrayError(
+      await validate(resetPasswordDto),
+    ).map((item) => {
+      const key = 'validationError.confirmPasswordNoMatch';
+      return { message: req.t(key) };
+    });
+
+    if (validationErrors.length) {
+      res.render('authen/reset-password', {
+        dto: resetPasswordDto,
+        errors: validationErrors,
+        csrfToken: req.csrfToken(),
+      });
+      return;
+    }
+
+    const token: any = req.params.token;
+    let [email, ...rest] = token.split('.');
+    email = Base64URL.urlDecode(email);
+
+    await this.userRepository.update(
+      { email: email },
+      {
+        password: Bcrypt.hash(resetPasswordDto.password),
+      },
+    );
+
+    res.render('authen/reset-password', {
+      dto: resetPasswordDto,
+      errors: null,
+      csrfToken: req.csrfToken(),
+    });
   }
 }

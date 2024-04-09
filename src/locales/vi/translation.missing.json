@@ -31,5 +31,12 @@
     "subscribe": "footer.subscribe",
     "contact": "footer.contact",
     "copyright": "footer.copyright"
+  },
+  "sweetalert": {
+    "notify": "sweetalert.notify",
+    "forgotPasswordNoti": "sweetalert.forgotPasswordNoti"
+  },
+  "validationError": {
+    "confirmPasswordNoMatch ": "validationError.confirmPasswordNoMatch "
   }
 }

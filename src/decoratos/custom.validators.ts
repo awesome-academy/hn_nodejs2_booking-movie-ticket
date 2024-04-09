@@ -3,6 +3,7 @@ import {
   ValidationArguments,
   ValidationOptions,
 } from 'class-validator';
+import i18next from 'i18next';
 
 function isFalsy(x: any) {
   return !x;
@@ -25,6 +26,28 @@ export function IsOptionalWithRegex(
         },
         defaultMessage(args: ValidationArguments) {
           return `No match ${regex}`;
+        },
+      },
+    });
+  };
+}
+
+export function IsEqualProperty(
+  otherPropertyName: string,
+  validationOptions?: ValidationOptions,
+) {
+  return function (object: Object, propertyName: string) {
+    registerDecorator({
+      name: 'isEqualProperty',
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      validator: {
+        validate(value: any, args: ValidationArguments) {
+          return value === args.object[otherPropertyName];
+        },
+        defaultMessage(args: ValidationArguments) {
+          return 'validationError.confirmPasswordNoMatch';
         },
       },
     });
