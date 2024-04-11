@@ -17,6 +17,9 @@ export class PurchasedFood extends BaseEntity {
   @Column({ name: 'current_price', type: 'int' })
   currentPrice: number;
 
+  @Column({ name: 'quantity', type: 'int' })
+  quantity: number;
+
   @Column({ name: 'food_id', type: 'int' })
   foodId: number;
 

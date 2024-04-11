@@ -102,6 +102,12 @@ async function main() {
   // CORS middleware
   app.use('*', cors());
 
+  // Global variables
+  app.use((req, res, next) => {
+    res.locals.session = req.session;
+    next();
+  });
+
   // Use router
   const rootRoute = container.resolve(RootRoute);
   app.use(rootRoute.getRouter());

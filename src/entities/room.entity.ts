@@ -11,9 +11,6 @@ export class Room extends BaseEntity {
   @Column({ name: 'capacity', type: 'int' })
   capacity: number;
 
-  @Column({ name: 'imgurl', type: 'varchar' })
-  imgurl: string;
-
   @Column({ name: 'name', type: 'varchar' })
   name: string;
 

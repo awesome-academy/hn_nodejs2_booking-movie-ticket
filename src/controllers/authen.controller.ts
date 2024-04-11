@@ -49,11 +49,17 @@ export class AuthenController {
       return;
     }
 
-    req.session['user'] = user;
+    if (!Bcrypt.compare(req.body.password, user.password)) {
+      res.render('authen/login', {
+        errors: [new Error(req.t('validationError.passwordInCorrect'))],
+        csrfToken: req.csrfToken(),
+        user: { ...req.body },
+      });
+      return;
+    }
 
-    res.send(
-      `<h1 style="color: red;">${JSON.stringify(req.session['user'])}</h1>`,
-    );
+    req.session['user'] = user;
+    res.redirect('/');
   }
 
   @catchError()
@@ -153,7 +159,8 @@ export class AuthenController {
       await this.userRepository.save(user);
     }
 
-    res.send('<h1 style="color: red;">Register Success</h1>');
+    req.session['user'] = user;
+    res.redirect('/');
   }
 
   @catchError()
@@ -275,5 +282,11 @@ export class AuthenController {
       errors: null,
       csrfToken: req.csrfToken(),
     });
+  }
+
+  @catchError()
+  public async logout(req: Request, res: Response, next: NextFunction) {
+    delete req.session['user'];
+    res.redirect('/');
   }
 }

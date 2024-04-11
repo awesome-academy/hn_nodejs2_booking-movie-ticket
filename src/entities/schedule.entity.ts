@@ -11,7 +11,7 @@ import { Room } from './room.entity';
 import { Movie } from './movie.entity';
 import { Ticket } from './ticket.entity';
 
-@Entity({ name: 'shedule' })
+@Entity({ name: 'schedule' })
 export class Schedule extends BaseEntity {
   @PrimaryGeneratedColumn({ name: 'id', type: 'int' })
   id: number;
@@ -19,8 +19,8 @@ export class Schedule extends BaseEntity {
   @Column({ name: 'start_date', type: 'date' })
   startDate: Date;
 
-  @Column({ name: 'end_date', type: 'date' })
-  endDate: Date;
+  @Column({ name: 'start_time', type: 'time' })
+  startTime: String;
 
   @Column({ name: 'movie_id', type: 'int' })
   movieId: number;

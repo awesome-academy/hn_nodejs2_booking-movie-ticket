@@ -8,7 +8,8 @@
     "register": "header.register",
     "chooseLanguage": "header.chooseLanguage",
     "vi": "header.vi",
-    "en": "header.en"
+    "en": "header.en",
+    "hotMovies": "header.hotMovies"
   },
   "form": {
     "username": "form.username",
