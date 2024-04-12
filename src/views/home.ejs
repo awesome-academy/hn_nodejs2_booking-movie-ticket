@@ -39,15 +39,11 @@
         <% for (let i = 0; i < newestFilms.length; i++) { %>
           <% if (i == 0) { %>
             <div class="carousel-item active">
-              <a href="/movie-details/<%- newestFilms[i].id %>">
-                <img src="<%- newestFilms[i].largeImgurl %>" alt="Los Angeles" width="1100" height="500">
-              </a>
+              <img src="<%- newestFilms[i].largeImgurl %>" alt="Los Angeles" width="1100" height="500">
             </div>
           <% } else { %>
             <div class="carousel-item">
-              <a href="/movie-details/<%- newestFilms[i].id %>">
-                <img src="<%- newestFilms[i].largeImgurl %>" alt="Los Angeles" width="1100" height="500">
-              </a>
+              <img src="<%- newestFilms[i].largeImgurl %>" alt="Los Angeles" width="1100" height="500">
             </div>
           <% } %>
         <% } %>
@@ -68,12 +64,12 @@
     <h1><%- i18n.t('header.hotMoives') %></h1>
     <div class="d-flex justify-content-between flex-wrap">
       <% for (let i = 0; i < hotFilms.length; i++) { %>
-        <div class="card movie-item">
-          <img class="card-img-top img-movie" src="<%- hotFilms[i].smallImgurl %>" alt="Card image">
+        <div class="card movie-item" style="width:300px">
+          <img class="card-img-top img-movie" src="<%- hotFilms[i].smallImgurl %>" alt="Card image" style="width:100%">
           <div class="card-body">
-            <h4 class="card-title"><% hotFilms[i].name %></h4>
+            <h4 class="card-title"><%- hotFilms[i].name %></h4>
             <p class="card-text movie-short-description"><%- hotFilms[i].shortDescription %></p>
-            <a href="/movie-details/<%- hotFilms[i].id %>" class="btn btn-outline-warning btn-view-movie-detail"><%- i18n.t('movie.detail') %></a>
+            <a href="/movie-details/<%- hotFilms[i].id %>" class="btn btn-outline-warning" style="margin-right:70px"><%- i18n.t('movie.detail') %></a>
             <a href="/booking/<%- hotFilms[i].id %>" class="btn btn-outline-danger"><%- i18n.t('movie.byTicket') %></a>
           </div>
         </div>

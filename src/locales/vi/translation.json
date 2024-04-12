@@ -13,9 +13,11 @@
     "hotMoives": "Phim Hot",
     "allMovies": "Tất cả các phim",
     "historyOrder": "Lịch sử mua vé",
-    "personalInfo": "Thông tin cá nhân"
+    "personalInfo": "Thông tin cá nhân",
+    "hello": "Xin chào"
   },
   "form": {
+    "register": "Đăng kí",
     "required": "Bắt buộc",
     "username": "Tên người dùng",
     "email": "Địa chỉ email",
@@ -41,18 +43,24 @@
     "uniqueEmail": "Địa chỉ email đã tồn tại!",
     "emailNotExists": "Địa chỉ email không tồn tại",
     "passwordInCorrect": "Mật khẩu không chính xác",
-    "invalidEmailOrPassword": "Email hoặc mật khẩu không chính xác",
     "confirmPasswordNoMatch": "Mật khẩu nhập lại không khớp",
     "invalidFormatInt": "Định dạng số nguyên không đúng"
   },
   "sweetalert": {
     "notify": "Thông báo",
     "forgotPasswordNoti": "Chúng tôi đã gửi email để bạn đặt lại mật khẩu.Vui lòng kiểm tra email của bạn!",
-    "resetPasswordNoti": "Bạn đã thay đổi mật khẩu thành công!",
-    "passwordInCorrect": "Mật khẩu không chính xác"
+    "resetPasswordNoti": "Bạn đã thay đổi mật khẩu thành công!"
   },
   "movie": {
     "detail": "Chi tiết",
     "byTicket": "Mua vé"
+  },
+  "noti": {
+    "notData": "Không có dữ liệu",
+    "backToHome": "Quay lại trang chủ"
+  },
+  "pagination": {
+    "previous": "Trang trước",
+    "next": "Trang tiếp"
   }
 }

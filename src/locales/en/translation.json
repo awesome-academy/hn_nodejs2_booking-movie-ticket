@@ -13,7 +13,8 @@
     "hotMoives": "Hot Movies",
     "allMovies": "All Movies",
     "historyOrder": "History Order",
-    "personalInfo": "Personal Info"
+    "personalInfo": "Personal Info",
+    "hello": "Hello"
   },
   "footer": {
     "supportMe": "Support Me",
@@ -42,9 +43,8 @@
     "uniqueEmail": "Email is exists!",
     "emailNotExists": "Email is not exists",
     "passwordInCorrect": "Password is incorrect",
-    "invalidEmailOrPassword": "Invalid email or password",
     "confirmPasswordNoMatch": "The re-entered password does not match",
-    "invalidFormatInt": "Invalid Format Integr"
+    "invalidFormatInt": "Invalid Format Integer"
   },
   "sweetalert": {
     "notify": "Notify",
@@ -54,5 +54,13 @@
   "movie": {
     "detail": "Detail",
     "byTicket": "By ticket"
+  },
+  "noti": {
+    "notData": "Don't Have Data",
+    "backToHome": "Back To Home"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next"
   }
 }

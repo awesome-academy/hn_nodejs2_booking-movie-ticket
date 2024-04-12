@@ -17,3 +17,11 @@ footer {
 .carousel-item {
   cursor: pointer;
 }
+
+.header-active {
+  color: orange !important;
+}
+
+.header-inactive:hover {
+  color: #ffc400 !important;
+}

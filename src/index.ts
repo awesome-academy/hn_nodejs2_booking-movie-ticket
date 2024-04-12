@@ -105,6 +105,7 @@ async function main() {
   // Global variables
   app.use((req, res, next) => {
     res.locals.session = req.session;
+    res.locals.activeHeader = null;
     next();
   });
 
