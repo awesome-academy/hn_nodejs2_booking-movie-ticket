@@ -3,7 +3,6 @@ import {
   ValidationArguments,
   ValidationOptions,
 } from 'class-validator';
-import i18next from 'i18next';
 
 function isFalsy(x: any) {
   return !x;

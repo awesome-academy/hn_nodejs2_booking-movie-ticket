@@ -1,0 +1,98 @@
+th {
+  padding: 0px 20px 5px 0px;
+}
+
+.iframe-wapper {
+  position: relative;
+  div {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    cursor: pointer;
+  }
+}
+
+.comment-movie {
+  flex: 7;
+  position: relative;
+  min-height: 228px;
+}
+
+.star-statistical {
+  flex: 2.5;
+}
+
+.total-review,
+.comment-date {
+  font-size: 14px;
+  color: #808089;
+}
+
+.star-average {
+  font-size: 36px;
+  margin-bottom: 10px;
+  i {
+    color: #ffc107;
+  }
+}
+
+.star-statistical-detail {
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+}
+
+.star-statistical-detail-row {
+  display: flex;
+}
+
+.star-statistical-detail-row + .star-statistical-detail-row {
+  margin-top: 2px;
+}
+
+.star-active {
+  margin-top: auto;
+  margin-bottom: auto;
+  color: #ffc107;
+}
+
+.star-inactive {
+  margin-top: auto;
+  margin-bottom: auto;
+  color: #6c757d;
+}
+
+.progress {
+  width: 50%;
+  margin: auto auto auto 10px;
+}
+
+.movie-comments {
+  flex-direction: column !important;
+}
+
+.comment-row {
+  border-bottom: 3px solid #e9ecef;
+  width: 100%;
+}
+
+.wapper-btn-x > .btn {
+  width: 50%;
+}
+
+.modal-content {
+  width: 100%;
+  height: 100%;
+}
+
+#exampleModalLabel {
+  font-size: 25px;
+}
+
+.modal-dialog {
+  max-width: 70vw;
+  height: 85vh;
+}

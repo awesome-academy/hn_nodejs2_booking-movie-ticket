@@ -1,12 +1,15 @@
 import express from 'express';
-import { inject, injectable } from 'tsyringe';
+import { inject } from 'tsyringe';
 import { BaseRoute } from './base.route';
 import { AuthenRoute } from './authen.route';
 import { HomeRoute } from './home.route';
 import { AuthenCheckGuard } from '../guards/authen.check.guard';
-import { AllMoviesController } from '../controllers/all.movies.controller';
+import { AllMoviesRoute } from './all.movies.route';
+import { MovieDetailRoute } from './movie.detail.route';
+import { RestConfig } from '../decoratos/rest.api.decorator';
+import { ReviewRestController } from '../apis/review.api.controller';
 
-@injectable()
+@RestConfig([ReviewRestController])
 export class RootRoute extends BaseRoute {
   constructor(
     @inject(AuthenCheckGuard)
@@ -18,8 +21,11 @@ export class RootRoute extends BaseRoute {
     @inject(HomeRoute)
     private readonly homeRoute: HomeRoute,
 
-    @inject(AllMoviesController)
-    private readonly allMoviesController: AllMoviesController,
+    @inject(AllMoviesRoute)
+    private readonly allMoviesRoute: AllMoviesRoute,
+
+    @inject(MovieDetailRoute)
+    private readonly movieDetailRoute: MovieDetailRoute,
   ) {
     super();
     this.router = express.Router();
@@ -30,10 +36,7 @@ export class RootRoute extends BaseRoute {
       this.authenRoute.getRouter(),
     );
     this.router.use('/', this.homeRoute.getRouter());
-
-    this.router.get(
-      '/all-movies',
-      this.allMoviesController.getAllMovies.bind(this.allMoviesController),
-    );
+    this.router.use('/', this.allMoviesRoute.getRouter());
+    this.router.use('/', this.movieDetailRoute.getRouter());
   }
 }

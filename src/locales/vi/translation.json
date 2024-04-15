@@ -14,7 +14,9 @@
     "allMovies": "Tất cả các phim",
     "historyOrder": "Lịch sử mua vé",
     "personalInfo": "Thông tin cá nhân",
-    "hello": "Xin chào"
+    "hello": "Xin chào",
+    "movieDetail": "Chi tiết phim",
+    "filter": "Lọc"
   },
   "form": {
     "register": "Đăng kí",
@@ -53,7 +55,24 @@
   },
   "movie": {
     "detail": "Chi tiết",
-    "byTicket": "Mua vé"
+    "byTicket": "Mua vé",
+    "name": "Tên phim",
+    "direction": "Đạo diễn",
+    "actors": "Diễn viên",
+    "releaseDate": "Ngày Ra Mắt",
+    "startDateShowing": "Ngày Khởi Chiếu",
+    "categories": "Thể Loại",
+    "duration": "Thời Lượng",
+    "language": "Ngôn Ngữ",
+    "age": "tuổi",
+    "ageLimit": "Độ Tuổi",
+    "noAgeLimit": "Không giới hạn độ",
+    "review": "Đánh giá",
+    "reviews": "đánh giá",
+    "noReview": "Không có đánh giá",
+    "introduce": "Giới Thiệu",
+    "reviewAndComment": "Đánh giá và nhận xét",
+    "minutes": "phút"
   },
   "noti": {
     "notData": "Không có dữ liệu",
@@ -62,5 +81,11 @@
   "pagination": {
     "previous": "Trang trước",
     "next": "Trang tiếp"
+  },
+  "review": {
+    "all": "Tất cả",
+    "dateEarly": "Bình luận gần đây nhất",
+    "starGreat": "Số sao vote nhiều nhất",
+    "noReview": "Không có đánh giá nào"
   }
 }

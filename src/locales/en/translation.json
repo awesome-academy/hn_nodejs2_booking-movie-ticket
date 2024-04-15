@@ -14,7 +14,9 @@
     "allMovies": "All Movies",
     "historyOrder": "History Order",
     "personalInfo": "Personal Info",
-    "hello": "Hello"
+    "movieDetail": "Movie Detail",
+    "hello": "Hello",
+    "filter": "Filter"
   },
   "footer": {
     "supportMe": "Support Me",
@@ -53,7 +55,24 @@
   },
   "movie": {
     "detail": "Detail",
-    "byTicket": "By ticket"
+    "byTicket": "By ticket",
+    "name": "Name",
+    "direction": "Direction",
+    "actors": "Actions",
+    "releaseDate": "Release Date",
+    "startDateShowing": "Start Date Showing",
+    "categories": "Categories",
+    "duration": "Duration",
+    "language": "Language",
+    "age": "Age",
+    "ageLimit": "Age Limit",
+    "noAgeLimit": "No Age Limit",
+    "review": "Review",
+    "reviews": "review",
+    "noReview": "No Review",
+    "introduce": "Introduce",
+    "reviewAndComment": "Review and comment",
+    "minutes": "minutes"
   },
   "noti": {
     "notData": "Don't Have Data",
@@ -62,5 +81,11 @@
   "pagination": {
     "previous": "Previous",
     "next": "Next"
+  },
+  "review": {
+    "all": "All",
+    "dateEarly": "Date Early",
+    "starGreat": "Star Great",
+    "noReview": "No Review"
   }
 }
