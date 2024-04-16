@@ -57,7 +57,7 @@ export class Movie extends BaseEntity {
   name: string;
 
   @Column({ name: 'release_date', type: 'date' })
-  release: Date;
+  releaseDate: Date;
 
   @Column({ name: 'trailerurl', type: 'varchar', length: 255 })
   trailerurl: string;

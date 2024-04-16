@@ -1,5 +1,16 @@
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   position: relative;
+  background-color: #efefef !important;
+  scroll-behavior: smooth;
+}
+
+.main-content {
+  background-color: #fff;
+  padding: 25px;
 }
 
 nav {
@@ -7,7 +18,7 @@ nav {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 1001;
 }
 
 footer {
@@ -24,4 +35,9 @@ footer {
 
 .header-inactive:hover {
   color: #ffc400 !important;
+}
+
+.img-fit {
+  object-fit: cover;
+  border-radius: 50%;
 }

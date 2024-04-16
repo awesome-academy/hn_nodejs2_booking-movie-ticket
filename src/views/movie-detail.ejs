@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <script src="/js/jquery.js"></script>
+  <script src="/js/poper.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <link rel="icon" type="image/x-icon" href="/icon/icon-cinema.ico">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/movie-detail.css">
+  <title>NAMCINEMA | <%- i18n.t('header.movieDetail') %></title>
+</head>
+<body>
+  <!-- nav bar -->
+  <%- include('./header') %>
+  <!-- end of navbar -->
+  <div id="movie-id" class="d-none"><%- movie.id %></div>
+
+  <div class="modal fade my-0 mx-auto" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header d-flex">
+          <h5 class="modal-title mx-auto" id="exampleModalLabel"><%- movie.name %></h5>
+          <button type="button" class="close ml-0 close-video-modal" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="player"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success btn-cancle btn-back invisible" data-dismiss="modal"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button type="button" class="btn btn-primary btn-toggle-trailer" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap"></button>
+  <br><br><br>
+  <div class="container main-content">
+    <h1 class="text-center"><%- i18n.t('header.movieDetail') %></h1>
+    <br>
+    <div class="d-flex">
+      <div class="mr-5">
+        <img src="<%- movie.smallImgurl %>" alt="">
+        <div class="d-flex wapper-btn-x mt-2">
+          <% if (movie.status == 'inactive') { %>
+            <button  class="btn btn-danger btn-block btn-buy-ticket-not-signed-in" disabled><%- i18n.t('movie.byTicket') %></button>
+          <% } else { %>
+            <a href="/booking/<%- movie.id %>" class="btn btn-danger btn-block btn-disable"><%- i18n.t('movie.byTicket') %></a>
+          <% } %>
+          <a class="btn btn-info ml-2" href="#movie-detail-review"><%- i18n.t('movie.review') %></a>
+        </div>
+      </div>
+      <table>
+        <tr>
+          <th><b><%- i18n.t('movie.name') %>: </b></th>
+          <th><%- movie.name %></th>
+        </tr>
+        <tr>
+          <th><b><%- i18n.t('movie.direction') %>:</b></th>
+          <th><%- movie.direction %></th>
+        </tr>
+        <tr>
+          <th><b><%- i18n.t('movie.actors') %>:</b></th>
+          <th><%- movie.actors %></th>
+        </tr>
+        <tr>
+          <th><b><%- i18n.t('movie.releaseDate') %>:</b></th>
+          <th><%- movie.releaseDate %></th>
+        </tr>
+        <tr>
+          <th><b><%- i18n.t('movie.startDateShowing') %>:</b></th>
+          <th><%- movie.startDateShowing %></th>
+        </tr>
+        <tr>
+          <th><b><%- i18n.t('movie.categories') %>:</b></th>
+          <th><%- movie.categories %></th>
+        </tr>
+        <tr>
+          <th><b><%- i18n.t('movie.duration') %>:</b></th>
+          <th><%- movie.duration %> <%- i18n.t('movie.minutes') %></th>
+        </tr>
+        <tr>
+          <th><b><%- i18n.t('movie.language') %>:</b></th>
+          <th><%- movie.language %></th>
+        </tr>
+        <tr>
+          <th><b><%- i18n.t('movie.ageLimit') %>:</b></th>
+          <th><%- movie.ageLimit ? `>= ${movie.ageLimit}` : i18n.t('movie.noAgeLimit') %> <%- i18n.t('movie.age') %></th>
+        </tr>
+        <tr>
+          <th><b><%- i18n.t('movie.review') %>:</b></th>
+          <% if (movie.averageStar) { %>
+            <th><%- movie.averageStar %> <i class="fa-solid fa-star text-warning"></i> <span class="text-black-50">| <%- movie.totalReview %> <%- i18n.t('movie.reviews') %></span></th>
+          <% } else { %>
+            <th><span class="text-black-50"><%- i18n.t('movie.noReview') %></span></th>
+          <% } %>
+          </tr>
+      </table>
+    </div>
+    <br><br>
+    <div class="d-flex">
+      <div class="mr-5">
+        <h1>Trailer</h1>
+        <div class="iframe-wapper">
+          <div></div>
+          <iframe width="560" height="315" src="<%- movie.trailerurl %>"
+            title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+      <div>
+        <h1><%- i18n.t('movie.introduce') %></h1>
+        <p><%- movie.longDescription %></p>
+      </div>
+    </div>
+  </div>
+  <br><br>
+  <%- include('./movie-detail-review') %>
+  <%- include('./footer') %>
+
+  <script src="/js/youtube.api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/pagination.js"></script>
+  <script src="/js/lazyloading.js"></script>
+  <script src="/js/sweetalert.js"></script>
+  <script src="/js/movie-detail.js"></script>
+  <script src="/js/movie-detail.review.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<div class="container main-content" id="movie-detail-review">
+  <h1 class="mb-4"><%- i18n.t('movie.reviewAndComment') %></h1>
+  <% if (movie.totalReview > 0) { %>
+    <div class="d-flex flex-row-reverse">
+      <div class="btn-group">
+        <button class="btn btn-secondary btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+          <%- i18n.t('header.filter') %>&nbsp;&nbsp;<i class="fa-solid fa-filter"></i>
+        </button>
+
+        <div class="dropdown-menu">
+          <div class="px-4 py-3">
+            <div class="dropdown-item form-group">
+              <input type="radio" id="star0" name="star" class="mr-2" value="0">
+              <label for="all"><%- i18n.t('review.all') %></label>
+            </div>
+
+            <% for (let i = 1; i <= 5; i++) { %>
+              <div class="dropdown-item form-group">
+                <input type="radio" id="star<%- i %>" name="star" class="mr-2" value="<%- i %>">
+                <label for="star<%- i %>"><%- i %>&nbsp;<i class="fa-solid fa-star star-active"></i></label>
+              </div>
+            <% } %>
+
+            <div class="dropdown-item form-group">
+              <input type="checkbox" id="dateEarly" class="mr-2">
+              <label for="dateEarly"><%- i18n.t('review.dateEarly') %></label>
+            </div>
+            <div class="dropdown-item form-group">
+              <input type="checkbox" id="starGreat" class="mr-2">
+              <label for="starGreat"><%- i18n.t('review.starGreat') %></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="media">
+      <%- include('./star-statistical') %>
+      <div class="media-body comment-movie">
+        <div class="media mt-3 movie-comments"></div>
+      </div>
+    </div>
+
+    <div class="pagination-wapper d-flex flex-row-reverse mt-5">
+      <div aria-label="...">
+        <ul class="pagination"></ul>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="d-flex mb-5 flex-column">
+      <img src="/img/no_star.png" class="mr-auto ml-auto mb-0 mt-5"/>
+      <span class="mr-auto ml-auto mb-5 mt-0"><%- i18n.t('review.noReview') %></span>
+    </div>
+  <% } %>
+</div>

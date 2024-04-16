@@ -217,4 +217,20 @@ ul.social-footer2 li a {
 
 #footer {
   height: 256px;
+  z-index: 900 !important;
+}
+
+.btn-to-top {
+  display: none;
+  cursor: pointer;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99999;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: rgb(12, 12, 12);
+  color: white;
+  border: none;
 }
