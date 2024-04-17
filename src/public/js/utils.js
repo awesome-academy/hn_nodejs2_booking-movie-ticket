@@ -9,6 +9,22 @@ function getCookie(key) {
   return null;
 }
 
+function setCookie(key, value, millisecondsToExpire = null) {
+  if (millisecondsToExpire) { 
+    const expirationDate = new Date();
+    expirationDate.setTime(expirationDate.getTime() + millisecondsToExpire);
+    const expires = `expires=${expirationDate.toUTCString()}`;
+    document.cookie = `${key}=${value}; ${expires}; path=/`;
+  } else {
+    const expirationDate = new Date('Fri, 31 Dec 9999 23:59:59 GMT');
+    document.cookie = `${key}=${value}; expires=${expirationDate.toUTCString()}; path=/`;
+  }
+}
+
+function deleteCookie(key) {
+  document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+}
+
 function getSelectedRadioValue(name) {
   var radioButtons = document.getElementsByName(name);
   var selectedValue = null;
@@ -36,6 +52,7 @@ function debounce(callback, delay) {
       else {
         callback(...args);
       }
+      clearTimeout(timeout);
     }, delay);
   }
 }

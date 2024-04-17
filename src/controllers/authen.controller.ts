@@ -59,7 +59,7 @@ export class AuthenController {
     }
 
     req.session['user'] = user;
-    res.redirect('/');
+    res.redirect(req.cookies.currentPath ? req.cookies.currentPath : '/');
   }
 
   @catchError()
@@ -287,6 +287,6 @@ export class AuthenController {
   @catchError()
   public async logout(req: Request, res: Response, next: NextFunction) {
     delete req.session['user'];
-    res.redirect('/');
+    res.redirect(req.cookies.currentPath ? req.cookies.currentPath : '/');
   }
 }

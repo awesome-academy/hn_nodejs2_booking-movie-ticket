@@ -1,5 +1,8 @@
 import { inject } from 'tsyringe';
-import { GetMapping, RestController } from '../decoratos/rest.api.decorator';
+import {
+  GetMapping,
+  RestController,
+} from '../decoratos/api/rest.api.decorator';
 import { Request, Response, NextFunction } from 'express';
 import { ReviewService } from '../services/review.service';
 import { AppBaseResponseDto } from '../dtos/res/app.api.base.res.dto';
@@ -28,12 +31,18 @@ export class ReviewRestController {
       +req.query.dateEarly == 1 || +req.query.dateEarly == 0
         ? !!+req.query.dateEarly
         : false;
+    const ofUser = req.query.ofUser;
     const result = await this.reviewService.findAllByStarWithPagination(
       movieId,
       star,
       page,
       starGreat,
       dateEarly,
+      req.session['user']?.id
+        ? ofUser == '1'
+          ? req.session['user'].id
+          : null
+        : null,
     );
     return result;
   }

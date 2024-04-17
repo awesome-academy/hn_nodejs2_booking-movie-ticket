@@ -24,6 +24,7 @@ export class ReviewService {
     star: number,
     criteriaStar: boolean,
     criteriaDate: boolean,
+    userId: number,
   ): SelectQueryBuilder<Review> {
     const queryBuilder = this.reviewRepository
       .createQueryBuilder('review')
@@ -46,6 +47,10 @@ export class ReviewService {
         .addOrderBy('review.star', 'DESC');
     }
 
+    if (userId) {
+      queryBuilder.andWhere('review.userId = :userId', { userId });
+    }
+
     return queryBuilder;
   }
 
@@ -55,6 +60,7 @@ export class ReviewService {
     page: number,
     criteriaStar: boolean = true,
     criteriaDate: boolean = false,
+    userId?: number,
   ): Promise<AppBaseResponseDto> {
     if (!movieId) {
       throw new AppException('Invalid movieId', StatusEnum.BAD_REQUEST);
@@ -71,6 +77,7 @@ export class ReviewService {
       star,
       criteriaStar,
       criteriaDate,
+      userId,
     );
     const pagination: Pagination<Review> = await paginations(
       page,

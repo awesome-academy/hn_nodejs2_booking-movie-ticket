@@ -5,4 +5,5 @@ export enum StatusEnum {
   INTERNAL_ERROR = 500,
   BAD_REQUEST = 400,
   FORBIDDEN = 403,
+  UN_AUTHORIZED = 401,
 }
