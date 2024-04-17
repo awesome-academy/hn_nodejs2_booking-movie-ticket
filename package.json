@@ -41,6 +41,7 @@
     "@types/nodemailer": "^6.4.14",
     "@types/sanitize-html": "^2.11.0",
     "@types/uuid": "^9.0.8",
+    "@types/winston": "^2.4.4",
     "cross-env": "^7.0.3",
     "eslint": "^8.56.0",
     "nodemon": "^3.0.3",
@@ -80,6 +81,7 @@
     "tsyringe": "^4.8.0",
     "typeorm": "^0.3.20",
     "typeorm-transactional": "^0.5.0",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "winston": "^3.13.0"
   }
 }

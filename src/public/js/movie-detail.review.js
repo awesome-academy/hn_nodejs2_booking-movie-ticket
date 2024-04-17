@@ -5,6 +5,7 @@ let _page = null;
 let _star = null;
 let _starGreat = null;
 let _dateEarly = null;
+let _u = null;
 
 function initQueryParam() {
   querySearch = new URLSearchParams(window.location.search);
@@ -19,6 +20,10 @@ function initQueryParam() {
     querySearch.get('dateEarly') == '1' || querySearch.get('dateEarly') == '0'
       ? querySearch.get('dateEarly')
       : '0';
+  _ofUser =
+    querySearch.get('ofUser') == '1' || querySearch.get('ofUser') == '0'
+      ? querySearch.get('ofUser')
+      : '0';
 }
 
 const commentMovieElement = document.querySelector('.comment-movie');
@@ -31,9 +36,10 @@ const movieComments = document.querySelector('.movie-comments');
 
 const starGreatCheckBox = document.querySelector('#starGreat');
 const dateEarlyCheckBox = document.querySelector('#dateEarly');
+const uCheckBox = document.querySelector('#ofUser');
 
 const dropdownMenu = document.querySelector('.dropdown-menu');
-dropdownMenu.addEventListener('click', debounce(dropdownMenuClickHandler, 1000));
+dropdownMenu.addEventListener('click', debounce(dropdownMenuClickHandler, 500));
 
 function dropdownMenuClickHandler(event) {
   if (event.target.tagName.toLowerCase() != 'input') return;
@@ -42,6 +48,8 @@ function dropdownMenuClickHandler(event) {
     _dateEarly = event.target.checked ? '1' : '0';
   } else if (event.target.id == 'starGreat') {
     _starGreat = event.target.checked ? '1' : '0';
+  } else if (event.target.id == 'ofUser') {
+    _ofUser = event.target.checked ? '1' : '0';
   } else {
     _star = +event.target.value;
   }
@@ -62,6 +70,12 @@ function bindingDropdownInput() {
     dateEarlyCheckBox.checked = false
   }
 
+  if (_u == '1' && uCheckBox) {
+    uCheckBox.checked = true;
+  } else if(_u == '0' && uCheckBox) {
+    uCheckBox.checked = false;
+  }
+
   for (let i = 0; i <= 5; i++) {
     const radioStar = document.querySelector(`#star${i}`);
     if (_star == i) {
@@ -73,7 +87,7 @@ function bindingDropdownInput() {
 }
 
 function queryParamHandler() {
-  const queryParam = `?star=${_star}&page=${_page}&starGreat=${_starGreat}&dateEarly=${_dateEarly}`;
+  const queryParam = `?star=${_star}&page=${_page}&starGreat=${_starGreat}&dateEarly=${_dateEarly}&u=${_u}`;
   window.history.pushState(null, null, queryParam);
 }
 
@@ -85,6 +99,7 @@ function renderNoData() {
       <span class="mr-auto ml-auto mb-5 mt-0">${locale == 'vi' ? 'Không có đánh giá' : 'No Review'}</span>
     </div>
   `;
+  saveStatePage();
 }
 
 function renderUIWithDataFromAPI(data) {
@@ -114,6 +129,7 @@ function renderUIWithDataFromAPI(data) {
   }).join('');
 
   movieComments.innerHTML = html;
+  saveStatePage();
 }
 
 function renderReviewAndComment(isClickNodePagination = false) {
@@ -124,7 +140,7 @@ function renderReviewAndComment(isClickNodePagination = false) {
 
   if (isClickNodePagination) lazyloading.start();
 
-  fetch(`${protocol}//${host}/api/review?movieId=${movieId}&star=${_star}&page=${_page}&starGreat=${_starGreat}&dateEarly=${_dateEarly}`, requestOptions)
+  fetch(`${protocol}//${host}/api/review?movieId=${movieId}&star=${_star}&page=${_page}&starGreat=${_starGreat}&dateEarly=${_dateEarly}&ofUser=${_ofUser}`, requestOptions)
     .then((response) => response.json())
     .then(async (result) => {
       const { message, status, data } = result;

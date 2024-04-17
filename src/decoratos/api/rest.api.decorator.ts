@@ -1,10 +1,11 @@
 import 'reflect-metadata';
 import express from 'express';
 import { container, injectable, singleton } from 'tsyringe';
-import { HttpMethod } from '../enum/http.method.enum';
+import { HttpMethod } from '../../enum/http.method.enum';
 import { Request, Response, NextFunction } from 'express';
-import { StatusEnum } from '../enum/status.enum';
-import { ClassConstructor } from '../declare/class.constructor';
+import { StatusEnum } from '../../enum/status.enum';
+import { ClassConstructor } from '../../declare/class.constructor';
+import { Logger } from '../../config/logger';
 
 function errorHandler(
   err: any,
@@ -38,6 +39,11 @@ function errorHandler(
       });
       break;
     default:
+      Logger.error(err);
+      res.status(StatusEnum.INTERNAL_ERROR).json({
+        status: StatusEnum.INTERNAL_ERROR,
+        message: 'Internal Server Error',
+      });
       break;
   }
 }
@@ -63,11 +69,13 @@ export function RestConfig<T extends ClassConstructor>(
 export function RestController<T extends ClassConstructor>(path: string) {
   return function decorator(constructor: T) {
     injectable()(constructor);
+
     constructor.prototype.route = express.Router();
     constructor.prototype.path = path;
     const controller = container.resolve(constructor);
-    Object.keys(constructor.prototype.mapping).forEach((keyPath) => {
-      let [method, handlers] = constructor.prototype.mapping[keyPath];
+
+    Object.values(constructor.prototype.mapping).forEach((obj: any) => {
+      const { path: _path, method, handlers } = obj;
       const newHandler = async function (
         req: Request,
         res: Response,
@@ -83,8 +91,8 @@ export function RestController<T extends ClassConstructor>(path: string) {
         }
       };
       const [oldHandler, ...restHandlers] = handlers;
-      constructor.prototype.route[`${method.toLowerCase()}`](keyPath, [
-        restHandlers?.reverse(),
+      constructor.prototype.route[`${method.toLowerCase()}`](_path, [
+        ...restHandlers?.reverse(),
         newHandler,
       ]);
     });
@@ -94,19 +102,23 @@ export function RestController<T extends ClassConstructor>(path: string) {
 export function RequestMapping(path: string, method?: string) {
   return function (
     target: any,
-    propertyKey: string,
+    propertyName: string,
     descriptor: PropertyDescriptor,
   ) {
     method = method ? method.toUpperCase() : HttpMethod.GET;
-    const handlers = [];
     const handler = descriptor.value;
 
     if (!target.constructor.prototype.mapping) {
       target.constructor.prototype.mapping = {};
     }
 
-    handlers.push(handler);
-    target.constructor.prototype.mapping[path] = [method, handlers];
+    target.constructor.prototype.mapping[propertyName] = {
+      path,
+      method,
+      handlers: [],
+    };
+
+    target.constructor.prototype.mapping[propertyName].handlers.push(handler);
   };
 }
 

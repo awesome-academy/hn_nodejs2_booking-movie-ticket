@@ -29,6 +29,12 @@
               <input type="checkbox" id="starGreat" class="mr-2">
               <label for="starGreat"><%- i18n.t('review.starGreat') %></label>
             </div>
+            <% if (session.user) { %>
+              <div class="dropdown-item form-group">
+                <input type="checkbox" id="ofUser" class="mr-2">
+                <label for="ofUser"><%- i18n.t('review.yourReviews') %></label>
+              </div>
+            <% } %>
           </div>
         </div>
       </div>

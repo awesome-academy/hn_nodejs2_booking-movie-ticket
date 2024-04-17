@@ -22,3 +22,16 @@ const scrollToTop = () => {
 
 displayButton();
 scrollToTop();
+
+const commonPaths = ['/movie-details', '/all-movies', '/'];
+function saveStatePage() {
+  const path = `${window.location.pathname}${window.location.search}`;
+  commonPaths.forEach(item => {
+    if (path.includes(item) && !path.includes('/authen')) {
+      setCookie('currentPath', path);
+      return;
+    }
+  });
+}
+
+saveStatePage();
