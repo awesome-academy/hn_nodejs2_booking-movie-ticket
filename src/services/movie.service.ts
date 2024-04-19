@@ -57,10 +57,62 @@ export class MovieService {
     return hotFilms;
   }
 
+  private makeQueryBuilderMovieWithMultiCondition(
+    name: string,
+    categoryIds: number[],
+    age: number,
+  ): SelectQueryBuilder<Movie> {
+    const queryBuilder = this.movieRepository
+      .createQueryBuilder('movie')
+      .where('1 = 1');
+
+    if (name != null) {
+      // mysql FULLTEXT SEARCH
+      queryBuilder.andWhere(
+        'match(movie.name) against(:name IN NATURAL LANGUAGE MODE)',
+        { name },
+      );
+    }
+
+    if (categoryIds) {
+      categoryIds.forEach((categoryId, index) => {
+        const subquery = this.movieRepository
+          .createQueryBuilder('movie')
+          .addSelect('category.id', 'categoryId')
+          .innerJoin('movie.categories', 'category')
+          .getQuery();
+
+        queryBuilder.innerJoin(
+          `(${subquery})`,
+          `subquery${index + 1}`,
+          `subquery${index + 1}.movie_id = movie.id and subquery${index + 1}.categoryId = :categoryId`,
+          {
+            categoryId,
+          },
+        );
+      });
+    }
+
+    if (age != null) {
+      queryBuilder
+        .andWhere('movie.ageLimit >= :age', { age })
+        .orWhere('movie.ageLimit is null');
+    }
+
+    return queryBuilder;
+  }
+
   public async getMoivesWithPagination(
     page: number,
+    name: string = null,
+    categoryIds: number[] = null,
+    age: number = null,
   ): Promise<Pagination<Movie>> {
-    const queryBuilder = this.movieRepository.createQueryBuilder('movie');
+    const queryBuilder = this.makeQueryBuilderMovieWithMultiCondition(
+      name,
+      categoryIds,
+      age,
+    );
     const pagination: Pagination<Movie> = await paginations<Movie>(
       page,
       AllMoviesPagination,

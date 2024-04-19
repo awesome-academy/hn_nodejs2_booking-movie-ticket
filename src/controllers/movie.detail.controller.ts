@@ -13,7 +13,6 @@ export class MovieDetailController {
   public async getMovieDeatil(req: Request, res: Response, next: NextFunction) {
     const id = +req.params.id;
     const movie: Movie = await this.movieService.getMovieDetail(id);
-    console.log('>>>movie:', movie);
     res.render('movie-detail', {
       movie,
     });

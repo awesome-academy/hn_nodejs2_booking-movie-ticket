@@ -12,6 +12,8 @@ function Lazyloading(parentElement) {
   }
 
   this.close = function() {
-    parentElement.removeChild(parentElement.firstElementChild);
+    if (parentElement.firstElementChild.classList.contains('lazyloading')) {
+      parentElement.removeChild(parentElement.firstElementChild);
+    }
   }
 }

@@ -9,30 +9,30 @@
 
         <div class="dropdown-menu">
           <div class="px-4 py-3">
-            <div class="dropdown-item form-group">
-              <input type="radio" id="star0" name="star" class="mr-2" value="0">
-              <label for="all"><%- i18n.t('review.all') %></label>
+            <div class="dropdown-item form-group custom-radio">
+              <input type="radio" id="star0" name="star" class="mr-2 custom-control-input" value="0">
+              <label class="custom-control-label" for="star0">&nbsp;&nbsp;<%- i18n.t('review.all') %></label>
             </div>
 
             <% for (let i = 1; i <= 5; i++) { %>
-              <div class="dropdown-item form-group">
-                <input type="radio" id="star<%- i %>" name="star" class="mr-2" value="<%- i %>">
-                <label for="star<%- i %>"><%- i %>&nbsp;<i class="fa-solid fa-star star-active"></i></label>
+              <div class="dropdown-item form-group custom-radio">
+                <input type="radio" id="star<%- i %>" name="star" class="mr-2 custom-control-input" value="<%- i %>">
+                <label class="custom-control-label" for="star<%- i %>">&nbsp;&nbsp;<%- i %>&nbsp;<i class="fa-solid fa-star star-active"></i></label>
               </div>
             <% } %>
 
-            <div class="dropdown-item form-group">
-              <input type="checkbox" id="dateEarly" class="mr-2">
-              <label for="dateEarly"><%- i18n.t('review.dateEarly') %></label>
+            <div class="dropdown-item form-group custom-checkbox">
+              <input type="checkbox" id="dateEarly" class="mr-2 custom-control-input">
+              <label class="custom-control-label" for="dateEarly"><%- i18n.t('review.dateEarly') %></label>
             </div>
-            <div class="dropdown-item form-group">
-              <input type="checkbox" id="starGreat" class="mr-2">
-              <label for="starGreat"><%- i18n.t('review.starGreat') %></label>
+            <div class="dropdown-item form-group custom-checkbox">
+              <input type="checkbox" id="starGreat" class="mr-2 custom-control-input">
+              <label class="custom-control-label" for="starGreat"><%- i18n.t('review.starGreat') %></label>
             </div>
             <% if (session.user) { %>
-              <div class="dropdown-item form-group">
-                <input type="checkbox" id="ofUser" class="mr-2">
-                <label for="ofUser"><%- i18n.t('review.yourReviews') %></label>
+              <div class="dropdown-item form-group custom-checkbox">
+                <input type="checkbox" id="ofUser" class="mr-2 custom-control-input">
+                <label class="custom-control-label" for="ofUser"><%- i18n.t('review.yourReviews') %></label>
               </div>
             <% } %>
           </div>

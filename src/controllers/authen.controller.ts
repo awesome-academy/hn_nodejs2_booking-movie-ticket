@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import { inject, injectable } from 'tsyringe';
 import { UserRepository } from '../repositories/user.repository';
 import { Request, Response, NextFunction } from 'express-serve-static-core';
