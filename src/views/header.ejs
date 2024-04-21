@@ -17,13 +17,13 @@
           <a class="nav-link text-white<%- activeHeader == 'historyOrder' ? ' header-active' : ' header-inactive' %>" href="#"><%- i18n.t('header.historyOrder') %></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled text-white<%- activeHeader == 'personalInfo' ? ' header-active' : ' header-inactive' %>"><%- i18n.t('header.personalInfo') %></a>
+          <a class="nav-link text-white<%- activeHeader == 'personalInfo' ? ' header-active' : ' header-inactive' %>" href="/personal-info"><%- i18n.t('header.personalInfo') %></a>
         </li>
       <% } %>
     </ul>
   </div>
   <% if (session.user) { %>
-    <div class="mr-3 text-warning font-weight-bold h5"><%- i18n.t('header.hello') %>, <%- session.user.username %></div>
+    <div class="mr-3 text-warning font-weight-bold h5"><%- i18n.t('header.hello') %>, <span class="hello-username"><%- session.user.username %></span></div>
   <% } %>
   <div>
     <% if (session.user) { %>

@@ -32,7 +32,12 @@
     "uploadedImage": "Ảnh đã được tải",
     "forgotPassword": "Bạn quên mật khẩu?",
     "send": "Gửi",
-    "confirmPassword": "Nhập lại mật khẩu"
+    "confirmPassword": "Nhập lại mật khẩu",
+    "saveChanges": "Lưu thay đổi",
+    "cancel": "Hủy",
+    "changePassword": "Đổi mật khẩu",
+    "oldPassword": "Mật khẩu cũ",
+    "newPassword": "Mật khẩu mới"
   },
   "footer": {
     "supportMe": "Hỗ trợ tôi",
@@ -46,7 +51,8 @@
     "emailNotExists": "Địa chỉ email không tồn tại",
     "passwordInCorrect": "Mật khẩu không chính xác",
     "confirmPasswordNoMatch": "Mật khẩu nhập lại không khớp",
-    "invalidFormatInt": "Định dạng số nguyên không đúng"
+    "invalidFormatInt": "Định dạng số nguyên không đúng",
+    "invalidEmailOrPassword": "Email hoặc mật khẩu không chính xác"
   },
   "sweetalert": {
     "notify": "Thông báo",
@@ -88,5 +94,24 @@
     "starGreat": "Số sao vote nhiều nhất",
     "noReview": "Không có đánh giá nào",
     "yourReviews": "Bình luận của bạn"
+  },
+  "user": {
+    "avatar": "Ảnh đại diện",
+    "userAvatar": "Ảnh đại diện của bạn",
+    "accountDetails": "Thông tin chi tiết tài khoản",
+    "email": "Email",
+    "username": "Tên người dùng",
+    "phoneNumber": "Số điện thoại",
+    "address": "Địa chỉ",
+    "password": "Mật khẩu",
+    "confirmPassword": "Nhập lại mật khẩu",
+    "notifyImageSize": "JPG hoặc PNG không lớn hơn 5 MB",
+    "uploadNewAvatar": "Tải ảnh đại diện mới",
+    "usernamePlaceHolder": "Nhập tên người dùng",
+    "phoneNumberPlaceHolder": "Nhập số điện thoại",
+    "addrressPlaceHolder": "Nhập địa chỉ",
+    "oldPasswordPlaceHolder": "Nhập mật khẩu cũ của bạn",
+    "newPasswordPlaceHolder": "Nhập mật khẩu mới của bạn",
+    "confirmPasswordPlaceHolder": "Xác nhận lại mật khẩu của bạn"
   }
 }
