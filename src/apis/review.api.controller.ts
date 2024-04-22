@@ -1,9 +1,10 @@
 import { inject } from 'tsyringe';
 import {
   GetMapping,
+  Query,
   RestController,
+  Session,
 } from '../decoratos/api/rest.api.decorator';
-import { Request, Response, NextFunction } from 'express';
 import { ReviewService } from '../services/review.service';
 import { AppBaseResponseDto } from '../dtos/res/app.api.base.res.dto';
 
@@ -16,33 +17,28 @@ export class ReviewRestController {
 
   @GetMapping('/')
   public async findAllByStarWithPagination(
-    req: Request,
-    res: Response,
-    next: NextFunction,
+    @Query() querySearch: any,
+    @Session() session: any,
   ): Promise<AppBaseResponseDto> {
-    const movieId = +req.query.movieId;
-    const page = +req.query.page;
-    const star = +req.query.star;
+    const movieId = +querySearch.movieId;
+    const page = +querySearch.page;
+    const star = +querySearch.star;
     const starGreat =
-      +req.query.starGreat == 1 || +req.query.starGreat == 0
-        ? !!+req.query.starGreat
+      +querySearch.starGreat == 1 || +querySearch.starGreat == 0
+        ? !!+querySearch.starGreat
         : true;
     const dateEarly =
-      +req.query.dateEarly == 1 || +req.query.dateEarly == 0
-        ? !!+req.query.dateEarly
+      +querySearch.dateEarly == 1 || +querySearch.dateEarly == 0
+        ? !!+querySearch.dateEarly
         : false;
-    const ofUser = req.query.ofUser;
+    const ofUser = querySearch.ofUser;
     const result = await this.reviewService.findAllByStarWithPagination(
       movieId,
       star,
       page,
       starGreat,
       dateEarly,
-      req.session['user']?.id
-        ? ofUser == '1'
-          ? req.session['user'].id
-          : null
-        : null,
+      session['user']?.id ? (ofUser == '1' ? session['user'].id : null) : null,
     );
     return result;
   }

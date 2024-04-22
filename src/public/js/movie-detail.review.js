@@ -1,11 +1,11 @@
-let querySearch = null;;
+let querySearch = null;
 
 let movieId = null;
 let _page = null;
 let _star = null;
 let _starGreat = null;
 let _dateEarly = null;
-let _u = null;
+let _ofUser = null;
 
 function initQueryParam() {
   querySearch = new URLSearchParams(window.location.search);
@@ -36,7 +36,7 @@ const movieComments = document.querySelector('.movie-comments');
 
 const starGreatCheckBox = document.querySelector('#starGreat');
 const dateEarlyCheckBox = document.querySelector('#dateEarly');
-const uCheckBox = document.querySelector('#ofUser');
+const ofUserCheckBox = document.querySelector('#ofUser');
 
 const dropdownMenu = document.querySelector('.dropdown-menu');
 dropdownMenu.addEventListener('click', debounce(dropdownMenuClickHandler, 500));
@@ -70,10 +70,10 @@ function bindingDropdownInput() {
     dateEarlyCheckBox.checked = false
   }
 
-  if (_u == '1' && uCheckBox) {
-    uCheckBox.checked = true;
-  } else if(_u == '0' && uCheckBox) {
-    uCheckBox.checked = false;
+  if (_ofUser == '1' && ofUserCheckBox) {
+    ofUserCheckBox.checked = true;
+  } else if(_ofUser == '0' && ofUserCheckBox) {
+    ofUserCheckBox.checked = false;
   }
 
   for (let i = 0; i <= 5; i++) {
@@ -87,7 +87,7 @@ function bindingDropdownInput() {
 }
 
 function queryParamHandler() {
-  const queryParam = `?star=${_star}&page=${_page}&starGreat=${_starGreat}&dateEarly=${_dateEarly}&u=${_u}`;
+  const queryParam = `?star=${_star}&page=${_page}&starGreat=${_starGreat}&dateEarly=${_dateEarly}&ofUser=${_ofUser}`;
   window.history.pushState(null, null, queryParam);
 }
 

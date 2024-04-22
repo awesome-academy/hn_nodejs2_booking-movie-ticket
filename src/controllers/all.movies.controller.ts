@@ -1,14 +1,17 @@
 import { inject, injectable } from 'tsyringe';
 import { Request, Response, NextFunction } from 'express-serve-static-core';
 import { catchError } from '../decoratos/catcherror.decorators';
-import { AppException } from '../exceptions/app.exception';
 import { MovieService } from '../services/movie.service';
+import { CategoryService } from '../services/category.service';
 
 @injectable()
 export class AllMoviesController {
   constructor(
     @inject(MovieService)
     private readonly movieService: MovieService,
+
+    @inject(CategoryService)
+    private readonly categoryService: CategoryService,
   ) {}
 
   @catchError()
@@ -22,9 +25,12 @@ export class AllMoviesController {
       return;
     }
 
+    const categories = await this.categoryService.getAllCategories();
+
     res.render('allmovies', {
       ...pagination,
       movies: pagination.items,
+      categories,
       activeHeader: 'allMovies',
     });
   }

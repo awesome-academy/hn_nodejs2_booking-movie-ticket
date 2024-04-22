@@ -8,8 +8,9 @@ import { AllMoviesRoute } from './all.movies.route';
 import { MovieDetailRoute } from './movie.detail.route';
 import { RestConfig } from '../decoratos/api/rest.api.decorator';
 import { ReviewRestController } from '../apis/review.api.controller';
+import { MovieRestController } from '../apis/movie.api.controller';
 
-@RestConfig([ReviewRestController])
+@RestConfig([ReviewRestController, MovieRestController])
 export class RootRoute extends BaseRoute {
   constructor(
     @inject(AuthenCheckGuard)
