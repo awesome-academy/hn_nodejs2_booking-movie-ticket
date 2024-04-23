@@ -60,9 +60,15 @@ export class AuthenController {
       });
       return;
     }
-
     req.session['user'] = user;
-    res.redirect(req.cookies.currentPath ? req.cookies.currentPath : '/');
+    res.redirect(
+      req.session['originalUrl']
+        ? req.session['originalUrl']
+        : req.cookies.currentPath
+          ? req.cookies.currentPath
+          : '/',
+    );
+    delete req.session['originalUrl'];
   }
 
   @catchError()
@@ -290,6 +296,12 @@ export class AuthenController {
   @catchError()
   public async logout(req: Request, res: Response, next: NextFunction) {
     delete req.session['user'];
-    res.redirect(req.cookies.currentPath ? req.cookies.currentPath : '/');
+    res.redirect(
+      req['logoutRedirectHome']
+        ? '/'
+        : req.cookies.currentPath
+          ? req.cookies.currentPath
+          : '/',
+    );
   }
 }

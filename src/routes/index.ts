@@ -9,8 +9,10 @@ import { MovieDetailRoute } from './movie.detail.route';
 import { RestConfig } from '../decoratos/api/rest.api.decorator';
 import { ReviewRestController } from '../apis/review.api.controller';
 import { MovieRestController } from '../apis/movie.api.controller';
+import { PersonalInfoController } from '../controllers/personal.info.controller';
+import { UserRestController } from '../apis/user.api.controller';
 
-@RestConfig([ReviewRestController, MovieRestController])
+@RestConfig([ReviewRestController, MovieRestController, UserRestController])
 export class RootRoute extends BaseRoute {
   constructor(
     @inject(AuthenCheckGuard)
@@ -27,17 +29,27 @@ export class RootRoute extends BaseRoute {
 
     @inject(MovieDetailRoute)
     private readonly movieDetailRoute: MovieDetailRoute,
+
+    @inject(PersonalInfoController)
+    private readonly personalInfoController: PersonalInfoController,
   ) {
     super();
     this.router = express.Router();
 
     this.router.use(
       '/authen',
-      this.authenCheckGuard.beforeAuthen,
+      this.authenCheckGuard.beforeAuthen.bind(this.authenCheckGuard),
       this.authenRoute.getRouter(),
     );
     this.router.use('/', this.homeRoute.getRouter());
     this.router.use('/', this.allMoviesRoute.getRouter());
     this.router.use('/', this.movieDetailRoute.getRouter());
+    this.router.get(
+      '/personal-info',
+      this.authenCheckGuard.afterAuthen.bind(this.authenCheckGuard),
+      this.personalInfoController.getUIPersonInfo.bind(
+        this.personalInfoController,
+      ),
+    );
   }
 }

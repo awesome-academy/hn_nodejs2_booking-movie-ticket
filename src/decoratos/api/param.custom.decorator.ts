@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ParamDecoratorCallBack } from '../../declare/class.constructor';
+import { ParamDecoratorCallBack } from '../../declare/param.decorator.callback';
 
 export interface ExecutionContext {
   req: Request;

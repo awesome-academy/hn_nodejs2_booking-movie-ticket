@@ -38,7 +38,12 @@
     "uploadedImage": "Uploaded Image",
     "forgotPassword": "Forgot Your Password?",
     "send": "Send",
-    "confirmPassword": "Confirm Password"
+    "confirmPassword": "Confirm Password",
+    "saveChanges": "Save Changes",
+    "cancel": "Cancel",
+    "changePassword": "Change Password",
+    "oldPassword": "Old Password",
+    "newPassword": "New Password"
   },
   "validationError": {
     "imagetype": "Only accept image file!",
@@ -46,7 +51,8 @@
     "emailNotExists": "Email is not exists",
     "passwordInCorrect": "Password is incorrect",
     "confirmPasswordNoMatch": "The re-entered password does not match",
-    "invalidFormatInt": "Invalid Format Integer"
+    "invalidFormatInt": "Invalid Format Integer",
+    "invalidEmailOrPassword": "Email or password incorrect"
   },
   "sweetalert": {
     "notify": "Notify",
@@ -88,5 +94,24 @@
     "starGreat": "Star Great",
     "noReview": "No Review",
     "yourReviews": "Your Reviews"
+  },
+  "user": {
+    "avatar": "Avatar",
+    "userAvatar": "User Avatar",
+    "accountDetails": "Account Details",
+    "email": "Email",
+    "username": "Username",
+    "phoneNumber": "Phone Number",
+    "address": "Address",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "notifyImageSize": "JPG or PNG no larger than 5 MB",
+    "uploadNewAvatar": "Upload new avatar",
+    "usernamePlaceHolder": "Enter your username",
+    "phoneNumberPlaceHolder": "Enter your phone number",
+    "addrressPlaceHolder": "Enter your address",
+    "oldPasswordPlaceHolder": "Enter your old password",
+    "newPasswordPlaceHolder": "Enter your new password",
+    "confirmPasswordPlaceHolder": "Enter confirm password"
   }
 }

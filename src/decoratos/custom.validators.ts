@@ -14,7 +14,7 @@ export function IsOptionalWithRegex(
 ) {
   return function (object: Object, propertyName: string) {
     registerDecorator({
-      name: 'isOptionalDate',
+      name: 'isOptionalWithRegex',
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
@@ -24,7 +24,7 @@ export function IsOptionalWithRegex(
           return !!value.match(regex);
         },
         defaultMessage(args: ValidationArguments) {
-          return `No match ${regex}`;
+          return `${args.property} no match ${regex}`;
         },
       },
     });

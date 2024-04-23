@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <script src="/js/jquery.js"></script>
+  <script src="/js/bootstrap.js"></script>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/personal-info.css">
+  <link rel="icon" type="image/x-icon" href="/icon/icon-cinema.ico">
+  <title>NAMCINEMA | <%- i18n.t('header.personalInfo') %></title>
+</head>
+
+<body>
+  <%- include('./header') %>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><%- i18n.t('form.changePassword') %></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label"><%- i18n.t('form.oldPassword') %>:</label>
+              <input type="password" class="form-control" id="oldPassword" name="oldPassword" placeholder="<%- i18n.t('user.oldPasswordPlaceHolder') %>">
+              <div class="d-none invalid-feedback" id="noti-oldPassword"></div>
+            </div>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label"><%- i18n.t('form.newPassword') %>:</label>
+              <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="<%- i18n.t('user.newPasswordPlaceHolder') %>">
+              <div class="d-none invalid-feedback" id="noti-newPassword"></div>
+            </div>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label"><%- i18n.t('user.confirmPassword') %>:</label>
+              <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="<%- i18n.t('user.confirmPasswordPlaceHolder') %>">
+              <div class="d-none invalid-feedback" id="noti-confirmPassword"></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-cancle" data-dismiss="modal"><%- i18n.t('form.cancel') %></button>
+          <button type="button" class="btn btn-primary btn-save-password"><%- i18n.t('form.saveChanges') %></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-xl px-4 mt-4 main-content">
+    <hr class="mt-0 mb-4">
+    <div class="row">
+      <div class="col-xl-4">
+        <!-- Profile picture card-->
+        <div class="card mb-4 mb-xl-0">
+          <div class="card-header"><%- i18n.t('user.userAvatar') %></div>
+          <div class="card-body text-center">
+            <!-- Profile picture image-->
+            <img class="img-account-profile rounded-circle mb-2 user-avatar"
+              src="" alt="">
+            <!-- Profile picture help block-->
+            <div class="small font-italic text-muted mb-4"><%- i18n.t('user.notifyImageSize') %></div>
+            <!-- Profile picture upload button-->
+            <input class="d-none" type="file" id="upload-avatar"/>
+            <label for="upload-avatar" class="btn btn-primary btn-change-avatar" type="button"><%- i18n.t('user.uploadNewAvatar') %></label>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-8">
+        <!-- Account details card-->
+        <div class="card mb-4">
+          <div class="card-header"><%- i18n.t('user.accountDetails') %></div>
+          <div class="card-body">
+            <div>
+              <input type="hidden" id="_csrf" name="_csrf"/>
+              <!-- Form Group (email)-->
+              <div class="mb-3">
+                <label class="small mb-1" for="email"><%- i18n.t('user.email') %></label>
+                <input class="form-control" id="email" type="email" readonly disabled
+                  value="name@example.com">
+              </div>
+              <!-- Form Group (username)-->
+              <div class="mb-3">
+                <label class="small mb-1" for="username"><%- i18n.t('user.username') %> <span class="text-danger">(*)</span></label>
+                <input required class="form-control" id="username"
+                  autocomplete="nope"
+                  pattern="^.{1,24}$" name="username" min="1" max="24"
+                  type="text" placeholder="<%- i18n.t('user.usernamePlaceHolder') %>">
+                <div class="d-none invalid-feedback" id="noti-username"></div>
+              </div>
+              <!-- Form Group (phone)-->
+              <div class="mb-3">
+                <label class="small mb-1" for="phone"><%- i18n.t('user.phoneNumber') %></label>
+                <input class="form-control" id="phone" type="tel"
+                  autocomplete="nope"
+                  pattern="^0[1-9][0-9]{8,9}$" min="10" max="11" name="phone"
+                  placeholder="<%- i18n.t('user.phoneNumberPlaceHolder') %>">
+                <div class="d-none invalid-feedback" id="noti-phone"></div>
+              </div>
+              <!-- Form Group (address)-->
+              <div class="mb-3">
+                <label class="small mb-1" for="address"><%- i18n.t('user.address') %></label>
+                <input class="form-control" id="address" type="text" name="address"
+                  autocomplete="nope" pattern="^.{5,100}$"
+                  min="50" max="100"
+                  placeholder="<%- i18n.t('user.addrressPlaceHolder') %>">
+                <div class="d-none invalid-feedback" id="noti-address"></div>
+              </div>
+              <!-- Save changes button-->
+              <div class="d-flex flex-row-reverse">
+                <button class="btn btn-primary btn-save-changes" type="button"><%- i18n.t('form.saveChanges') %></button>
+                <button class="btn btn-primary mr-3 btn-change-password"
+                  data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap"
+                >
+                  <%- i18n.t('form.changePassword') %>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('./footer') %>
+
+  <script src="/js/sweetalert.js"></script>
+  <script src="/js/personal-info.js"></script>
+</body>
+
+</html>
