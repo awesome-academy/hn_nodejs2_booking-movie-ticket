@@ -21,9 +21,6 @@ export class Review extends BaseEntity {
   @Column({ name: 'star', type: 'enum', enum: ReviewStatus })
   star: number;
 
-  @Column({ name: 'deleted_at', type: 'timestamp', nullable: true })
-  deletedAt: Date;
-
   @Column({ name: 'user_id', type: 'int' })
   userId: number;
 

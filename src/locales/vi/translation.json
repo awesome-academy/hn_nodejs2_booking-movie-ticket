@@ -37,7 +37,8 @@
     "cancel": "Hủy",
     "changePassword": "Đổi mật khẩu",
     "oldPassword": "Mật khẩu cũ",
-    "newPassword": "Mật khẩu mới"
+    "newPassword": "Mật khẩu mới",
+    "delete": "Xóa"
   },
   "footer": {
     "supportMe": "Hỗ trợ tôi",
@@ -113,5 +114,25 @@
     "oldPasswordPlaceHolder": "Nhập mật khẩu cũ của bạn",
     "newPasswordPlaceHolder": "Nhập mật khẩu mới của bạn",
     "confirmPasswordPlaceHolder": "Xác nhận lại mật khẩu của bạn"
+  },
+  "table": {
+    "numericalOrder": "STT",
+    "action": "Thao tác",
+    "detail": "Chi tiết",
+    "review": "Đánh giá",
+    "notiLimitTimeReview": "Lưu ý: Bạn có 3 ngày để đánh giá phim kể từ khi phim được chiếu theo lịch "
+  },
+  "order": {
+    "orderDate": "Ngày đặt",
+    "totalPrice": "Tổng tiền",
+    "early": "Gần nhất",
+    "latest": "Muộn nhất",
+    "lowest": "Thấp nhất",
+    "highest": "Cao nhất"
+  },
+  "bill": {
+    "detail": "Chi tiết hóa đơn",
+    "code": "Mã hóa đơn",
+    "review": "Đánh giá phim"
   }
 }

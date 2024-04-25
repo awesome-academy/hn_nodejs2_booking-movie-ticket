@@ -56,15 +56,10 @@ export class UserRestController {
   }
 
   @SessionAuthen()
-  @MultiPart(
-    {
-      fieldname: 'avatar',
-      single: true,
-    },
-    {
-      limits: { fileSize: 5 * 1024 * 1024 },
-    },
-  )
+  @MultiPart({
+    fieldname: 'avatar',
+    single: true,
+  })
   @CSRFProtection()
   @ImageFileGuard()
   @PutMapping('/')

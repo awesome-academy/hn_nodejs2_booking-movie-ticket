@@ -9,3 +9,8 @@ export const ReviewPagination: PaginationConfig = {
   ITEM_IN_PAGE: 5,
   NODE_PAGE: 5,
 };
+
+export const BillPagination: PaginationConfig = {
+  ITEM_IN_PAGE: 3,
+  NODE_PAGE: 5,
+};

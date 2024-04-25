@@ -58,3 +58,40 @@ export async function paginations<T>(
     items,
   };
 }
+
+export function getPaginationParameter(
+  totalRecords: number,
+  page: number,
+  config: PaginationConfig,
+) {
+  if (!page) {
+    return null;
+  }
+
+  const allPages =
+    totalRecords % config.ITEM_IN_PAGE == 0
+      ? (totalRecords / config.ITEM_IN_PAGE) | 0
+      : ((totalRecords / config.ITEM_IN_PAGE) | 0) + 1;
+
+  if (page > allPages) {
+    return null;
+  }
+
+  const prevPage = page > 1 ? page - 1 : null;
+  const nextPage = page < allPages ? page + 1 : null;
+
+  const startNode = page - (page % config.NODE_PAGE) + 1;
+  const endNode =
+    startNode + config.NODE_PAGE - 1 <= allPages
+      ? startNode + config.NODE_PAGE - 1
+      : allPages;
+
+  return {
+    page,
+    prevPage,
+    nextPage,
+    startNode,
+    endNode,
+    itemInPage: config.ITEM_IN_PAGE,
+  };
+}

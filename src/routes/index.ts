@@ -11,8 +11,16 @@ import { ReviewRestController } from '../apis/review.api.controller';
 import { MovieRestController } from '../apis/movie.api.controller';
 import { PersonalInfoController } from '../controllers/personal.info.controller';
 import { UserRestController } from '../apis/user.api.controller';
+import { HistoryOrderController } from '../controllers/history.order.controller';
+import { BillRestController } from '../apis/bill.api.controller';
+import { csrfProtection } from '../security/csrf.protection.middleware';
 
-@RestConfig([ReviewRestController, MovieRestController, UserRestController])
+@RestConfig([
+  ReviewRestController,
+  MovieRestController,
+  UserRestController,
+  BillRestController,
+])
 export class RootRoute extends BaseRoute {
   constructor(
     @inject(AuthenCheckGuard)
@@ -32,6 +40,9 @@ export class RootRoute extends BaseRoute {
 
     @inject(PersonalInfoController)
     private readonly personalInfoController: PersonalInfoController,
+
+    @inject(HistoryOrderController)
+    private readonly historyOrderController: HistoryOrderController,
   ) {
     super();
     this.router = express.Router();
@@ -49,6 +60,14 @@ export class RootRoute extends BaseRoute {
       this.authenCheckGuard.afterAuthen.bind(this.authenCheckGuard),
       this.personalInfoController.getUIPersonInfo.bind(
         this.personalInfoController,
+      ),
+    );
+    this.router.get(
+      '/history-order',
+      this.authenCheckGuard.afterAuthen.bind(this.authenCheckGuard),
+      csrfProtection,
+      this.historyOrderController.getUIHistoryOrder.bind(
+        this.historyOrderController,
       ),
     );
   }

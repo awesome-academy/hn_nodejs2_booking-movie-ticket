@@ -1,0 +1,68 @@
+.main-content {
+  min-height: calc(100vh - 56px - 256px);
+}
+
+th,
+td {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+.star-active {
+  margin-top: auto;
+  margin-bottom: auto;
+  color: #ffc107;
+}
+
+.star-inactive {
+  margin-top: auto;
+  margin-bottom: auto;
+  color: #6c757d;
+}
+
+.star-vote {
+  position: relative;
+}
+
+.star-blur {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.lb-star-vote {
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.wapper-bill-list {
+  position: relative;
+}
+
+th {
+  padding: 0px 50px 5px 0px;
+}
+
+.bill-detail-common {
+  th,
+  td {
+    text-align: left !important;
+  }
+}
+
+#modalDetailOrder {
+  .modal-dialog {
+    min-width: 60vw;
+  }
+  .modal-content {
+    width: 100%;
+  }
+}
+
+.comment-date {
+  font-size: 14px;
+  color: #808089;
+}

@@ -56,3 +56,13 @@ function debounce(callback, delay) {
     }, delay);
   }
 }
+
+function getValueRadioGroup(name) {
+  const radioGroup = document.querySelectorAll(`input[name=${name}]`);
+  for (item of radioGroup) {
+    if (item.checked == true) {
+      return item.value;
+    }
+  }
+  return null;
+}

@@ -22,3 +22,14 @@ export function PipeDto<T extends ClassConstructor>(constructorDto: T) {
     return dto;
   };
 }
+
+export function ParseIntPipe(x: any, key: string) {
+  if (+x) return +x;
+  throw {
+    status: StatusEnum.BAD_REQUEST,
+    message: 'Error Validate',
+    errors: {
+      [key]: 'Invalid integer format',
+    },
+  } as ErrorApiResponseDto;
+}
