@@ -43,7 +43,8 @@
     "cancel": "Cancel",
     "changePassword": "Change Password",
     "oldPassword": "Old Password",
-    "newPassword": "New Password"
+    "newPassword": "New Password",
+    "delete": "Delete"
   },
   "validationError": {
     "imagetype": "Only accept image file!",
@@ -113,5 +114,25 @@
     "oldPasswordPlaceHolder": "Enter your old password",
     "newPasswordPlaceHolder": "Enter your new password",
     "confirmPasswordPlaceHolder": "Enter confirm password"
+  },
+  "table": {
+    "numericalOrder": "Numerical Order",
+    "action": "Action",
+    "detail": "Detail",
+    "review": "Review",
+    "notiLimitTimeReview": "Note: You have 3 days to rate the movie from the time the movie is scheduled to be shown"
+  },
+  "order": {
+    "orderDate": "Order Date",
+    "totalPrice": "Total Price",
+    "early": "Early",
+    "latest": "Latest",
+    "lowest": "Lowest",
+    "highest": "Highest"
+  },
+  "bill": {
+    "detail": "Bill Detail",
+    "code": "Code",
+    "review": "Review Movie"
   }
 }

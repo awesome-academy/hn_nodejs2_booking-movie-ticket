@@ -108,12 +108,29 @@ function savechanges() {
       if (status == 400) {
         clearNotiError(['username', 'phone', 'address']);
 
-        if (Object.keys(errors).includes('isImageFile')) {
+        if (Object.keys(errors).includes('isImageFileType')) {
           Swal.fire({
             title: locale == 'vi' ? 'Lỗi' : 'Error',
             text: locale == 'vi' ? 'Chỉ chấp nhận file ảnh' : 'Only accept image file',
             icon: 'error',
-          })
+          }).then((rs) => {
+            if (rs.isConfirmed) {
+              window.location.href = '/personal-info';
+            }
+          });
+          return;
+        }
+
+        if (Object.keys(errors).includes('isImageFileSize')) {
+          Swal.fire({
+            title: locale == 'vi' ? 'Lỗi' : 'Error',
+            text: locale == 'vi' ? 'Kích thước file vượt quá 5MB' : 'File size over 5MB',
+            icon: 'error',
+          }).then((rs) => {
+            if (rs.isConfirmed) {
+              window.location.href = '/personal-info';
+            }
+          });
           return;
         }
 

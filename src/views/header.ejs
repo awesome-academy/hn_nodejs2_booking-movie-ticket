@@ -14,7 +14,7 @@
       </li>
       <% if (session.user) { %>
         <li class="nav-item">
-          <a class="nav-link text-white<%- activeHeader == 'historyOrder' ? ' header-active' : ' header-inactive' %>" href="#"><%- i18n.t('header.historyOrder') %></a>
+          <a class="nav-link text-white<%- activeHeader == 'historyOrder' ? ' header-active' : ' header-inactive' %>" href="/history-order"><%- i18n.t('header.historyOrder') %></a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-white<%- activeHeader == 'personalInfo' ? ' header-active' : ' header-inactive' %>" href="/personal-info"><%- i18n.t('header.personalInfo') %></a>

@@ -26,6 +26,10 @@ export class VerifyResetPassword {
 
     let [email, timer, signature] = token.split('.');
 
+    if (!email || !timer || !signature) {
+      throw new AppException('Forbidden', StatusEnum.FORBIDDEN);
+    }
+
     const dateFromToken = new Date(+Base64URL.urlDecode(timer));
     if (dateFromToken.toString() == 'Invalid Date') {
       throw new AppException('Forbidden', StatusEnum.FORBIDDEN);

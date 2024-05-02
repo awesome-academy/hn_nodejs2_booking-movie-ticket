@@ -164,19 +164,19 @@ export function DeleteMapping(path: string) {
   return RequestMapping(path, HttpMethod.DELETE);
 }
 
-async function applyFunction(args: any[], obj: any) {
+async function applyFunction(args: any[], obj: any, name?: string) {
   if (!args) return obj;
 
   const [key, ...fns] = args;
   if (typeof key == 'string') {
     obj = obj[key];
     for (let fn of fns) {
-      obj = await fn(obj);
+      obj = await fn(obj, name);
     }
     return obj;
   }
   for (let fn of fns) {
-    obj = await fn(obj);
+    obj = await fn(obj, name);
   }
 
   return obj;
@@ -210,7 +210,7 @@ export function Param(key: string = null, ...fns: Function[]) {
   const params = createParamDecorator(
     async (data: any, ctx: ExecutionContext) => {
       const params = ctx.req.params;
-      return applyFunction(data, params);
+      return applyFunction(data, params, key);
     },
   );
   return params(key, ...fns);
@@ -220,7 +220,7 @@ export function Body(key: string = null, ...fns: Function[]) {
   const body = createParamDecorator(
     async (data: any, ctx: ExecutionContext) => {
       const body = ctx.req.body;
-      return applyFunction(data, body);
+      return applyFunction(data, body, key);
     },
   );
   return body(key, ...fns);
@@ -230,7 +230,7 @@ export function Query(key: string = null, ...fns: Function[]) {
   const query = createParamDecorator(
     async (data: any, ctx: ExecutionContext) => {
       const query = ctx.req.query;
-      return applyFunction(data, query);
+      return applyFunction(data, query, key);
     },
   );
   return query(key, ...fns);
@@ -240,7 +240,7 @@ export function Headers(key: string = null) {
   const headers = createParamDecorator(
     async (data: any, ctx: ExecutionContext) => {
       const headers = ctx.req.headers;
-      return applyFunction(data, headers);
+      return applyFunction(data, headers, key);
     },
   );
   return headers(key);
