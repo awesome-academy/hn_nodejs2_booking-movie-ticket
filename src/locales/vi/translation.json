@@ -16,7 +16,10 @@
     "personalInfo": "Thông tin cá nhân",
     "hello": "Xin chào",
     "movieDetail": "Chi tiết phim",
-    "filter": "Lọc"
+    "filter": "Lọc",
+    "chooseSchedule": "Chọn lịch chiếu",
+    "chooseSeat": "Chọn ghế ngồi",
+    "paymentResult": "Kết quả thanh toán"
   },
   "form": {
     "register": "Đăng kí",
@@ -38,7 +41,9 @@
     "changePassword": "Đổi mật khẩu",
     "oldPassword": "Mật khẩu cũ",
     "newPassword": "Mật khẩu mới",
-    "delete": "Xóa"
+    "delete": "Xóa",
+    "ok": "Đồng ý",
+    "pay": "Thanh toán"
   },
   "footer": {
     "supportMe": "Hỗ trợ tôi",
@@ -57,6 +62,7 @@
   },
   "sweetalert": {
     "notify": "Thông báo",
+    "error": "Lỗi",
     "forgotPasswordNoti": "Chúng tôi đã gửi email để bạn đặt lại mật khẩu.Vui lòng kiểm tra email của bạn!",
     "resetPasswordNoti": "Bạn đã thay đổi mật khẩu thành công!"
   },
@@ -83,7 +89,10 @@
   },
   "noti": {
     "notData": "Không có dữ liệu",
-    "backToHome": "Quay lại trang chủ"
+    "backToHome": "Quay lại trang chủ",
+    "paymentSuccessAndSendMail": "Thanh toán thành công, chúng tôi đã gửi mail cho bạn, cảm ơn bạn đã mua vé xem phim",
+    "checksumFaile": "Checksum sai",
+    "paymentFaile": "Thanh toán thất bại"
   },
   "pagination": {
     "previous": "Trang trước",
@@ -134,5 +143,14 @@
     "detail": "Chi tiết hóa đơn",
     "code": "Mã hóa đơn",
     "review": "Đánh giá phim"
+  },
+  "schedule": {
+    "dateShow": "Ngày chiếu",
+    "timeShow": "Giờ chiếu",
+    "numberOfEmptySeats": "Số lượng ghế trống"
+  },
+  "room": {
+    "screen": "Màn hình",
+    "remainTime": "Thời gian còn lại"
   }
 }

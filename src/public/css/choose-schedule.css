@@ -1,0 +1,21 @@
+.main-content {
+  min-height: calc(100vh - 48.5px - 256px);
+}
+
+.img {
+  object-fit: cover;
+}
+
+.modal-dialog {
+  min-width: 40vw !important;
+}
+
+th,
+td {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+.modal-body h3 {
+  color: #03599d !important;
+}

@@ -57,4 +57,23 @@ export class ObjectMapper {
     });
     return entity as T;
   }
+
+  public static mapToEntitiesFromRawResults(
+    rawResults: any[],
+    prefixes: string[],
+  ) {
+    return rawResults.map((rawObj) => {
+      let entity = {};
+      prefixes.forEach((prefix: string) => {
+        let obj = {};
+        Object.keys(rawObj).forEach((key) => {
+          if (key.startsWith(prefix)) {
+            obj = { ...obj, [key]: rawObj[key] };
+          }
+        });
+        entity = { ...entity, [prefix]: ObjectMapper.mapper(obj) };
+      });
+      return entity;
+    });
+  }
 }

@@ -19,12 +19,17 @@ import { StatusEnum } from './enum/status.enum';
 import methodOverride from 'method-override';
 import cors from 'cors';
 import { initializeTransactionalContext } from 'typeorm-transactional';
+import ngrok from 'ngrok';
 
 async function main() {
   initializeTransactionalContext();
   const app = express();
   const host = process.env.HOST;
   const port = +process.env.PORT;
+
+  app.locals.keepingSeats = {};
+
+  app.locals.billRequestDto = {};
 
   try {
     await AppDataSource.initialize();
@@ -152,6 +157,15 @@ async function main() {
   // Start server
   app.listen(port, host, () => {
     console.log(`App listening on port ${port}`);
+    ngrok
+      .connect(port)
+      .then((ngrokUrl) => {
+        process.env.momo_IpnUrl = ngrokUrl;
+        console.log(`Ngrok tunnel in: ${ngrokUrl}`);
+      })
+      .catch((error) => {
+        console.log(`Couldn't tunnel ngrok: ${error}`);
+      });
   });
 }
 

@@ -103,6 +103,8 @@ function renderUIWithDataFromAPI(data) {
         <div class="card-body">
           <h4 class="card-title">${movie.name}</h4>
           <p class="card-text movie-short-description">${movie.shortDescription}</p>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
           <a href="/movie-details/${movie.id}" class="btn btn-outline-warning btn-view-movie-detail">${locale == 'vi' ? 'Chi tiết' : 'Detail'}</a>
           <a href="/booking/${movie.id}" class="btn btn-outline-danger">${locale == 'vi' ? 'Mua vé' : 'By ticket'}</a>
         </div>

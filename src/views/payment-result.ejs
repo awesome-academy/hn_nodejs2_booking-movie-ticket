@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/no.data.css" />
+    <link rel="icon" type="image/x-icon" href="/icon/icon-cinema.ico">
+    <title>NAMCINEMA | <%- i18n.t('header.paymentResult') %></title>
+  </head>
+
+  <body>
+    <h1><a href="/"><%- i18n.t('noti.backToHome') %></a></h1>
+    <div class="travolta"></div>
+    <script src="/js/sweetalert.js"></script>
+
+    <% if (checksum == 1) { %>
+      <script>
+        const travolta = document.querySelector('.travolta');
+        travolta.style.background
+          = "url('/img/thank-you.gif') center center no-repeat";
+        travolta.style.backgroundSize = 'cover';
+        Swal.fire({
+          title: "<%- i18n.t('sweetalert.notify') %>",
+          text: "<%- i18n.t('noti.paymentSuccessAndSendMail') %>",
+          icon: "success"
+        });
+      </script>
+    <% } else if (checksum == 0) { %>
+      <script>
+        Swal.fire({
+          title: "<%- i18n.t('sweetalert.error') %>",
+          text: "<%- i18n.t('noti.checksumFaile') %>",
+          icon: "error"
+        });
+      </script>
+    <% } else { %>
+      <script>
+        const travolta = document.querySelector('.travolta');
+        travolta.style.background
+          = "url('/img/error.gif') center center no-repeat";
+        travolta.style.backgroundSize = 'cover';
+        Swal.fire({
+          title: "<%- i18n.t('sweetalert.error') %>",
+          text: "<%- i18n.t('noti.paymentFaile') %>",
+          icon: "error"
+        });
+      </script>
+    <% } %>
+  </body>
+</html>
