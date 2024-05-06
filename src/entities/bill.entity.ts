@@ -41,6 +41,14 @@ export class Bill extends BaseEntity {
   @Column({ name: 'user_id', type: 'int' })
   userId: number;
 
+  @Column({
+    name: 'payment_online_code',
+    type: 'varchar',
+    length: 255,
+    unique: true,
+  })
+  paymentOnlineCode: string;
+
   @ManyToOne(() => User, (user) => user.bills)
   @JoinColumn({
     name: 'user_id',

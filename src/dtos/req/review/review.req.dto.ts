@@ -8,7 +8,7 @@ import {
   MinLength,
 } from 'class-validator';
 import sanitize from 'sanitize-html';
-import { ValidateReviewRequestDto } from '../../../constant/validate.review.req.dt';
+import { ValidateReviewRequestDto } from '../../../constant/validate.review.req.dto';
 
 export class ReviewSaveRequestDto {
   @IsNotEmpty()

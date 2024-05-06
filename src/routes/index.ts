@@ -14,12 +14,18 @@ import { UserRestController } from '../apis/user.api.controller';
 import { HistoryOrderController } from '../controllers/history.order.controller';
 import { BillRestController } from '../apis/bill.api.controller';
 import { csrfProtection } from '../security/csrf.protection.middleware';
+import { BookingRoute } from './booking.route';
+import { ScheduleRestController } from '../apis/schedule.api.controller';
+import { FoodRestController } from '../apis/food.api.controller';
+import { PaymentResultController } from '../controllers/payment.result.controller';
 
 @RestConfig([
   ReviewRestController,
   MovieRestController,
   UserRestController,
   BillRestController,
+  ScheduleRestController,
+  FoodRestController,
 ])
 export class RootRoute extends BaseRoute {
   constructor(
@@ -43,6 +49,12 @@ export class RootRoute extends BaseRoute {
 
     @inject(HistoryOrderController)
     private readonly historyOrderController: HistoryOrderController,
+
+    @inject(BookingRoute)
+    private readonly bookingRoute: BookingRoute,
+
+    @inject(PaymentResultController)
+    private readonly paymentResultController: PaymentResultController,
   ) {
     super();
     this.router = express.Router();
@@ -68,6 +80,14 @@ export class RootRoute extends BaseRoute {
       csrfProtection,
       this.historyOrderController.getUIHistoryOrder.bind(
         this.historyOrderController,
+      ),
+    );
+    this.router.use('/booking', this.bookingRoute.getRouter());
+    this.router.get(
+      '/payment-result',
+      this.authenCheckGuard.afterAuthen.bind(this.authenCheckGuard),
+      this.paymentResultController.paymentResult.bind(
+        this.paymentResultController,
       ),
     );
   }

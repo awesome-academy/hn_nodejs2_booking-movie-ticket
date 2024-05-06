@@ -12,6 +12,20 @@ import { AppBaseResponseDto } from '../dtos/res/app.api.base.res.dto';
 import { getPaginationParameter } from '../pagination/pagination';
 import dayjs from 'dayjs';
 import { DateFormat } from '../enum/date.format.enum';
+import { BillRequestDto } from '../dtos/req/bill/bill.req.dto';
+import { Mutex } from 'async-mutex';
+import { VNPAYService } from './external/payment/vnpay.service';
+import { MoMoService } from './external/payment/momo.service';
+import { PayOnlineType } from '../enum/pay.online.type.enum';
+import { SeatRepository } from '../repositories/seat.repository';
+import { FoodRepository } from '../repositories/food.repository';
+import { Base64URL } from '../security/base64url';
+import { BillStatus } from '../enum/bill.enum';
+import { v4 as uuidv4 } from 'uuid';
+import { sendMail } from '../utils/sendmail';
+import path from 'path';
+import { UserRepository } from '../repositories/user.repository';
+import { Transactional } from 'typeorm-transactional';
 
 @injectable()
 export class BillService {
@@ -27,6 +41,21 @@ export class BillService {
 
     @inject(PurchasedFoodRepository)
     private readonly purchasedFoodRepository: PurchasedFoodRepository,
+
+    @inject(SeatRepository)
+    private readonly seatRepository: SeatRepository,
+
+    @inject(VNPAYService)
+    private readonly vnpayService: VNPAYService,
+
+    @inject(MoMoService)
+    private readonly momoService: MoMoService,
+
+    @inject(FoodRepository)
+    private readonly foodRepository: FoodRepository,
+
+    @inject(UserRepository)
+    private readonly userRepository: UserRepository,
   ) {}
 
   private uniqueArray(array: any[]) {
@@ -51,7 +80,7 @@ export class BillService {
 
       const purchasedFood = {
         id: obj['food'].id,
-        image: obj['food'].image,
+        image: obj['food'].imagurl,
         unit: obj['food'].unit,
         price: obj['purchasedFood'].currentPrice,
         quantity: obj['purchasedFood'].quantity,
@@ -177,28 +206,16 @@ export class BillService {
         .getCount(),
     ]);
 
-    const arr = rawResult.map((rawObj) => {
-      let entities = {};
-      [
-        'bill',
-        'ticket',
-        'schedule',
-        'movie',
-        'room',
-        'seat',
-        'purchasedFood',
-        'food',
-      ].forEach((prefix) => {
-        let obj = {};
-        Object.keys(rawObj).forEach((key) => {
-          if (key.startsWith(prefix)) {
-            obj = { ...obj, [key]: rawObj[key] };
-          }
-        });
-        entities = { ...entities, [prefix]: ObjectMapper.mapper(obj) };
-      });
-      return entities;
-    });
+    const arr = ObjectMapper.mapToEntitiesFromRawResults(rawResult, [
+      'bill',
+      'ticket',
+      'schedule',
+      'movie',
+      'room',
+      'seat',
+      'purchasedFood',
+      'food',
+    ]);
 
     const paginationParameter = getPaginationParameter(
       totalRecords,
@@ -217,5 +234,256 @@ export class BillService {
       message: 'OK',
       data: !arr?.length ? null : data,
     } as AppBaseResponseDto;
+  }
+
+  private isSeatKeeping(
+    seatIds: number[],
+    scheduleId: number,
+    keepSeats: any,
+  ): boolean {
+    for (let seatId of seatIds) {
+      if (keepSeats[scheduleId]?.[seatId]) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public async transactionToPaymentExternal(
+    billRequestDto: BillRequestDto,
+    keepSeats: any,
+  ) {
+    const { scheduleId, foodIds, payType, quantities, seatIds } =
+      billRequestDto;
+    const schedule = await this.scheduleRepository.findOneBy({
+      id: billRequestDto.scheduleId,
+    });
+    const timeShow = new Date(
+      dayjs(schedule.startDate).format(DateFormat.YYYY_MM_DD) +
+        ' ' +
+        schedule.startTime,
+    ).getTime();
+
+    const now = new Date().getTime();
+    const scheduleAddTime = +process.env.SCHEDULE_ADD_TIME;
+    if (now + scheduleAddTime > timeShow) {
+      throw {
+        status: StatusEnum.BAD_REQUEST,
+        message: 'Bad Request',
+        errors: {
+          time: 'TIME BLOCK',
+        },
+      } as ErrorApiResponseDto;
+    }
+
+    if (this.isSeatKeeping(seatIds, scheduleId, keepSeats)) {
+      throw {
+        status: StatusEnum.BAD_REQUEST,
+        message: 'Bad Request',
+        errors: {
+          seatKeeping: 'SEAT IS KEEPING',
+        },
+      } as ErrorApiResponseDto;
+    }
+
+    const tickets = await this.ticketRepository
+      .createQueryBuilder('ticket')
+      .where('ticket.seatId in (:ids)', { ids: seatIds })
+      .andWhere('ticket.scheduleId = :scheduleId', { scheduleId })
+      .getMany();
+
+    if (tickets.length) {
+      throw {
+        status: StatusEnum.BAD_REQUEST,
+        message: 'Bad Request',
+        errors: {
+          seatChoosed: 'SEAT IS CHOOSED',
+        },
+      } as ErrorApiResponseDto;
+    }
+
+    // semaphore flag to sync common resources
+    const mutex = new Mutex();
+    const release = await mutex.acquire();
+    try {
+      keepSeats[scheduleId] = {};
+      for (let seatId of seatIds) {
+        keepSeats[scheduleId][seatId] = true;
+      }
+    } finally {
+      release();
+    }
+
+    const [rawResult, foods] = await Promise.all([
+      this.seatRepository
+        .createQueryBuilder('seat')
+        .select('sum(seat.price) as totalPriceFromTicket')
+        .where('seat.id in (:ids)', { ids: seatIds })
+        .getRawOne(),
+
+      this.foodRepository
+        .createQueryBuilder('food')
+        .where('food.id in (:ids)', { ids: foodIds })
+        .getMany(),
+    ]);
+
+    const { totalPriceFromTicket } = rawResult;
+
+    let totalPriceFromFood = 0;
+    for (let i = 0; i < foods?.length; i++) {
+      const food = foods[i];
+      totalPriceFromFood += food.price * quantities[i];
+    }
+
+    billRequestDto['totalPriceFromTicket'] = +totalPriceFromTicket;
+    billRequestDto['totalPriceFromFood'] = +totalPriceFromFood;
+
+    switch (payType) {
+      case PayOnlineType.VNPAY:
+        return this.vnpayService.transaction(
+          billRequestDto,
+          billRequestDto['ipAddr'],
+          'vi',
+        );
+      case PayOnlineType.MOMO:
+        return this.momoService.transaction(billRequestDto);
+      default:
+        return this.vnpayService.transaction(
+          billRequestDto,
+          billRequestDto['ipAddr'],
+          'vi',
+        );
+    }
+  }
+
+  @Transactional()
+  public async saveNewBill(
+    userId: number,
+    externalRequestDto: any,
+    paymentOnlineType: PayOnlineType,
+    status: BillStatus,
+    billRequestDto: any,
+  ) {
+    const {
+      foodIds,
+      quantities,
+      scheduleId,
+      seatIds,
+      totalPriceFromTicket,
+      totalPriceFromFood,
+    } = billRequestDto;
+
+    let payTime = null;
+    let bankCode = 'SGB';
+    let bankTranNo = null;
+    switch (paymentOnlineType) {
+      case PayOnlineType.VNPAY:
+        payTime = dayjs(
+          externalRequestDto.vnp_PayDate,
+          DateFormat.YYYYMMDDHHmmss,
+        ).toDate();
+        bankCode = externalRequestDto.vnp_BankCode;
+        bankTranNo = `${bankCode}${externalRequestDto.vnp_PayDate}`;
+        break;
+      case PayOnlineType.MOMO:
+        payTime = new Date(+externalRequestDto.responseTime);
+        bankCode = 'SGB';
+        bankTranNo = `${bankCode}${dayjs(payTime).format(DateFormat.YYYYMMDDHHmmss)}`;
+        break;
+      default:
+        break;
+    }
+
+    const paymentOnlineCode = uuidv4();
+
+    let bill = this.billRepository.create({
+      totalPriceFromTicket,
+      totalPriceFromFood,
+      status,
+      type: paymentOnlineType,
+      bankCode,
+      payTime: dayjs(payTime).format(DateFormat.YYYY_MM_DD_HH_mm_ss),
+      userId,
+      bankTranNo,
+      paymentOnlineCode,
+    });
+
+    await this.billRepository.save(bill);
+    bill = await this.billRepository.findOneBy({ paymentOnlineCode });
+
+    const [seats, foods, user, schedule] = await Promise.all([
+      this.seatRepository
+        .createQueryBuilder('seat')
+        .where('seat.id in (:ids)', { ids: seatIds })
+        .getMany(),
+
+      this.foodRepository
+        .createQueryBuilder('food')
+        .where('food.id in (:ids)', { ids: foodIds })
+        .getMany(),
+
+      this.userRepository.findOneBy({ id: userId }),
+
+      this.scheduleRepository
+        .createQueryBuilder('schedule')
+        .innerJoinAndSelect('schedule.movie', 'movie')
+        .innerJoinAndSelect('schedule.room', 'room')
+        .where('schedule.id = :scheduleId', { scheduleId })
+        .getOne(),
+    ]);
+
+    const tickets = this.ticketRepository.create(
+      seats.map((seat) => {
+        return {
+          currentPrice: seat.price,
+          billId: bill.id,
+          scheduleId,
+          seatId: seat.id,
+        };
+      }),
+    );
+
+    const purchasedFoods = this.purchasedFoodRepository.create(
+      foods.map((food, index) => {
+        return {
+          currentPrice: food.price,
+          foodId: food.id,
+          billId: bill.id,
+          quantity: quantities[index],
+        };
+      }),
+    );
+
+    let dateShow: any = new Date(
+      dayjs(schedule.startDate).format(DateFormat.YYYY_MM_DD) +
+        ' ' +
+        schedule.startTime,
+    );
+    const day = `${dateShow.getDay() == 0 ? 'CN' : 'T' + (dateShow.getDay() + 1)}`;
+    dateShow = `${day} ${dayjs(dateShow).format(DateFormat.YYYY_MM_DD_HH_mm_ss)}`;
+
+    await Promise.all([
+      this.ticketRepository.save(tickets),
+      this.purchasedFoodRepository.save(purchasedFoods),
+      sendMail({
+        email: user.email,
+        subject: 'Thank for booking',
+        context: {
+          seats,
+          foods,
+          user,
+          schedule,
+          quantities,
+          totalPriceFromTicket,
+          totalPriceFromFood,
+          dateShow,
+        },
+        templatePath: path.join(
+          __dirname,
+          '..',
+          'views/mail/mail.thankfor.booking.ejs',
+        ),
+      }),
+    ]);
   }
 }

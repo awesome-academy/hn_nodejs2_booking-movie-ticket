@@ -4,7 +4,12 @@ import { catchError } from '../decoratos/catcherror.decorators';
 
 @injectable()
 export class AuthenCheckGuard {
-  private readonly pageRequireLogins = ['/personal-info', '/history-order'];
+  private readonly pageRequireLogins = [
+    '/personal-info',
+    '/history-order',
+    '/booking/choose-seat',
+    '/payment-result',
+  ];
 
   constructor() {}
 

@@ -70,6 +70,8 @@
           <div class="card-body">
             <h4 class="card-title"><%- hotFilms[i].name %></h4>
             <p class="card-text movie-short-description"><%- hotFilms[i].shortDescription %></p>
+          </div>
+          <div class="card-footer d-flex justify-content-between">
             <a href="/movie-details/<%- hotFilms[i].id %>" class="btn btn-outline-warning" style="margin-right:70px"><%- i18n.t('movie.detail') %></a>
             <a href="/booking/<%- hotFilms[i].id %>" class="btn btn-outline-danger"><%- i18n.t('movie.byTicket') %></a>
           </div>

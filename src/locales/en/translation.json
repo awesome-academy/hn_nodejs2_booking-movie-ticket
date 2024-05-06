@@ -16,7 +16,10 @@
     "personalInfo": "Personal Info",
     "movieDetail": "Movie Detail",
     "hello": "Hello",
-    "filter": "Filter"
+    "filter": "Filter",
+    "chooseSchedule": "Choose Schedule",
+    "chooseSeat": "Choose Seat",
+    "paymentResult": "Payment Result"
   },
   "footer": {
     "supportMe": "Support Me",
@@ -44,7 +47,9 @@
     "changePassword": "Change Password",
     "oldPassword": "Old Password",
     "newPassword": "New Password",
-    "delete": "Delete"
+    "delete": "Delete",
+    "ok": "OK",
+    "pay": "Pay"
   },
   "validationError": {
     "imagetype": "Only accept image file!",
@@ -57,6 +62,7 @@
   },
   "sweetalert": {
     "notify": "Notify",
+    "error": "Error",
     "forgotPasswordNoti": "We have sent you an email to reset your password.Please check your email",
     "resetPasswordNoti": "You have successfully changed your password!"
   },
@@ -83,7 +89,10 @@
   },
   "noti": {
     "notData": "Don't Have Data",
-    "backToHome": "Back To Home"
+    "backToHome": "Back To Home",
+    "paymentSuccessAndSendMail": "Payment Success, we sent mail to you, thank you very much",
+    "checksumFaile": "Checksum Faile",
+    "paymentFaile": "Payment faile"
   },
   "pagination": {
     "previous": "Previous",
@@ -134,5 +143,14 @@
     "detail": "Bill Detail",
     "code": "Code",
     "review": "Review Movie"
+  },
+  "schedule": {
+    "dateShow": "Date show",
+    "timeShow": "Time show",
+    "numberOfEmptySeats": "Number of empty seats"
+  },
+  "room": {
+    "screen": "Screen",
+    "remainTime": "Remain time"
   }
 }

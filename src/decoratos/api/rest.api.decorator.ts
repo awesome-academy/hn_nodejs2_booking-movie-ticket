@@ -10,6 +10,7 @@ import {
   createParamDecorator,
   ExecutionContext,
 } from './param.custom.decorator';
+import { Interceptor } from './interceptor.decorator';
 
 function errorHandler(
   err: any,
@@ -64,6 +65,7 @@ async function getMethodParams(
   res: Response,
   next: NextFunction,
 ) {
+  if (!controllerMethodParams) return;
   const promises = Object.keys(controllerMethodParams)
     .sort((n1, n2) => +n1 - +n2)
     .map((key) => {
@@ -97,7 +99,7 @@ export function RestController<T extends ClassConstructor>(path: string) {
       ) {
         try {
           const methodParams = await getMethodParams(
-            constructor.prototype.controllerMethodParams[methodName],
+            constructor.prototype.controllerMethodParams?.[methodName],
             req,
             res,
             next,
@@ -105,15 +107,68 @@ export function RestController<T extends ClassConstructor>(path: string) {
           const obj = await handlers[0].apply(controller, methodParams);
           const status =
             req.method == HttpMethod.POST ? StatusEnum.CREATED : StatusEnum.OK;
+          if (constructor.prototype?.interceptors?.[methodName]) {
+            res['tempObj'] = obj;
+            next();
+            return;
+          }
           res.status(status).json(obj);
         } catch (error) {
           next(error);
         }
       };
+
+      const befores = [];
+      const afters = [];
+      if (
+        constructor.prototype.interceptors &&
+        constructor.prototype.interceptors[methodName]
+      ) {
+        befores.push(
+          ...constructor.prototype.interceptors[methodName].map(
+            (interceptor: Interceptor) => {
+              return function (
+                req: Request,
+                res: Response,
+                next: NextFunction,
+              ) {
+                try {
+                  const ctx: ExecutionContext = { req, res, next };
+                  interceptor.before(null, ctx);
+                } catch (error) {
+                  next(error);
+                }
+              };
+            },
+          ),
+        );
+
+        afters.push(
+          ...constructor.prototype.interceptors[methodName].map(
+            (interceptor: Interceptor) => {
+              return function (
+                req: Request,
+                res: Response,
+                next: NextFunction,
+              ) {
+                try {
+                  const ctx: ExecutionContext = { req, res, next };
+                  interceptor.after(res['tempObj'], ctx);
+                } catch (error) {
+                  next(error);
+                }
+              };
+            },
+          ),
+        );
+      }
+
       const [oldHandler, ...restHandlers] = handlers;
       constructor.prototype.route[`${method.toLowerCase()}`](_path, [
         ...restHandlers?.reverse(),
+        ...befores,
         newHandler,
+        ...afters,
       ]);
     });
   };

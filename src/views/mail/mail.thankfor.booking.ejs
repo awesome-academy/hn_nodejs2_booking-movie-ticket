@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank you for booking</title>
+</head>
+<body>
+  <div style="font-size: 30px; margin: 10px;">Dear, <%- user.email %></div>
+  <div>Cảm ơn bạn đã đặt vé xem phim tại NAMCINEMA</div>
+  <h2>Thông tin chi tiết như sau:</h2>
+  <div>
+    <div><b>Phim: <%- schedule.movie.name %></b></div>
+    <div><b>Lịch chiếu: <%- dateShow %></b></div>
+  </div>
+  <hr/>
+  <div>
+    <div><b>Phòng <%- schedule.room.name %></b></div>
+    <div><b>Ghế ngồi:</b></div>
+    <% for (let seat of seats) { %>
+      <div><%- seat.name %> - <%- new Number(seat.price).toLocaleString('vi') %> <span style="color: red;">VNĐ</span></div>
+    <% } %>
+    <div><b>Tổng tiền vé: <%- totalPriceFromTicket %> <span style="color: red;">VNĐ</span></b></div>
+  </div>
+  <hr/>
+  <div>
+    <div><b>Đồ ăn:</b></div>
+    <% for (let food of foods) { %>
+      <div><%- food.description %> - số lượng <%- food.quantity %> x <%- new Number(food.price).toLocaleString('vi') %> <span style="color: red;">VNĐ</span></div>
+    <% } %>
+    <div><b>Tổng tiền đồ ăn: <%- totalPriceFromFood %> <span style="color: red;">VNĐ</span></b></div>
+  </div>
+  <hr/>
+  <div><b>Tổng tiền: <%- totalPriceFromTicket + totalPriceFromFood %> <span style="color: red;">VNĐ</span></b></div>
+  <br>
+  <span style="color: red; font-size: 16px;"><i>Chú ý: Đây là mail tự động, vui lòng không reply</i></span>
+</body>
+</html>

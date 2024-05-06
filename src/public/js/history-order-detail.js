@@ -99,7 +99,7 @@ function renderUIOrderDetail(obj) {
       <tr>
         <th scope="row">${i + 1}</th>
         <td class="text-danger">FOOD${food.id}</td>
-        <td><image src="/img/food/pepsi.jpg" width="64px" height="64px" style="border-radius: 50%;" /></td>
+        <td><image src="${food.image}" width="64px" height="64px" style="border-radius: 50%;" /></td>
         <td>${Number(food.price).toLocaleString('vi')} <span class="text-danger">VNĐ</span></td>
         <td>${food.quantity}</td>
         <td>${food.description}</td>
