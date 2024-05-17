@@ -25,6 +25,7 @@ import { ChangePasswordDto } from '../dtos/req/user/change.password.dto';
 import { Bcrypt } from '../security/bcrypt';
 import { ErrorApiResponseDto } from '../dtos/res/error.api.res.dto';
 import { ImageFileGuard } from '../decoratos/api/guards/guard.image.file.decorator';
+import { UserConstant } from '../constant/user.constant';
 
 @RestController('/api/user')
 export class UserRestController {
@@ -47,7 +48,7 @@ export class UserRestController {
       data: {
         email: user.email,
         username: user.username,
-        avatar: user.avatar,
+        avatar: user.avatar || UserConstant.NO_AVATAR,
         phone: user.phone,
         address: user.address,
         csrfToken: csrfToken,

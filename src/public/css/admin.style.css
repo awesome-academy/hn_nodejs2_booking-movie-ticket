@@ -1,0 +1,40 @@
+/* Set the width of the sidebar */
+.sidebar {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #343a40;
+  padding-top: 50px;
+}
+/* Style sidebar links */
+.sidebar a {
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #fff;
+  display: block;
+}
+/* Change color on hover */
+.sidebar a:hover {
+  background-color: #666;
+}
+/* Page content */
+.content {
+  margin-left: 250px;
+}
+/* Top bar */
+.top-bar {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+/* Username display */
+.username {
+  margin-right: 20px;
+  font-weight: bold;
+}

@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import {
   registerDecorator,
   ValidationArguments,
@@ -150,6 +153,74 @@ export function IsLengthEqualsOtherPropertyAndValueInRange(
         },
         defaultMessage(args: ValidationArguments) {
           return `${args.property} length must be equals ${option.otherPropertyName} length and value item in range(${option.min}, ${option.max})`;
+        },
+      },
+    });
+  };
+}
+
+export function IsLessOrEqual(
+  dateStringToCompare: string,
+  validationOptions?: ValidationOptions,
+) {
+  return function (object: Object, propertyName: string) {
+    registerDecorator({
+      name: 'isLengthEqualsOtherProperty',
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      validator: {
+        validate(value: any, args: ValidationArguments) {
+          const dateToCompare = new Date(dateStringToCompare);
+          const date = new Date(value);
+          if (
+            dateToCompare.toDateString() == 'Invalid Date' ||
+            date.toDateString() == 'Invalid Date' ||
+            date > dateToCompare
+          ) {
+            return false;
+          }
+          return true;
+        },
+        defaultMessage(args: ValidationArguments) {
+          return `${args.property} must be less or equal now`;
+        },
+      },
+    });
+  };
+}
+
+export function IsStartDateValid(
+  endDateProperty: string,
+  validationOptions?: ValidationOptions,
+) {
+  return function (object: Object, propertyName: string) {
+    registerDecorator({
+      name: 'isLengthEqualsOtherProperty',
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      validator: {
+        validate(value: any, args: ValidationArguments) {
+          const endDate = new Date(args.object[endDateProperty]);
+          const startDate = new Date(value);
+          if (
+            endDate.toDateString() == 'Invalid Date' ||
+            startDate.toDateString() == 'Invalid Date' ||
+            endDate.getTime() - startDate.getTime() < 0 ||
+            endDate.getTime() - startDate.getTime() >
+              +process.env.ADMIN_STATISTIC_MOVIE_TIME_LIMIT *
+                24 *
+                60 *
+                60 *
+                1000
+          ) {
+            return false;
+          }
+          return true;
+        },
+        defaultMessage(args: ValidationArguments) {
+          return `${args.property} must be less or equal than endDate and time limit less or equal than ${process.env.ADMIN_STATISTIC_MOVIE_TIME_LIMIT} days`;
         },
       },
     });

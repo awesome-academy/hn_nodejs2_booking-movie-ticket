@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%- i18n.t('header.adminDashboard') %></title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <script src="/js/jquery.js"></script>
+    <script src="/js/poper.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    
+    <link rel="icon" type="image/x-icon" href="/icon/icon-cinema.ico">
+    <link rel="stylesheet" href="/css/admin.style.css">
+    <link rel="stylesheet" href="/css/admin.home.css">
+</head>
+<body>
+    <!-- Page content -->
+    <div class="content">
+        <!-- Side bar -->
+        <%- include('./admin-sidebar') %>
+
+        <!-- Top bar -->
+        <%- include('./admin-topbar') %>
+
+        <!-- Main content -->
+        <div class="statistic-summary-wapper d-flex">
+            <div class="statistic-summary d-flex p-3 mt-4">
+                <div class="statistic-summary__icon d-flex mr-3">
+                    <i class="fa-solid fa-film m-auto"></i>
+                </div>
+                <div>
+                    <div class="statistic-summary__key"><b><%- i18n.t('admin.movieCount') %></b></div>
+                    <div class="statistic-summary__value"><span class="movie-count-value"></span></div>
+                </div>
+            </div>
+            <div class="statistic-summary d-flex p-3 mt-4">
+                <div class="statistic-summary__icon d-flex mr-3 text-info">
+                    <i class="fa-solid fa-ticket m-auto"></i>
+                </div>
+                <div>
+                    <div class="statistic-summary__key"><b><%- i18n.t('admin.ticketCount') %></b></div>
+                    <div class="statistic-summary__value"><span class="ticket-count-value"></span></div>
+                </div>
+            </div>
+            <div class="statistic-summary d-flex p-3 mt-4">
+                <div class="statistic-summary__icon d-flex mr-3 text-success">
+                    <i class="fa-solid fa-dollar-sign m-auto"></i>
+                </div>
+                <div>
+                    <div class="statistic-summary__key"><b><%- i18n.t('admin.revenueMonth') %> <span class="revenue-month"><%- new Date().getMonth() %></span></b></div>
+                    <div class="statistic-summary__value"><span class="revenue-month-value"></span> <span class="text-danger">VNĐ</span></div>
+                </div>
+            </div>
+            <div class="statistic-summary d-flex p-3 mt-4">
+                <div class="statistic-summary__icon d-flex mr-3 icon-user">
+                    <i class="fa-solid fa-user m-auto"></i>
+                </div>
+                <div>
+                    <div class="statistic-summary__key"><b><%- i18n.t('admin.userCount') %></b></div>
+                    <div class="statistic-summary__value"><span class="user-count-value"></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="container mt-5">
+            <h2 class="text-center"><%- i18n.t('admin.topMovie') %></h2>
+            <div class="d-flex justify-content-end mb-3">
+                <div class="mr-3">
+                    <span><%- i18n.t('admin.statisticMovieStartDate') %></span>:
+                    <input type="date" name="startDate" id="startDate" class="form-control" />
+                </div>
+                <div class="mr-3">
+                    <span><%- i18n.t('admin.statisticMovieEndDate') %></span>:
+                    <input type="date" name="endDate" id="endDate" class="form-control" />
+                </div>
+                <div class="mr-3">
+                    <div class="invisible">aaaa</div>
+                    <button type="button" class="btn btn-success btn-draw-chart"><%- i18n.t('admin.drawChart') %></button>
+                </div>
+            </div>
+            <canvas class="my-chart"></canvas>
+        </div>
+    </div>
+
+    <script src="/js/chart.js"></script>
+    <script src="/js/sweetalert.js"></script>
+    <script src="/js/admin.home.js"></script>
+</body>
+</html>
+
