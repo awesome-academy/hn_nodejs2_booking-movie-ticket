@@ -21,6 +21,7 @@ import { ForgotPasswordDto } from '../dtos/authen/forgot.password';
 import { Base64URL } from '../security/base64url';
 import { Sha256 } from '../security/sha256';
 import { ResetPasswordDto } from '../dtos/authen/reset.password.dto';
+import { UserRole } from '../enum/user.enum';
 
 @injectable()
 export class AuthenController {
@@ -61,6 +62,12 @@ export class AuthenController {
       return;
     }
     req.session['user'] = user;
+
+    if (user.role == UserRole.ADMIN) {
+      res.redirect('/admin');
+      return;
+    }
+
     res.redirect(
       req.session['originalUrl']
         ? req.session['originalUrl']

@@ -19,7 +19,22 @@
     "filter": "Lọc",
     "chooseSchedule": "Chọn lịch chiếu",
     "chooseSeat": "Chọn ghế ngồi",
-    "paymentResult": "Kết quả thanh toán"
+    "paymentResult": "Kết quả thanh toán",
+    "admin": "Quản trị viên",
+    "adminDashboard": "Bảng điều khiển"
+  },
+  "admin": {
+    "manageMovie": "Quản lý phim",
+    "manageTicket": "Quản lý vé",
+    "manageSchedule": "Sắp xếp lịch chiếu phim",
+    "topMovie": "Top 10 bộ phim có doanh thu cao nhất",
+    "movieCount": "Số lượng phim",
+    "ticketCount": "Số lượng vé",
+    "revenueMonth": "Doanh thu trong tháng",
+    "userCount": "Số lượng người dùng",
+    "drawChart": "Vẽ biểu đồ",
+    "statisticMovieStartDate": "Ngày bắt đầu",
+    "statisticMovieEndDate": "Ngày kết thúc"
   },
   "form": {
     "register": "Đăng kí",

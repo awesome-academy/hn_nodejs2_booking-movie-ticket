@@ -19,7 +19,22 @@
     "filter": "Filter",
     "chooseSchedule": "Choose Schedule",
     "chooseSeat": "Choose Seat",
-    "paymentResult": "Payment Result"
+    "paymentResult": "Payment Result",
+    "admin": "Admin",
+    "adminDashboard": "Admin Dashboard"
+  },
+  "admin": {
+    "manageMovie": "Manage Movie",
+    "manageTicket": "Manage ticket",
+    "manageSchedule": "Manage schedule",
+    "topMovie": "Top 10 highest-grossing movies",
+    "movieCount": "Movie count",
+    "ticketCount": "Ticket count",
+    "revenueMonth": "Revenue month",
+    "userCount": "User count",
+    "drawChart": "Draw chart",
+    "statisticMovieStartDate": "Start Date",
+    "statisticMovieEndDate": "End Date"
   },
   "footer": {
     "supportMe": "Support Me",

@@ -18,6 +18,9 @@ import { BookingRoute } from './booking.route';
 import { ScheduleRestController } from '../apis/schedule.api.controller';
 import { FoodRestController } from '../apis/food.api.controller';
 import { PaymentResultController } from '../controllers/payment.result.controller';
+import { AdminRoute } from './admin.route';
+import { AdminCheckGuard } from '../guards/admin.check.guard';
+import { AdminHomeRestController } from '../apis/admin/admin.home.api';
 
 @RestConfig([
   ReviewRestController,
@@ -26,6 +29,7 @@ import { PaymentResultController } from '../controllers/payment.result.controlle
   BillRestController,
   ScheduleRestController,
   FoodRestController,
+  AdminHomeRestController,
 ])
 export class RootRoute extends BaseRoute {
   constructor(
@@ -55,6 +59,12 @@ export class RootRoute extends BaseRoute {
 
     @inject(PaymentResultController)
     private readonly paymentResultController: PaymentResultController,
+
+    @inject(AdminRoute)
+    private readonly adminRoute: AdminRoute,
+
+    @inject(AdminCheckGuard)
+    private readonly adminCheckGuard: AdminCheckGuard,
   ) {
     super();
     this.router = express.Router();
@@ -89,6 +99,11 @@ export class RootRoute extends BaseRoute {
       this.paymentResultController.paymentResult.bind(
         this.paymentResultController,
       ),
+    );
+    this.router.use(
+      '/admin',
+      this.adminCheckGuard.afterAuthen.bind(this.adminCheckGuard),
+      this.adminRoute.getRouter(),
     );
   }
 }
