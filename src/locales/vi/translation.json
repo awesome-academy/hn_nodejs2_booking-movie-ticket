@@ -34,7 +34,12 @@
     "userCount": "Số lượng người dùng",
     "drawChart": "Vẽ biểu đồ",
     "statisticMovieStartDate": "Ngày bắt đầu",
-    "statisticMovieEndDate": "Ngày kết thúc"
+    "statisticMovieEndDate": "Ngày kết thúc",
+    "addNew": "Thêm mới",
+    "enterMovieNameHint": "Nhập tên phim",
+    "startDateShowing": "Ngày khởi chiếu",
+    "endDateShowing": "Ngày dừng chiếu",
+    "addNewMovie": "Thêm phim mới"
   },
   "form": {
     "register": "Đăng kí",
@@ -58,7 +63,8 @@
     "newPassword": "Mật khẩu mới",
     "delete": "Xóa",
     "ok": "Đồng ý",
-    "pay": "Thanh toán"
+    "pay": "Thanh toán",
+    "chooseFile": "Chọn tệp"
   },
   "footer": {
     "supportMe": "Hỗ trợ tôi",
@@ -100,7 +106,12 @@
     "noReview": "Không có đánh giá",
     "introduce": "Giới Thiệu",
     "reviewAndComment": "Đánh giá và nhận xét",
-    "minutes": "phút"
+    "minutes": "phút",
+    "endDateShowing": "Ngày dừng chiếu",
+    "largeImage": "Ảnh to",
+    "smallImage": "Ảnh bé",
+    "shortDescription": "Mô tả ngắn ngọn",
+    "longDescription": "Mô tả chi tiết"
   },
   "noti": {
     "notData": "Không có dữ liệu",

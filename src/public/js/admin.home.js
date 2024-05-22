@@ -182,7 +182,7 @@ btnDrawChart.addEventListener('click', async () => {
     drawLineChart(data.data);
   } catch (error) {
     console.log(error);
-    if (!error.error) return;
+    if (!error.errors) return;
 
     Swal.fire({
       title: locale == "vi" ? "Lỗi" : "Error",

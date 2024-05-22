@@ -38,3 +38,30 @@
   margin-right: 20px;
   font-weight: bold;
 }
+
+.funtion-active {
+  background-color: blue;
+}
+
+.funtion-active:hover {
+  background-color: blue !important;
+}
+
+th,
+td {
+  vertical-align: middle !important;
+  text-align: center !important;
+}
+
+.wapper-pagination {
+  display: flex;
+  justify-content: end;
+}
+
+.table-acction {
+  width: 25% !important;
+}
+
+.img-movie {
+  object-fit: cover;
+}

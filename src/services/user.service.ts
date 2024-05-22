@@ -36,7 +36,7 @@ export class UserService {
         ...dto,
         avatar: path.join('/', process.env.USER_IMAGE_PUBLIC_PATH, newFilename),
       });
-      await Promise.all([
+      await Promise.allSettled([
         this.userRepository.save(user),
         fs.writeFile(
           path.join(

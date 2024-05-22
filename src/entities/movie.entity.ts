@@ -65,6 +65,9 @@ export class Movie extends BaseEntity {
   @Column({ name: 'language', type: 'varchar', length: 255 })
   language: string;
 
+  @Column({ name: 'active', type: 'boolean', default: true })
+  active: boolean;
+
   @OneToMany(() => Review, (review) => review.movie)
   reviews: Review[];
 

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%- i18n.t('header.adminDashboard') %></title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <script src="/js/jquery.js"></script>
+  <script src="/js/poper.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <link rel="icon" type="image/x-icon" href="/icon/icon-cinema.ico">
+  <link rel="stylesheet" href="/css/admin.style.css">
+  <link rel="stylesheet" href="/css/admin.home.css">
+</head>
+
+<body>
+  <!-- Page content -->
+  <div class="content">
+    <!-- Side bar -->
+    <%- include('./admin-sidebar') %>
+
+      <!-- Top bar -->
+    <%- include('./admin-topbar') %>
+
+    <div class="modal fade my-0 mx-auto" id="modalAddNewMovie" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header d-flex">
+            <h1 class="modal-title mx-auto" id="exampleModalLabel"><%- i18n.t('admin.addNewMovie') %><span></span></h1>
+            <button type="button" class="close ml-0 close-modal" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <%- include('./admin-add-new-movie') %>
+          </div>
+          <div class="modal-footer d-flex">
+            <button type="button" class="btn btn-success btn-ok m-auto"><%- i18n.t('form.ok') %></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="container mt-3">
+      <h2 class="text-center"><%- i18n.t('admin.manageMovie') %></h2>
+
+      <div class="my-auto d-flex justify-content-end">
+        <button class="btn btn-secondary btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+          <%- i18n.t('header.filter') %>&nbsp;&nbsp;<i class="fa-solid fa-filter"></i>
+        </button>
+        
+        <div class="dropdown-menu mt-2">
+          <div class="form-group dropdown-item">
+            <label for="movie-name"><%- i18n.t('movie.name') %>:</label>
+            <input type="search" class="form-control" id="movie-name" placeholder="<%- i18n.t('movie.name') %>">
+          </div>
+          <div class="pl-4">
+            <label><%- i18n.t('movie.categories') %>:</label>
+            <% for (let i = 0; i < categories.length; i++) { %>
+              <div class="dropdown-item form-group custom-checkbox">
+                <input type="checkbox"
+                  id="category<%- categories[i].id %>"
+                  class="mr-2 custom-control-input category-item"
+                  value="<%- categories[i].id %>"
+                >
+                <label class="custom-control-label" for="category<%- categories[i].id %>"><%- categories[i].name %></label>
+              </div>
+            <% } %>
+          </div>
+          <div class="form-group dropdown-item">
+            <input type="number"
+              min="13"
+              max="18"
+              step="1"
+              class="form-control"
+              id="movie-age"
+              placeholder="<%- `${i18n.t('movie.age').charAt(0).toUpperCase()}${i18n.t('movie.age').slice(1)}` %>">
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-success btn-add-new-movie ml-3" data-toggle="modal" data-target="#modalAddNewMovie" data-whatever="@getbootstrap">
+          <i class="fa-solid fa-square-plus"></i>&nbsp;
+          <span><%- i18n.t('admin.addNew') %></span>
+        </button>
+      </div>
+
+      <div class="list-movies position-relative mt-4"></div>
+
+      <div class="wapper-pagination mt-3">
+        <nav aria-label="...">
+          <ul class="pagination"></ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/chart.js"></script>
+  <script src="/js/sweetalert.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/lazyloading.js"></script>
+  <script src="/js/pagination.js"></script>
+  <script src="/js/admin.common.js"></script>
+  <script src="/js/admin.manage-movie.js"></script>
+  <script src="/js/admin.add-new-movie.js"></script>
+  <script src="/js/admin.update-movie.js"></script>
+</body>
+
+</html>

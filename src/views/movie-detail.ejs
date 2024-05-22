@@ -46,7 +46,7 @@
     <br>
     <div class="d-flex">
       <div class="mr-5">
-        <img src="<%- movie.smallImgurl %>" alt="">
+        <img src="<%- movie.smallImgurl %>" width="240px" height="356px" alt="">
         <div class="d-flex wapper-btn-x mt-2">
           <% if (movie.status == 'inactive') { %>
             <button  class="btn btn-danger btn-block btn-buy-ticket-not-signed-in" disabled><%- i18n.t('movie.byTicket') %></button>

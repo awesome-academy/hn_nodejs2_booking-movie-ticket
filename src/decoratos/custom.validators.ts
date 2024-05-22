@@ -226,3 +226,28 @@ export function IsStartDateValid(
     });
   };
 }
+
+export function IsIntArray(validationOptions?: ValidationOptions) {
+  return function (object: Object, propertyName: string) {
+    registerDecorator({
+      name: 'isIntArray',
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      validator: {
+        validate(value: any, args: ValidationArguments) {
+          if (value == undefined) {
+            return false;
+          }
+          for (let item of value) {
+            if (isNaN(+item)) return false;
+          }
+          return true;
+        },
+        defaultMessage(args: ValidationArguments) {
+          return `${args.property} must be int array`;
+        },
+      },
+    });
+  };
+}

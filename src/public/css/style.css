@@ -42,6 +42,10 @@ footer {
   border-radius: 50%;
 }
 
+img {
+  object-fit: cover;
+}
+
 .dropdown-item {
   label {
     width: 100%;
