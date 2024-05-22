@@ -21,6 +21,7 @@ import { PaymentResultController } from '../controllers/payment.result.controlle
 import { AdminRoute } from './admin.route';
 import { AdminCheckGuard } from '../guards/admin.check.guard';
 import { AdminHomeRestController } from '../apis/admin/admin.home.api';
+import { AdminManageMovieRestController } from '../apis/admin/admin.manage-movie.api';
 
 @RestConfig([
   ReviewRestController,
@@ -30,6 +31,7 @@ import { AdminHomeRestController } from '../apis/admin/admin.home.api';
   ScheduleRestController,
   FoodRestController,
   AdminHomeRestController,
+  AdminManageMovieRestController,
 ])
 export class RootRoute extends BaseRoute {
   constructor(

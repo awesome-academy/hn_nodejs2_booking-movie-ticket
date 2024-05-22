@@ -1,0 +1,122 @@
+<div>
+  <div class="form-group">
+    <label for="name" class="col-form-label"><%- i18n.t('movie.name') %> <span class="text-danger">(*)</span>:</label>
+    <input type="text" class="form-control" id="name" maxlength="255" placeholder="<%- i18n.t('movie.name') %>" required>
+    <div id="nameFeedback" class="invalid-feedback d-none"></div>
+  </div>
+
+  <div class="form-group">
+    <label for="direction" class="col-form-label"><%- i18n.t('movie.direction') %> <span class="text-danger">(*)</span>:</label>
+    <input type="text" class="form-control" id="direction" maxlength="255" placeholder="<%- i18n.t('movie.direction') %>" required>
+    <div id="directionFeedback" class="invalid-feedback d-none"></div>
+  </div>
+
+  <div class="form-group">
+    <label for="actors" class="col-form-label"><%- i18n.t('movie.actors') %> <span class="text-danger">(*)</span>:</label>
+    <input type="text" class="form-control" id="actors" maxlength="255" placeholder="<%- i18n.t('movie.actors') %>" required>
+    <div id="actorsFeedback" class="invalid-feedback d-none"></div>
+  </div>
+
+  <div class="form-group">
+    <label for="trailerurl" class="col-form-label">Trailer <span class="text-danger">(*)</span>:</label>
+    <input type="text" class="form-control" id="trailerurl" maxlength="255" placeholder="Trailer" required>
+    <div id="trailerurlFeedback" class="invalid-feedback d-none"></div>
+  </div>
+
+  <div class="form-group">
+    <label for="language" class="col-form-label"><%- i18n.t('movie.language') %> <span class="text-danger">(*)</span>:</label>
+    <input type="text" class="form-control" id="language" maxlength="255" placeholder="<%- i18n.t('movie.language') %>" required>
+    <div id="languageFeedback" class="invalid-feedback d-none"></div>
+  </div>
+
+  <div class="form-group">
+    <div><%- i18n.t('movie.categories') %> <span class="text-danger">(*)</span>:</div>
+    <div class="my-auto">
+      <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+        <%- i18n.t('movie.categories') %>
+      </button>
+      <div class="dropdown-menu">
+        <div class="pl-4">
+          <% for (let i = 0; i < categories.length; i++) { %>
+            <div class="dropdown-item form-group custom-checkbox">
+              <input type="checkbox"
+                id="ctg<%- categories[i].id %>"
+                class="mr-2 custom-control-input ctg-item"
+                value="<%- categories[i].id %>"
+              >
+              <label class="custom-control-label" for="ctg<%- categories[i].id %>"><%- categories[i].name %></label>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="duration" class="col-form-label"><%- i18n.t('movie.duration') %> (<%- i18n.t('movie.minutes') %>) <span class="text-danger">(*)</span>:</label>
+    <input type="number" min="60" max="180" class="form-control" id="duration" placeholder="<%- i18n.t('movie.duration') %>" required>
+    <div id="durationFeedback" class="invalid-feedback d-none"></div>
+  </div>
+
+  <div class="form-group">
+    <label for="ageLimit" class="col-form-label"><%- i18n.t('movie.ageLimit') %> <span class="text-danger">(*)</span>:</label>
+    <input type="number" min="13" max="18" class="form-control" id="ageLimit" placeholder="<%- i18n.t('movie.ageLimit') %>" required>
+    <div id="ageLimitFeedback" class="invalid-feedback d-none"></div>
+  </div>
+
+  <div class="form-group">
+    <label for="releaseDate" class="col-form-label"><%- i18n.t('movie.releaseDate') %> <span class="text-danger">(*)</span>:</label>
+    <input type="date" min="60" max="180" class="form-control" id="releaseDate" required>
+    <div id="releaseDateFeedback" class="invalid-feedback d-none"></div>
+  </div>
+
+  <div class="form-group">
+    <label for="startDateShowing" class="col-form-label"><%- i18n.t('movie.startDateShowing') %> <span class="text-danger">(*)</span>:</label>
+    <input type="date" min="60" max="180" class="form-control" id="startDateShowing" required>
+    <div id="startDateShowingFeedback" class="invalid-feedback d-none"></div>
+  </div>
+
+  <div class="form-group">
+    <label for="endDateShowing" class="col-form-label"><%- i18n.t('movie.endDateShowing') %> <span class="text-danger">(*)</span>:</label>
+    <input type="date" min="60" max="180" class="form-control" id="endDateShowing" required>
+    <div id="endDateShowingFeedback" class="invalid-feedback d-none"></div>
+  </div>
+
+  <div class="mb-2"><%- i18n.t('movie.largeImage') %> <span class="text-danger">(*)</span>:</div>
+  <div class="custom-file">
+    <input type="file" min="60" max="180" class="custom-file-input" id="largeImgurl" accept="image/*" required>
+    <div id="largeImgurlFeedback" class="invalid-feedback d-none"></div>
+    <label class="custom-file-label" for="largeImgurl"><%- i18n.t('form.chooseFile') %>...</label>
+    <div class="d-flex">
+      <img
+      class="img-movie mt-3 mx-auto"
+      width="150px" height="200px"
+      src="/img/no-result.png" />
+    </div>
+  </div>
+  
+  <div class="mb-2"><%- i18n.t('movie.smallImage') %> <span class="text-danger">(*)</span>:</div>
+  <div class="custom-file">
+    <input type="file" min="60" max="180" class="custom-file-input" id="smallImgurl" accept="image/*" required>
+    <div id="smallImgurlFeedback" class="invalid-feedback d-none"></div>
+    <label class="custom-file-label" for="smallImgurl"><%- i18n.t('form.chooseFile') %>...</label>
+    <div class="d-flex">
+      <img
+        class="img-movie mt-3 mx-auto"
+        width="150px" height="200px"
+        src="/img/no-result.png"/>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="shortDescription" class="col-form-label"><%- i18n.t('movie.shortDescription') %> <span class="text-danger">(*)</span>:</label>
+    <textarea class="form-control" id="shortDescription" maxlength="255" placeholder="<%- i18n.t('movie.shortDescription') %>" required></textarea>
+    <div id="shortDescriptionFeedback" class="invalid-feedback d-none"></div>
+  </div>
+
+  <div class="form-group">
+    <label for="longDescription" class="col-form-label"><%- i18n.t('movie.longDescription') %> <span class="text-danger">(*)</span>:</label>
+    <textarea class="form-control" id="longDescription" maxlength="500" placeholder="<%- i18n.t('movie.longDescription') %>" required></textarea>
+    <div id="longDescriptionFeedback" class="invalid-feedback d-none"></div>
+  </div>
+</div>

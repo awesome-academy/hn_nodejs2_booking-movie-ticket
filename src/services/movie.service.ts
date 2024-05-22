@@ -1,7 +1,10 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import { inject, injectable } from 'tsyringe';
 import { MovieRepository } from '../repositories/movie.repository';
 import { Movie } from '../entities/movie.entity';
-import { MoreThan, SelectQueryBuilder } from 'typeorm';
+import { MoreThan, SelectQueryBuilder, Transaction } from 'typeorm';
 import { ScheduleRepository } from '../repositories/schedule.repository';
 import { paginations, Pagination } from '../pagination/pagination';
 import { AllMoviesPagination } from '../constant/pagination.constant';
@@ -9,6 +12,19 @@ import { ReviewRepository } from '../repositories/review.repository';
 import { ObjectMapper } from '../utils/mapper';
 import dayjs from 'dayjs';
 import { DateFormat } from '../enum/date.format.enum';
+import {
+  MovieSaveRequestDto,
+  MovieUpdateRequestDto,
+} from '../dtos/req/movie/movie.save.req.dto';
+import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
+import fs from 'fs';
+import { CategoryRepository } from '../repositories/category.repository';
+import { AppBaseResponseDto } from '../dtos/res/app.api.base.res.dto';
+import { StatusEnum } from '../enum/status.enum';
+import { AppException } from '../exceptions/app.exception';
+import { Transactional } from 'typeorm-transactional';
+import { ErrorApiResponseDto } from '../dtos/res/error.api.res.dto';
 
 @injectable()
 export class MovieService {
@@ -21,6 +37,9 @@ export class MovieService {
 
     @inject(ReviewRepository)
     private readonly reviewRepository: ReviewRepository,
+
+    @inject(CategoryRepository)
+    private readonly categoryRepository: CategoryRepository,
   ) {}
 
   public async getNewestFilms(): Promise<Movie[]> {
@@ -61,10 +80,16 @@ export class MovieService {
     name: string,
     categoryIds: number[],
     age: number,
+    adminRequest: boolean = false,
   ): SelectQueryBuilder<Movie> {
     const queryBuilder = this.movieRepository
       .createQueryBuilder('movie')
+      .leftJoinAndMapMany('movie.categories', 'movie.categories', 'category')
       .where('1 = 1');
+
+    if (!adminRequest) {
+      queryBuilder.andWhere('movie.active = :active', { active: true });
+    }
 
     if (name != null) {
       // mysql FULLTEXT SEARCH
@@ -107,11 +132,13 @@ export class MovieService {
     name: string = null,
     categoryIds: number[] = null,
     age: number = null,
+    adminRequest: boolean = false,
   ): Promise<Pagination<Movie>> {
     const queryBuilder = this.makeQueryBuilderMovieWithMultiCondition(
       name,
       categoryIds,
       age,
+      adminRequest,
     );
     const pagination: Pagination<Movie> = await paginations<Movie>(
       page,
@@ -125,7 +152,7 @@ export class MovieService {
     const stars = [1, 2, 3, 4, 5];
     const queryBuilder = this.movieRepository
       .createQueryBuilder('movie')
-      .leftJoinAndMapMany('movie.categories', 'movie.categories', 'category')
+      .innerJoinAndMapMany('movie.categories', 'movie.categories', 'category')
       .where('movie.id = :id', { id });
 
     stars.forEach((item) => {
@@ -199,5 +226,225 @@ export class MovieService {
       totalReview,
       totalStar,
     } as unknown as Movie;
+  }
+
+  @Transactional()
+  public async save(
+    dto: MovieUpdateRequestDto | MovieSaveRequestDto,
+    largeImage: Express.Multer.File = null,
+    smallImage: Express.Multer.File = null,
+  ) {
+    if (!dto['movieId']) {
+      return await this.create(dto, largeImage, smallImage);
+    }
+    return await this.update(
+      dto as MovieUpdateRequestDto,
+      largeImage,
+      smallImage,
+    );
+  }
+
+  private async create(
+    dto: MovieSaveRequestDto,
+    largeImgurl: Express.Multer.File = null,
+    smallImgurl: Express.Multer.File = null,
+  ) {
+    if (!largeImgurl) {
+      throw {
+        status: StatusEnum.BAD_REQUEST,
+        message: 'Bad Request',
+        errors: {
+          largeImage: 'Large image not empty',
+        },
+      } as ErrorApiResponseDto;
+    }
+
+    if (!smallImgurl) {
+      throw {
+        status: StatusEnum.BAD_REQUEST,
+        message: 'Bad Request',
+        errors: {
+          smallImage: 'Small image not empty',
+        },
+      } as ErrorApiResponseDto;
+    }
+
+    const categories = await this.categoryRepository
+      .createQueryBuilder('category')
+      .where('category.id in (:ids)', { ids: dto.categoryIds })
+      .getMany();
+
+    if (categories.length != dto.categoryIds.length) {
+      throw {
+        status: StatusEnum.BAD_REQUEST,
+        message: 'Exsist category not exsist',
+      } as AppException;
+    }
+
+    const originalLargeImageName = largeImgurl.originalname;
+    const newLargeImageName = `${uuidv4()}.${originalLargeImageName.substring(originalLargeImageName.lastIndexOf('.') + 1)}`;
+
+    const originalSmallImageName = smallImgurl.originalname;
+    const newSmallImageName = `${uuidv4()}.${originalSmallImageName.substring(originalSmallImageName.lastIndexOf('.') + 1)}`;
+
+    if (!dto.ageLimit) dto.ageLimit = null;
+
+    const movie = this.movieRepository.create({
+      ...dto,
+      categories,
+      largeImgurl: path.join(
+        '/',
+        process.env.LARGE_IMAGE_PUBLIC_PATH,
+        newLargeImageName,
+      ),
+      smallImgurl: path.join(
+        '/',
+        process.env.SMALL_IMAGE_PUBLIC_PATH,
+        newSmallImageName,
+      ),
+    });
+
+    await Promise.all([
+      this.movieRepository.save(movie),
+      fs.writeFile(
+        path.join(
+          __dirname,
+          '..',
+          process.env.LARGE_IMAGE_REAL_PATH,
+          newLargeImageName,
+        ),
+        largeImgurl.buffer,
+        (err) => {},
+      ),
+
+      fs.writeFile(
+        path.join(
+          __dirname,
+          '..',
+          process.env.SMALL_IMAGE_REAL_PATH,
+          newSmallImageName,
+        ),
+        smallImgurl.buffer,
+        (err) => {},
+      ),
+    ]);
+
+    return {
+      status: StatusEnum.CREATED,
+      message: 'Created',
+      data: movie,
+    } as AppBaseResponseDto;
+  }
+
+  private async update(
+    dto: MovieUpdateRequestDto,
+    largeImgurl: Express.Multer.File = null,
+    smallImgurl: Express.Multer.File = null,
+  ) {
+    let movie = await this.movieRepository.findOneBy({ id: dto.movieId });
+    if (!movie) {
+      throw {
+        status: StatusEnum.BAD_REQUEST,
+        message: 'Movie not exsist',
+      } as AppException;
+    }
+
+    const categories = await this.categoryRepository
+      .createQueryBuilder('category')
+      .where('category.id in (:ids)', { ids: dto.categoryIds })
+      .getMany();
+
+    if (categories.length != dto.categoryIds.length) {
+      throw {
+        status: StatusEnum.BAD_REQUEST,
+        message: 'Exsist category not exsist',
+      } as AppException;
+    }
+
+    if (!dto['largeImgurl']) dto['largeImgurl'] = movie.largeImgurl;
+    if (!dto['smallImgurl']) dto['smallImgurl'] = movie.smallImgurl;
+    if (!dto.ageLimit) dto.ageLimit = null;
+
+    movie = {
+      ...movie,
+      ...dto,
+      categories,
+    };
+
+    if (largeImgurl) {
+      const originalLargeImageName = largeImgurl.originalname;
+      const newLargeImageName = `${uuidv4()}.${originalLargeImageName.substring(originalLargeImageName.lastIndexOf('.') + 1)}`;
+      movie = {
+        ...movie,
+        largeImgurl: path.join(
+          '/',
+          process.env.LARGE_IMAGE_PUBLIC_PATH,
+          newLargeImageName,
+        ),
+      };
+      await Promise.all([
+        fs.writeFile(
+          path.join(
+            __dirname,
+            '..',
+            process.env.LARGE_IMAGE_REAL_PATH,
+            newLargeImageName,
+          ),
+          largeImgurl.buffer,
+          (err) => {},
+        ),
+        fs.unlink(
+          path.join(
+            __dirname,
+            '..',
+            process.env.LARGE_IMAGE_REAL_PATH,
+            dto['largeImgurl'].replace('/img/movie/large/', ''),
+          ),
+          (err) => {},
+        ),
+      ]);
+    }
+
+    if (smallImgurl) {
+      const originalSmallImageName = smallImgurl.originalname;
+      const newSmallImageName = `${uuidv4()}.${originalSmallImageName.substring(originalSmallImageName.lastIndexOf('.') + 1)}`;
+      movie = {
+        ...movie,
+        smallImgurl: path.join(
+          '/',
+          process.env.SMALL_IMAGE_PUBLIC_PATH,
+          newSmallImageName,
+        ),
+      };
+      await Promise.all([
+        fs.writeFile(
+          path.join(
+            __dirname,
+            '..',
+            process.env.SMALL_IMAGE_REAL_PATH,
+            newSmallImageName,
+          ),
+          smallImgurl.buffer,
+          (err) => {},
+        ),
+        fs.unlink(
+          path.join(
+            __dirname,
+            '..',
+            process.env.SMALL_IMAGE_REAL_PATH,
+            dto['smallImgurl'].replace('/img/movie/small/', ''),
+          ),
+          (err) => {},
+        ),
+      ]);
+    }
+
+    await this.movieRepository.save(movie);
+
+    return {
+      status: StatusEnum.OK,
+      message: 'Updated',
+      data: movie,
+    } as AppBaseResponseDto;
   }
 }

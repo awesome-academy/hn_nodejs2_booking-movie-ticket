@@ -319,11 +319,15 @@ export const File = createParamDecorator(
   },
 );
 
-export const Files = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext) => {
-    return ctx.req.files;
-  },
-);
+export function Files(key: string = null) {
+  const files = createParamDecorator(
+    async (data: any, ctx: ExecutionContext) => {
+      const files = ctx.req.files;
+      return applyFunction(data, files, key);
+    },
+  );
+  return files(key);
+}
 
 export const CSRFToken = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {

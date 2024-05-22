@@ -6,6 +6,6 @@ export class AdminHomeController {
   constructor() {}
 
   public async getView(req: Request, res: Response, next: NextFunction) {
-    res.render('admin/admin-home');
+    res.render('admin/admin-home', { active: 'home' });
   }
 }

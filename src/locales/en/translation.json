@@ -34,7 +34,12 @@
     "userCount": "User count",
     "drawChart": "Draw chart",
     "statisticMovieStartDate": "Start Date",
-    "statisticMovieEndDate": "End Date"
+    "statisticMovieEndDate": "End Date",
+    "addNew": "Add new",
+    "enterMovieNameHint": "Enter movie name",
+    "startDateShowing": "Start date showing",
+    "endDateShowing": "End date showing",
+    "addNewMovie": "Add new movie"
   },
   "footer": {
     "supportMe": "Support Me",
@@ -64,7 +69,8 @@
     "newPassword": "New Password",
     "delete": "Delete",
     "ok": "OK",
-    "pay": "Pay"
+    "pay": "Pay",
+    "chooseFile": "Choose file"
   },
   "validationError": {
     "imagetype": "Only accept image file!",
@@ -86,7 +92,7 @@
     "byTicket": "By ticket",
     "name": "Name",
     "direction": "Direction",
-    "actors": "Actions",
+    "actors": "Actors",
     "releaseDate": "Release Date",
     "startDateShowing": "Start Date Showing",
     "categories": "Categories",
@@ -100,7 +106,12 @@
     "noReview": "No Review",
     "introduce": "Introduce",
     "reviewAndComment": "Review and comment",
-    "minutes": "minutes"
+    "minutes": "minutes",
+    "endDateShowing": "End date showing",
+    "largeImage": "Large image",
+    "smallImage": "Small image",
+    "shortDescription": "Short Description",
+    "longDescription": "Long Description"
   },
   "noti": {
     "notData": "Don't Have Data",
