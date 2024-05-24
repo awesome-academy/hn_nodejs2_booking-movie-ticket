@@ -89,14 +89,14 @@ export class MovieRestController {
     } as AppBaseResponseDto;
   }
 
-  // @AdminAuth()
+  @AdminAuth()
   @MultiParts({
     fields: [
       { name: 'largeImgurl', maxCount: 1 },
       { name: 'smallImgurl', maxCount: 1 },
     ],
   })
-  // @CSRFProtection()
+  @CSRFProtection()
   @ImageFilesGuard()
   @PostMapping('/')
   public async create(
@@ -116,14 +116,14 @@ export class MovieRestController {
     );
   }
 
-  // @AdminAuth()
+  @AdminAuth()
   @MultiParts({
     fields: [
       { name: 'largeImgurl', maxCount: 1 },
       { name: 'smallImgurl', maxCount: 1 },
     ],
   })
-  // @CSRFProtection()
+  @CSRFProtection()
   @ImageFilesGuard()
   @PutMapping('/')
   public async update(

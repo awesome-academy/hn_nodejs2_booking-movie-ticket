@@ -1,6 +1,5 @@
 import { inject, injectable } from 'tsyringe';
 import { BillRepository } from '../repositories/bill.repository';
-import { User } from '../entities/user.entity';
 import { ScheduleRepository } from '../repositories/schedule.repository';
 import { TicketRepository } from '../repositories/ticket.repository';
 import { PurchasedFoodRepository } from '../repositories/purchased.food.repository';
@@ -19,7 +18,6 @@ import { MoMoService } from './external/payment/momo.service';
 import { PayOnlineType } from '../enum/pay.online.type.enum';
 import { SeatRepository } from '../repositories/seat.repository';
 import { FoodRepository } from '../repositories/food.repository';
-import { Base64URL } from '../security/base64url';
 import { BillStatus } from '../enum/bill.enum';
 import { v4 as uuidv4 } from 'uuid';
 import { sendMail } from '../utils/sendmail';
@@ -76,6 +74,7 @@ export class BillService {
         price: obj['ticket'].currentPrice,
         room: obj['room'].name,
         schedule: `${dayjs(new Date(obj['schedule'].startDate)).format(DateFormat.DD_MM_YYYY)} ${obj['schedule'].startTime}`,
+        reasonReject: obj['ticket'].reasonReject,
       };
 
       const purchasedFood = {
@@ -100,6 +99,7 @@ export class BillService {
             DateFormat.DD_MM_YYYY_HH_mm_ss,
           ),
           totalPrice: +obj['bill'].totalPrice,
+          userId: +obj['bill'].userId,
           movie: {
             id: obj['movie'].id,
             name: obj['movie'].name,
@@ -126,12 +126,19 @@ export class BillService {
     return items;
   }
 
-  public async getAllBillWithPaginationAndConditionByUser(
-    user: User,
+  public async getAllBillWithPaginationAndCondition(
+    userId: number = null,
     orderDate: string = null,
     orderPrice: string = null,
     page: number = null,
+    itemInPage: number = null,
   ) {
+    const billPagination = { ...BillPagination };
+
+    if (itemInPage) {
+      billPagination.ITEM_IN_PAGE = itemInPage;
+    }
+
     if (
       !page ||
       (orderDate != '1' && orderDate != '0') ||
@@ -150,10 +157,13 @@ export class BillService {
         '(bill.totalPriceFromTicket + bill.totalPriceFromFood)',
         'totalPrice',
       )
-      .where(`bill.userId = ${user.id}`)
       .groupBy('bill.id')
-      .skip((page - 1) * BillPagination.ITEM_IN_PAGE)
-      .take(BillPagination.ITEM_IN_PAGE);
+      .skip((page - 1) * billPagination.ITEM_IN_PAGE)
+      .take(billPagination.ITEM_IN_PAGE);
+
+    if (userId) {
+      cdt.where(`bill.userId = ${userId}`);
+    }
 
     if (orderPrice == '1') {
       cdt.orderBy('totalPrice', 'DESC');
@@ -186,24 +196,30 @@ export class BillService {
       .innerJoinAndSelect('purchasedFood.food', 'food')
       .getQuery();
 
-    const [rawResult, totalRecords] = await Promise.all([
-      this.billRepository
-        .createQueryBuilder('bill')
-        .addSelect('cdt.totalPrice', 'bill_totalPrice')
-        .innerJoin(`(${cdt})`, 'cdt', 'bill.id = cdt.bill_id')
-        .innerJoinAndSelect(`(${sq1})`, 'sq1', 'bill.id = sq1.ticket_bill_id')
-        .leftJoinAndSelect(
-          `(${sq2})`,
-          'sq2',
-          'bill.id = sq2.purchasedFood_bill_id',
-        )
-        .getRawMany(),
+    const rawResultPromise = this.billRepository
+      .createQueryBuilder('bill')
+      .addSelect('cdt.totalPrice', 'bill_totalPrice')
+      .innerJoin(`(${cdt})`, 'cdt', 'bill.id = cdt.bill_id')
+      .innerJoinAndSelect(`(${sq1})`, 'sq1', 'bill.id = sq1.ticket_bill_id')
+      .leftJoinAndSelect(
+        `(${sq2})`,
+        'sq2',
+        'bill.id = sq2.purchasedFood_bill_id',
+      )
+      .getRawMany();
 
-      this.billRepository
-        .createQueryBuilder('bill')
-        .addSelect('distinct bill.id')
-        .where(`bill.userId = ${user.id}`)
-        .getCount(),
+    let totalRecordsPromise: any = this.billRepository
+      .createQueryBuilder('bill')
+      .addSelect('distinct bill.id');
+
+    if (userId) {
+      totalRecordsPromise.where(`bill.userId = ${userId}`);
+    }
+    totalRecordsPromise = totalRecordsPromise.getCount();
+
+    const [rawResult, totalRecords] = await Promise.all([
+      rawResultPromise,
+      totalRecordsPromise,
     ]);
 
     const arr = ObjectMapper.mapToEntitiesFromRawResults(rawResult, [
@@ -220,7 +236,7 @@ export class BillService {
     const paginationParameter = getPaginationParameter(
       totalRecords,
       page,
-      BillPagination,
+      billPagination,
     );
 
     const items = this.convertToBillListItems(arr);

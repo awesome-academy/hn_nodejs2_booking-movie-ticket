@@ -3,6 +3,7 @@ let querySearch = null;
 let _page = null;
 let _orderDate = null;
 let _orderPrice = null;
+let _itemInPage = 9;
 
 function initQueryParam() {
   querySearch = new URLSearchParams(window.location.search);
@@ -16,6 +17,8 @@ function initQueryParam() {
       ? querySearch.get('orderPrice')
       : '0';
 }
+
+let dataResponse = null;
 
 const translate = {
   vi: {
@@ -47,7 +50,6 @@ const translate = {
     ticketReject: "Từ chối",
     ticketViewReject: "Xem lý do",
     ticketViewed: "Đã xem",
-    ticketNoWatch: "Chưa xem phim",
     foodDetail: "Chi tiết đồ ăn",
     foodCode: "Mã đồ ăn",
     foodImage: "Ảnh",
@@ -85,7 +87,6 @@ const translate = {
     tikcetReject: "Reject",
     ticketViewReject: "View reject",
     ticketViewed: "Viewed",
-    ticketNoWatch: "No watch",
     foodDetail: "Food Detail",
     foodCode: "Food Code",
     foodImage: "Image",
@@ -170,6 +171,7 @@ function renderUIWithDataFromAPI(data) {
     </thead>
   `;
 
+  dataResponse = data;
   let htmltrs = '';
   const items = data.items;
   for (let i = 0; i < items.length; i++) {
@@ -183,7 +185,7 @@ function renderUIWithDataFromAPI(data) {
         <td>01/01/2024 12:12:12</td>
         <td>${Number(item.totalPrice).toLocaleString('vi')} <span class="text-danger">VNĐ</span></td>
         <td>
-          <button type="button" class="btn btn-success btn-order-detail" data-toggle="modal" data-target="#modalDetailOrder" data-whatever="@getbootstrap">
+          <button type="button" class="btn btn-info btn-order-detail" data-toggle="modal" data-target="#modalDetailOrder" data-whatever="@getbootstrap">
             <i class="fa-solid fa-list"></i>&nbsp;
             ${translate[locale].detail}
           </button>
@@ -221,7 +223,7 @@ function renderListBills(isClickNodePagination = false) {
 
   if (isClickNodePagination) lazyloading.start();
   
-  fetch(`${protocol}//${host}/api/bill?page=${_page}&orderDate=${_orderDate}&orderPrice=${_orderPrice}`, requestOptions)
+  fetch(`${protocol}//${host}/api/bill?page=${_page}&orderDate=${_orderDate}&orderPrice=${_orderPrice}&itemInPage=${_itemInPage}`, requestOptions)
     .then((response) => response.json())
     .then(async (result) => {
       const { message, status, data } = result;
@@ -258,6 +260,11 @@ window.addEventListener('popstate', () => {
   initQueryParam();
   bindingDropdownInput();
   renderListBills();
+});
+
+const btnExportExcel = document.querySelector('.btn-export-excel');
+btnExportExcel.addEventListener('click', () => {
+  exportExcel(dataResponse.items, _page);
 });
 
 initQueryParam();

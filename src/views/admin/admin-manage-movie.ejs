@@ -29,6 +29,8 @@
       <!-- Top bar -->
     <%- include('./admin-topbar') %>
 
+    <div id="_csrf" class="d-none"><%- csrfToken %></div>
+
     <div class="modal fade my-0 mx-auto" id="modalAddNewMovie" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">

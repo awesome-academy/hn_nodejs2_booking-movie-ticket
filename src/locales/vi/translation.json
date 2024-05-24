@@ -64,7 +64,8 @@
     "delete": "Xóa",
     "ok": "Đồng ý",
     "pay": "Thanh toán",
-    "chooseFile": "Chọn tệp"
+    "chooseFile": "Chọn tệp",
+    "exportExcel": "Xuất excel"
   },
   "footer": {
     "supportMe": "Hỗ trợ tôi",
@@ -168,7 +169,8 @@
   "bill": {
     "detail": "Chi tiết hóa đơn",
     "code": "Mã hóa đơn",
-    "review": "Đánh giá phim"
+    "review": "Đánh giá phim",
+    "reject": "Lý do từ chối"
   },
   "schedule": {
     "dateShow": "Ngày chiếu",

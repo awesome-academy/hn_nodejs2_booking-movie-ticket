@@ -1,6 +1,10 @@
 const modalBodyOrderDetail = document.querySelector('#modalDetailOrder .modal-body');
 
 const rejectTextarea = document.querySelector('.reject-text-area');
+let saveChangesFlag = 0;
+let btnReject = null;
+let currentTicket = null;
+const btnCancleModalViewReject = document.querySelector('.btn-cancle-modal-view-reject');
 
 function checkValidTime(dateString) {
   const timeSchedule = new Date(
@@ -85,9 +89,11 @@ function renderUIOrderDetail(obj) {
         <td>${ticket.room}</td>
         <td>${ticket.schedule}</td>
         <td>
-          <div class="text-danger ${!ticket.reasonReject && checkValidTime(ticket.schedule) ? '' : 'd-none'}">
-            ${translate[locale].ticketNoWatch}
-          </div>
+          <button type="button" class="btn btn-danger btn-reject ${!ticket.reasonReject && checkValidTime(ticket.schedule) ? '' : 'd-none'}"
+            data-toggle="modal" data-target="#modalReject" data-whatever="@getbootstrap"
+          >
+            <span>${translate[locale].ticketReject}</span>&nbsp;
+            <i class="fa-solid fa-square-xmark"></i>
           </button>
           <button type="button" class="btn btn-info btn-view-reject ${ticket.reasonReject ? '' : 'd-none'}"
             data-toggle="modal" data-target="#modalReject" data-whatever="@getbootstrap"
@@ -137,23 +143,87 @@ function renderUIOrderDetail(obj) {
   html = html + htmlTicket + htmlFood;
   modalBodyOrderDetail.innerHTML = html;
 
-  document.querySelectorAll('.btn-view-reject').forEach((item, index) => {
+  document.querySelectorAll('.btn-reject').forEach((item, index) => {
     item.addEventListener('click', () => {
-      rejectTextarea.value = obj.tickets[index].reasonReject;
+      saveChangesFlag = 0;
+      btnReject = item;
+      btnSaveChanges.classList.remove('d-none');
+      currentTicket = obj.tickets[index];
+      rejectTextarea.value = '';
+      rejectTextarea.disabled = false;
+      rejectTextarea.readonly = false;
     });
   });
+
+  document.querySelectorAll('.btn-view-reject').forEach((item, index) => {
+    item.addEventListener('click', () => {
+      saveChangesFlag = 1;
+      btnSaveChanges.classList.add('d-none');
+      rejectTextarea.value = obj.tickets[index].reasonReject;
+      rejectTextarea.disabled = true;
+      rejectTextarea.readonly = true;
+    });
+  });
+}
+
+const btnSaveChanges = document.querySelector('.btn-save-changes');
+btnSaveChanges.addEventListener('click', () => {
+  if (saveChangesFlag == 0) {
+    updateReasonReject(btnReject, btnReject.nextElementSibling, currentTicket);
+  }
+});
+
+var csrfToken = document.querySelector('#_csrf').innerText;
+
+async function updateReasonReject(btnReject, btnViewReject, ticket) {
+  const urlencoded = new URLSearchParams();
+  urlencoded.append("_csrf", csrfToken);
+  urlencoded.append("ticketId", ticket.id);
+  if (saveChangesFlag == 0) {
+    urlencoded.append("reasonReject", rejectTextarea.value);
+  }
+
+  const requestOptions = {
+    method: "PUT",
+    body: urlencoded,
+    redirect: "follow",
+  };
+
+  try {
+    const response = await fetch(`${protocol}//${host}/api/ticket/update-reason`, requestOptions);
+    const data = await response.json();
+
+    if (data.status != 200) {
+      throw data;
+    }
+
+    ticket.reasonReject = data.data;
+
+    Swal.fire({
+      title: locale == "vi" ? "Thành công" : "Success",
+      text: locale == "vi" ? "Cập nhật lý do thành công" : "Update reject reason success",
+      icon: "success",
+    }).then((result) => {
+      if (result.isConfirmed && saveChangesFlag == 0) {
+        btnReject.classList.add('d-none');
+        btnViewReject.classList.remove('d-none');
+        btnCancleModalViewReject.click();
+      }
+    });
+  } catch (error) {
+    console.log(error);
+
+    Swal.fire({
+      title: locale == "vi" ? "Lỗi" : "Error",
+      text: error.message,
+      icon: "error",
+    });
+  }
 }
 
 const commentDate = document.querySelector('.comment-date');
 const commentTextArea = document.querySelector('.comment-text-area');
 const reviewIdElement = document.querySelector('#reviewId');
-
-const starBlurElement = document.querySelector('.star-blur');
-const btnSaveChanges = document.querySelector('.btn-save-changes');
-const btnDelete = document.querySelector('.btn-delete');
-const btnCancle = document.querySelector('.btn-cancle');
-
-const csrfToken = document.querySelector('#_csrf').innerText;
 
 function convertDateStringFromDDMMYYYYHHmmssToYYYYMMDDHHmmss(dateString) {
   const arr = dateString.split(' ')[0].split('-');
@@ -161,29 +231,6 @@ function convertDateStringFromDDMMYYYYHHmmssToYYYYMMDDHHmmss(dateString) {
 }
 
 function renderReviewDetail(item) {
-  const timeSchedule = new Date(convertDateStringFromDDMMYYYYHHmmssToYYYYMMDDHHmmss(
-    item.tickets[0].schedule
-  )).getTime();
-  const now = new Date().getTime();
-  if (
-    timeSchedule >
-    now + 3 * 24 * 60 * 60 * 1000 ||
-    timeSchedule < now
-  ) {
-    btnSaveChanges.classList.add('d-none');
-    btnDelete.classList.add('d-none');
-    starBlurElement.classList.remove('d-none');
-    commentTextArea.disabled = true;
-    commentTextArea.readonly = true;
-  }
-  else {
-    btnSaveChanges.classList.remove('d-none');
-    btnDelete.classList.remove('d-none');
-    starBlurElement.classList.add('d-none');
-    commentTextArea.disabled = false;
-    commentTextArea.readonly = false;
-  }
-
   const movieId = item.movie.id;
 
   const requestOptions = {
@@ -191,7 +238,7 @@ function renderReviewDetail(item) {
     redirect: "follow"
   };
   
-  fetch(`${protocol}//${host}/api/review/one?movieId=${movieId}`, requestOptions)
+  fetch(`${protocol}//${host}/api/review/one?movieId=${movieId}&userId=${item.userId}`, requestOptions)
     .then((response) => response.json())
     .then((result) => {
       const { message, status, data } = result;
@@ -216,94 +263,6 @@ function renderReviewDetail(item) {
       commentTextArea.value = data.comment;
       makeStarActiveAndInActive(data.star - 1);
       reviewIdElement.innerText = data.id;
-    })
-    .catch((error) => console.error(error));
-}
-
-btnSaveChanges.addEventListener('click', () => {
-  let method = "POST";
-  if (reviewIdElement.innerText) {
-    method = "PUT";
-  }
-  const urlencoded = new URLSearchParams();
-  urlencoded.append("billId", billId);
-  urlencoded.append("comment", commentTextArea.value);
-  urlencoded.append("star", getSelectedRadioValue('star'));
-  urlencoded.append("_csrf", csrfToken);
-
-  const requestOptions = {
-    method: method,
-    body: urlencoded,
-    redirect: "follow"
-  };
-
-  fetch(`${protocol}//${host}/api/review`, requestOptions)
-    .then((response) => response.json())
-    .then((result) => {
-      const { message, status, data } = result;
-      btnCancle.click();
-      if (status != 200 && status != 201) {
-        Swal.fire({
-          title: locale == 'vi' ? 'Lỗi' : 'Error',
-          text: locale == 'vi' ? 'Thao tác bị lỗi' : 'The action incorrect',
-          icon: 'error',
-        });
-        return;
-      }
-      Swal.fire({
-        title: locale == 'vi' ? 'Thành công' : 'Success',
-        text: locale == 'vi'
-          ? (method == 'POST' ? 'Tạo đánh giá thành công' : 'Cập nhật đánh giá thành công')
-          : (method == 'POST' ? 'Create Review Successfully' : 'Update Review Successfully'),
-        icon: 'success',
-      });
-    })
-    .catch((error) => console.error(error));
-});
-
-btnDelete.addEventListener('click', () => {
-  Swal.fire({
-    title: locale == 'vi' ? 'Thông báo' : 'Notify',
-    text: locale == 'vi' ? 'Bạn có chắc chắn muốn xóa đánh giá không?' : 'Are you sure delete this review?',
-    icon: 'info',
-    showCancelButton: true,
-    confirmButtonText: 'OK',
-  }).then((result) => {
-    if (result.isConfirmed) {
-      deleteReview();
-    }
-  });
-});
-
-function deleteReview() {
-  const urlencoded = new URLSearchParams();
-  urlencoded.append("billId", billId);
-  urlencoded.append("_csrf", csrfToken);
-
-  const requestOptions = {
-    method: "DELETE",
-    body: urlencoded,
-    redirect: "follow"
-  };
-  
-  fetch(`${protocol}//${host}/api/review`, requestOptions)
-    .then((response) => response.json())
-    .then((result) => {
-      const { message, status, data } = result;
-      btnCancle.click();
-      if (status != 200) {
-        Swal.fire({
-          title: locale == 'vi' ? 'Lỗi' : 'Error',
-          text: locale == 'vi' ? 'Thao tác bị lỗi' : 'The action incorrect',
-          icon: 'error',
-        });
-        return;
-      }
-      Swal.fire({
-        title: locale == 'vi' ? 'Thành công' : 'Success',
-        text: locale == 'vi' ? 'Xóa đánh giá thành công' : 'Delete Review Successfully',
-        icon: 'success',
-      });
     })
     .catch((error) => console.error(error));
 }
