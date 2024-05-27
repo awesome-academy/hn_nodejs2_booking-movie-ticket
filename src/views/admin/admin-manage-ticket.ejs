@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%- i18n.t('header.adminDashboard') %></title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <script src="/js/jquery.js"></script>
+  <script src="/js/poper.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <link rel="icon" type="image/x-icon" href="/icon/icon-cinema.ico">
+  <link rel="stylesheet" href="/css/admin.style.css">
+  <link rel="stylesheet" href="/css/admin.home.css">
+  <link rel="stylesheet" href="/css/history-order.css">
+</head>
+
+<body>
+  <!-- Page content -->
+  <div class="content">
+    <!-- Side bar -->
+    <%- include('./admin-sidebar') %>
+
+      <!-- Top bar -->
+    <%- include('./admin-topbar') %>
+
+    <div class="d-none" id="reviewId"></div>
+    <div class="d-none" id="_csrf"><%- csrfToken %></div>
+
+    <div class="modal fade my-0 mx-auto" id="modalDetailOrder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header d-flex">
+            <h1 class="modal-title mx-auto" id="exampleModalLabel"><%- i18n.t('bill.detail') %><span></span></h1>
+            <button type="button" class="close ml-0 close-video-modal" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success btn-back invisible" data-dismiss="modal"><%- i18n.t('form.cancel') %></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade my-0 mx-auto" id="modalReview" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header d-flex">
+            <h5 class="modal-title mx-auto" id="exampleModalLabel"><%- i18n.t('bill.review') %><span></span></h5>
+            <button type="button" class="close ml-0 close-video-modal" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="star-vote">
+              <div class="star-blur"></div>
+              <% for (let i = 1; i <= 5; i++) { %>
+                <input type="radio" name="star" id="star-<%- i %>" class="d-none"<%- i == 1 ? 'checked' : '' %> value="<%- i %>">
+                <label for="star-<%- i %>" class="lb-star-vote">
+                  <i class="fa-solid fa-star<%- i == 1 ? ' star-active' : ' star-inactive' %>"></i>
+                </label>
+              <% } %>
+            </div>
+            <p class="comment-date"></p>
+            <textarea class="form-control comment-text-area" id="comment" rows="3" disabled readonly></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-cancle invisible"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade my-0 mx-auto" id="modalReject" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header d-flex">
+            <h5 class="modal-title mx-auto" id="exampleModalLabel"><%- i18n.t('bill.reject') %><span></span></h5>
+            <button type="button" class="close ml-0 close-video-modal" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <textarea class="form-control reject-text-area" id="comment" rows="3"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-cancle-modal-view-reject" data-dismiss="modal"><%- i18n.t('form.cancel') %></button>
+            <button type="button" class="btn btn-primary btn-save-changes"><%- i18n.t('form.saveChanges') %></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="container main-content mt-3 position-relative">
+      <h1 class="text-center"><%- i18n.t('admin.manageTicket') %></h1>
+
+      <div class="d-flex justify-content-between my-4">
+        <div class="d-flex justify-content-end" style="width: 100%;">
+          <button class="btn btn-secondary btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+            <%- i18n.t('header.filter') %>&nbsp;&nbsp;<i class="fa-solid fa-filter"></i>
+          </button>
+          <div class="dropdown-menu">
+            <div class="pl-4 py-3">
+              <label><%- i18n.t('order.orderDate') %>:</label>
+              <div class="dropdown-item form-group custom-radio">
+                <input type="radio"
+                  id="dateEarly"
+                  class="mr-2 custom-control-input"
+                  value="0"
+                  name="orderDate"
+                >
+                <label class="custom-control-label" for="dateEarly"><%- i18n.t('order.early') %></label>
+              </div>
+    
+              <div class="dropdown-item form-group custom-radio">
+                <input type="radio"
+                  id="dateLatest"
+                  class="mr-2 custom-control-input"
+                  value="1"
+                  name="orderDate"
+                >
+                <label class="custom-control-label" for="dateLatest"><%- i18n.t('order.latest') %></label>
+              </div>
+    
+              <label><%- i18n.t('order.totalPrice') %>:</label>
+              <div class="dropdown-item form-group custom-radio">
+                <input type="radio"
+                  id="priceLowest"
+                  class="mr-2 custom-control-input"
+                  value="0"
+                  name="orderPrice"
+                >
+                <label class="custom-control-label" for="priceLowest"><%- i18n.t('order.lowest') %></label>
+              </div>
+      
+              <div class="dropdown-item form-group custom-radio">
+                <input type="radio"
+                  id="priceHighest"
+                  class="mr-2 custom-control-input"
+                  value="1"
+                  name="orderPrice"
+                >
+                <label class="custom-control-label" for="priceHighest"><%- i18n.t('order.highest') %></label>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-success btn-export-excel ml-3">
+            <span><%- i18n.t('form.exportExcel') %></span>&nbsp;&nbsp;<i class="fa-solid fa-download"></i>
+          </button>
+        </div>
+      </div>
+  
+      <div class="wapper-bill-list">
+        <table class="table table-striped table-bill-list">
+        </table>
+    
+        <div class="pagination-wapper d-flex flex-row-reverse mt-2">
+          <div aria-label="...">
+            <ul class="pagination"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/chart.js"></script>
+  <script src="/js/sweetalert.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/lazyloading.js"></script>
+  <script src="/js/pagination.js"></script>
+  <script src="/js/star-vote.js"></script>
+  <script src="/js/admin.common.js"></script>
+  <script src="/js/admin-history-order.js"></script>
+  <script src="/js/admin-history-order-detail.js"></script>
+  <script src="/js/sheet.js"></script>
+  <script src="/js/file-saver.js"></script>
+  <script src="/js/export-excel.js"></script>
+</body>
+
+</html>

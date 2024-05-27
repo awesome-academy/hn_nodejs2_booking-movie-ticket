@@ -3,7 +3,7 @@ var locale = getCookie('locale');
 var nameInput = document.querySelector('#name');
 var directionInput = document.querySelector('#direction');
 var actorsInput = document.querySelector('#actors');
-var trailerInput = document.querySelector('#trailer');
+var trailerInput = document.querySelector('#trailerurl');
 var languageInput = document.querySelector('#language');
 var ctgItems = document.querySelectorAll('.ctg-item');
 var durationInput = document.querySelector('#duration');
@@ -15,6 +15,8 @@ var largeImageInput = document.querySelector('#largeImgurl');
 var smallImageInput = document.querySelector('#smallImgurl');
 var shortDescriptionInput = document.querySelector('#shortDescription');
 var longDescriptionInput = document.querySelector('#longDescription');
+
+var csrfToken = document.querySelector('#_csrf').innerText;
 
 function bindingMovieInModal(moviesIndex) {
   const movie = movies[moviesIndex];
@@ -48,6 +50,9 @@ function bindingMovieInModal(moviesIndex) {
 
 async function saveMovie() {
   const formdata = new FormData();
+
+  formdata.append("_csrf", csrfToken);
+
   formdata.append("duration", durationInput.value);
   formdata.append("direction", directionInput.value);
   formdata.append("actors", actorsInput.value);

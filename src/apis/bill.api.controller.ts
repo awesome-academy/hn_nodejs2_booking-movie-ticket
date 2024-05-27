@@ -22,6 +22,7 @@ import { BillRequestDto } from '../dtos/req/bill/bill.req.dto';
 import { MoMoService } from '../services/external/payment/momo.service';
 import { PipeDto } from '../decoratos/api/pipe.decorator';
 import session from 'express-session';
+import { UserRole } from '../enum/user.enum';
 
 @RestController('/api/bill')
 export class BillRestController {
@@ -45,11 +46,21 @@ export class BillRestController {
     @Query()
     query: any,
   ) {
-    return await this.billService.getAllBillWithPaginationAndConditionByUser(
-      user,
+    if (user.role == UserRole.ADMIN) {
+      return await this.billService.getAllBillWithPaginationAndCondition(
+        null,
+        query.orderDate,
+        query.orderPrice,
+        +query.page,
+        +query.itemInPage,
+      );
+    }
+    return await this.billService.getAllBillWithPaginationAndCondition(
+      user.id,
       query.orderDate,
       query.orderPrice,
       +query.page,
+      +query.itemInPage,
     );
   }
 

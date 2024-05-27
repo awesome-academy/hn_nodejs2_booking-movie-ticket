@@ -27,6 +27,14 @@ export class Ticket extends BaseEntity {
   @Column({ name: 'schedule_id', type: 'int' })
   scheduleId: number;
 
+  @Column({
+    name: 'reason_reject',
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+  })
+  reasonReject: string;
+
   @ManyToOne(() => Bill, (bill) => bill.tickets)
   @JoinColumn({
     name: 'bill_id',

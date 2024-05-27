@@ -19,6 +19,7 @@ import { ReviewSaveRequestDto } from '../dtos/req/review/review.req.dto';
 import { ParseIntPipe, PipeDto } from '../decoratos/api/pipe.decorator';
 import { User } from '../entities/user.entity';
 import { CSRFProtection } from '../decoratos/api/guards/guard.csrf.decorator';
+import { UserRole } from '../enum/user.enum';
 
 @RestController('/api/review')
 export class ReviewRestController {
@@ -63,7 +64,14 @@ export class ReviewRestController {
 
     @Query('movieId', ParseIntPipe)
     movieId: number,
+
+    @Query('userId')
+    userId: number,
   ) {
+    if (user.role == UserRole.ADMIN) {
+      userId = +userId;
+      return this.reviewService.getOneByUserIdAndMovieId(userId, movieId);
+    }
     return this.reviewService.getOneByUserIdAndMovieId(user.id, movieId);
   }
 

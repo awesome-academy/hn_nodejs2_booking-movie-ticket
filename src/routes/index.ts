@@ -22,6 +22,7 @@ import { AdminRoute } from './admin.route';
 import { AdminCheckGuard } from '../guards/admin.check.guard';
 import { AdminHomeRestController } from '../apis/admin/admin.home.api';
 import { AdminManageMovieRestController } from '../apis/admin/admin.manage-movie.api';
+import { TicketRestController } from '../apis/ticket.api.controller';
 
 @RestConfig([
   ReviewRestController,
@@ -32,6 +33,7 @@ import { AdminManageMovieRestController } from '../apis/admin/admin.manage-movie
   FoodRestController,
   AdminHomeRestController,
   AdminManageMovieRestController,
+  TicketRestController,
 ])
 export class RootRoute extends BaseRoute {
   constructor(

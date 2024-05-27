@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import { BaseRoute } from './base.route';
 import { AdminHomeController } from '../controllers/admin/admin.home.controller';
 import { AdminManageMovieController } from '../controllers/admin/admin.manage-movie.controller';
+import { csrfProtection } from '../security/csrf.protection.middleware';
 
 @injectable()
 export class AdminRoute extends BaseRoute {
@@ -22,7 +23,15 @@ export class AdminRoute extends BaseRoute {
     );
     this.router.get(
       '/manage-movie',
+      csrfProtection,
       this.adminMangeMovieController.getAdminManageMoiveView.bind(
+        this.adminMangeMovieController,
+      ),
+    );
+    this.router.get(
+      '/manage-ticket',
+      csrfProtection,
+      this.adminMangeMovieController.getAdminManageTicketView.bind(
         this.adminMangeMovieController,
       ),
     );

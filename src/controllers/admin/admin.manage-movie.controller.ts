@@ -18,6 +18,18 @@ export class AdminManageMovieController {
     resp.render('admin/admin-manage-movie', {
       active: 'manage-movie',
       categories,
+      csrfToken: req.csrfToken(),
+    });
+  }
+
+  public async getAdminManageTicketView(
+    req: Request,
+    resp: Response,
+    next: NextFunction,
+  ) {
+    resp.render('admin/admin-manage-ticket', {
+      active: 'manage-ticket',
+      csrfToken: req.csrfToken(),
     });
   }
 }
