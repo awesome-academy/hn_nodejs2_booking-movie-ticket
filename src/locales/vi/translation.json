@@ -26,7 +26,7 @@
   "admin": {
     "manageMovie": "Quản lý phim",
     "manageTicket": "Quản lý vé",
-    "manageSchedule": "Sắp xếp lịch chiếu phim",
+    "manageSchedule": "Sắp xếp lịch chiếu",
     "topMovie": "Top 10 bộ phim có doanh thu cao nhất",
     "movieCount": "Số lượng phim",
     "ticketCount": "Số lượng vé",
@@ -39,7 +39,8 @@
     "enterMovieNameHint": "Nhập tên phim",
     "startDateShowing": "Ngày khởi chiếu",
     "endDateShowing": "Ngày dừng chiếu",
-    "addNewMovie": "Thêm phim mới"
+    "addNewMovie": "Thêm phim mới",
+    "addNewSchedule": "Thêm lịch chiếu mới"
   },
   "form": {
     "register": "Đăng kí",
@@ -175,7 +176,16 @@
   "schedule": {
     "dateShow": "Ngày chiếu",
     "timeShow": "Giờ chiếu",
-    "numberOfEmptySeats": "Số lượng ghế trống"
+    "numberOfEmptySeats": "Số lượng ghế trống",
+    "chooseMovie": "Chọn phim",
+    "chooseDate": "Chọn ngày",
+    "chooseStartTime": "Chọn giờ bắt đầu",
+    "chooseRoom": "Chọn phòng",
+    "editSchedule": "Chỉnh sửa lịch chiếu",
+    "searchDate": "Chọn ngày",
+    "enterMovieName": "Nhập tên phim",
+    "search": "Tìm kiếm",
+    "seat": "ghế"
   },
   "room": {
     "screen": "Màn hình",

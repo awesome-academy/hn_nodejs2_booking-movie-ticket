@@ -37,7 +37,12 @@ export async function paginations<T>(
   const prevPage = page > 1 ? page - 1 : null;
   const nextPage = page < allPages ? page + 1 : null;
 
-  const startNode = page - (page % config.NODE_PAGE) + 1;
+  const startNode =
+    page -
+    (page % config.NODE_PAGE == 0
+      ? config.NODE_PAGE
+      : page % config.NODE_PAGE) +
+    1;
   const endNode =
     startNode + config.NODE_PAGE - 1 <= allPages
       ? startNode + config.NODE_PAGE - 1

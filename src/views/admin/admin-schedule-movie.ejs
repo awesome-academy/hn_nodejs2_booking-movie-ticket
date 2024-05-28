@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%- i18n.t('header.adminDashboard') %></title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <script src="/js/jquery.js"></script>
+  <script src="/js/poper.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <link rel="icon" type="image/x-icon" href="/icon/icon-cinema.ico">
+  <link rel="stylesheet" href="/css/admin.style.css">
+  <link rel="stylesheet" href="/css/admin.home.css">
+</head>
+
+<body>
+  <!-- Page content -->
+  <div class="content">
+    <!-- Side bar -->
+    <%- include('./admin-sidebar') %>
+
+      <!-- Top bar -->
+    <%- include('./admin-topbar') %>
+
+    <div id="_csrf" class="d-none"><%- csrfToken %></div>
+
+    <div class="modal fade my-0 mx-auto" id="modalSaveSchedule" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header d-flex">
+            <h2 class="modal-title mx-auto" id="exampleModalLabel"><%- i18n.t('admin.addNewSchedule') %><span></span></h2>
+            <button type="button" class="close ml-0 close-modal" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <%- include('./admin-schedule-save') %>
+          </div>
+          <div class="modal-footer d-flex">
+            <button type="button" class="btn btn-success btn-ok m-auto"><%- i18n.t('form.ok') %></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="container mt-3">
+      <h2 class="text-center"><%- i18n.t('admin.manageSchedule') %></h2>
+
+      <div class="form-inline d-flex justify-content-end mt-4">
+        <div class="form-group mr-5">
+          <input type="text" id="movieName" class="form-control" placeholder="<%- i18n.t('schedule.enterMovieName') %>">
+        </div>
+        <div class="form-group">
+          <label for="dateSearch" class="mr-2"><%- i18n.t('schedule.searchDate') %>:</label>
+          <input type="date" id="dateSearch" class="form-control">
+        </div>
+        <button type="button" class="btn btn-info btn-search-schedule ml-5">
+          <i class="fa-solid fa-magnifying-glass"></i>&nbsp;
+          <%- i18n.t('schedule.search') %>
+        </button>
+        <button type="button" class="btn btn-success ml-3 btn-add-new-schedule"
+          data-toggle="modal" data-target="#modalSaveSchedule" data-whatever="@getbootstrap"
+        >
+          <i class="fa-solid fa-square-plus"></i>&nbsp;
+          <%- i18n.t('admin.addNewSchedule') %>
+        </button>
+      </div>
+
+      <div class="wapper-table-schedules mt-4">
+      </div>
+
+      <div class="wapper-pagination mt-3">
+        <nav aria-label="...">
+          <ul class="pagination"></ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/sweetalert.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/lazyloading.js"></script>
+  <script src="/js/pagination.js"></script>
+  <script src="/js/admin.common.js"></script>
+  <script src="/js/admin-schedule-movie.js"></script>
+  <script src="/js/admin-schedule-update.js"></script>
+</body>
+
+</html>

@@ -5,6 +5,7 @@ import { StatusEnum } from '../../enum/status.enum';
 import { AppBaseResponseDto } from '../../dtos/res/app.api.base.res.dto';
 import { MovieStatusEnum } from '../../enum/movie.status.enum';
 import { Category } from '../../entities/category.entity';
+import { ErrorApiResponseDto } from '../../dtos/res/error.api.res.dto';
 
 @injectable()
 export class AdminManageMovieService {
@@ -23,9 +24,12 @@ export class AdminManageMovieService {
 
     if (!movie) {
       throw {
-        message: 'Movie not exsists',
         status: StatusEnum.BAD_REQUEST,
-      } as AppException;
+        message: 'Bad Request',
+        errors: {
+          movie: 'Movie not exsists',
+        },
+      } as ErrorApiResponseDto;
     }
 
     movie.active = status == MovieStatusEnum.ACTIVE ? true : false;

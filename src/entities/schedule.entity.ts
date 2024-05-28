@@ -28,6 +28,9 @@ export class Schedule extends BaseEntity {
   @Column({ name: 'room_id', type: 'int' })
   roomId: number;
 
+  @Column({ name: 'active', type: 'boolean' })
+  active: boolean;
+
   @ManyToOne(() => Movie, (movie) => movie.schedules)
   @JoinColumn({
     name: 'movie_id',

@@ -14,3 +14,8 @@ export const BillPagination: PaginationConfig = {
   ITEM_IN_PAGE: 3,
   NODE_PAGE: 5,
 };
+
+export const SchedulePagination: PaginationConfig = {
+  ITEM_IN_PAGE: 10,
+  NODE_PAGE: 5,
+};

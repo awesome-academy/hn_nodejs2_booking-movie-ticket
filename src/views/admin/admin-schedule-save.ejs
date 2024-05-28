@@ -1,0 +1,34 @@
+<div class="form-group">
+  <label for="movieId"><%- i18n.t('schedule.chooseMovie') %>:</label>
+  <input type="text" id="movieId" class="form-control dropdown-toggle"
+    type="button" data-toggle="dropdown" aria-expanded="false"
+    placeholder="<%- i18n.t('schedule.chooseMovie') %>" />
+  
+  <div class="dropdown-menu movieIds">
+    <% for (let movie of movies) { %>
+      <div class="dropdown-item movie-name-option"><%- movie.name %></div>
+      <div class="movieId d-none"><%- movie.id %></div>
+    <% } %>
+  </div>
+</div>
+<div class="form-group">
+  <label for="startDate"><%- i18n.t('schedule.chooseDate') %>:</label>
+  <input type="date" id="startDate" class="form-control">
+</div>
+<div class="form-group">
+  <label for="startTime"><%- i18n.t('schedule.chooseStartTime') %>:</label>
+  <input type="time" id="startTime" class="form-control">
+</div>
+<div class="form-group">
+  <label for="roomId"><%- i18n.t('schedule.chooseRoom') %>:</label>
+  <input type="text" id="roomId" class="form-control dropdown-toggle"
+    type="button" data-toggle="dropdown" aria-expanded="false"
+    placeholder="<%- i18n.t('schedule.chooseRoom') %>" />
+  
+    <div class="dropdown-menu roomIds">
+      <% for (let room of rooms) { %>
+        <div class="dropdown-item room-name-option"><%- room.name %> -- <%- room.capacity %> <%- i18n.t('schedule.seat') %> -- <%- room.totalArea %> m2</div>
+        <div class="movieId d-none"><%- room.id %></div>
+      <% } %>
+    </div>
+</div>

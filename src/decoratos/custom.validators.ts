@@ -251,3 +251,23 @@ export function IsIntArray(validationOptions?: ValidationOptions) {
     });
   };
 }
+
+export function IsTimeString(validationOptions?: ValidationOptions) {
+  return function (object: Object, propertyName: string) {
+    registerDecorator({
+      name: 'isTimeString',
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      validator: {
+        validate(value: any, args: ValidationArguments) {
+          const date = new Date(`2002-01-01 ${value}`);
+          return date.toString() != 'Invalid Date';
+        },
+        defaultMessage(args: ValidationArguments) {
+          return `${args.property} must be time string valid`;
+        },
+      },
+    });
+  };
+}
