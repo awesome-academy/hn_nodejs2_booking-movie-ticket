@@ -4,6 +4,7 @@ import { BaseRoute } from './base.route';
 import { AdminHomeController } from '../controllers/admin/admin.home.controller';
 import { AdminManageMovieController } from '../controllers/admin/admin.manage-movie.controller';
 import { csrfProtection } from '../security/csrf.protection.middleware';
+import { AdminScheduleMovieController } from '../controllers/admin/admin.schedule.movie.controller';
 
 @injectable()
 export class AdminRoute extends BaseRoute {
@@ -13,6 +14,9 @@ export class AdminRoute extends BaseRoute {
 
     @inject(AdminManageMovieController)
     private readonly adminMangeMovieController: AdminManageMovieController,
+
+    @inject(AdminScheduleMovieController)
+    private readonly adminScheduleMovieController: AdminScheduleMovieController,
   ) {
     super();
     this.router = express.Router();
@@ -33,6 +37,13 @@ export class AdminRoute extends BaseRoute {
       csrfProtection,
       this.adminMangeMovieController.getAdminManageTicketView.bind(
         this.adminMangeMovieController,
+      ),
+    );
+    this.router.get(
+      '/manage-schedule',
+      csrfProtection,
+      this.adminScheduleMovieController.getScheduleMovieView.bind(
+        this.adminScheduleMovieController,
       ),
     );
   }

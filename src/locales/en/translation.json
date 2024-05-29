@@ -39,7 +39,8 @@
     "enterMovieNameHint": "Enter movie name",
     "startDateShowing": "Start date showing",
     "endDateShowing": "End date showing",
-    "addNewMovie": "Add new movie"
+    "addNewMovie": "Add new movie",
+    "addNewSchedule": "Add new schedule"
   },
   "footer": {
     "supportMe": "Support Me",
@@ -175,7 +176,15 @@
   "schedule": {
     "dateShow": "Date show",
     "timeShow": "Time show",
-    "numberOfEmptySeats": "Number of empty seats"
+    "numberOfEmptySeats": "Number of empty seats",
+    "chooseMovie": "Choose movie",
+    "chooseDate": "Choose date",
+    "chooseStartTime": "choose start time",
+    "chooseRoom": "Choose room",
+    "searchDate": "Search date",
+    "enterMovieName": "Enter movie name",
+    "search": "Search",
+    "seat": "Seat"
   },
   "room": {
     "screen": "Screen",

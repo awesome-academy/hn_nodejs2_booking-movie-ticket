@@ -178,11 +178,11 @@ function renderNoData() {
   listMoviesElement.innerHTML = html;
 }
 
-async function changeMovieStatus(movideId, status, moviesIndex) {
+async function changeMovieStatus(movieId, status, moviesIndex) {
   const locale = getCookie('locale');
 
   const urlencoded = new URLSearchParams();
-  urlencoded.append("movieId", movideId);
+  urlencoded.append("movieId", movieId);
   urlencoded.append("status", status);
 
   const requestOptions = {
@@ -194,6 +194,11 @@ async function changeMovieStatus(movideId, status, moviesIndex) {
   try {
     const response = await fetch(`${protocol}//${host}/api/admin/manage-movie/change-status`, requestOptions);
     const data = await response.json();
+
+    if (data.status != 200) {
+      throw data;
+    }
+
     movies[moviesIndex] = data.data;
     Swal.fire({
       title: locale == "vi" ? "Thành công" : "Success",
@@ -208,6 +213,10 @@ async function changeMovieStatus(movideId, status, moviesIndex) {
       title: locale == "vi" ? "Lỗi" : "Error",
       text: Object.values(error.errors)[0],
       icon: "error",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.reload();
+      }
     });
   }
 }
@@ -262,9 +271,9 @@ function renderUIWithDataFromAPI(data) {
   const btnInactives = document.querySelectorAll('.btn-inactive');
   btnInactives.forEach((item, index) => {
     item.addEventListener('click', () => {
-      const movideId = item.parentElement.parentElement.querySelector('.movieId').innerText;
+      const movieId = item.parentElement.parentElement.querySelector('.movieId').innerText;
       
-      changeMovieStatus(movideId, 'INACTIVE', (_page - 1) * itemInPage + index);
+      changeMovieStatus(movieId, 'INACTIVE', (_page - 1) * itemInPage + index);
 
       const btnActive = item.parentElement.parentElement.querySelector('.btn-active');
       btnActive.classList.remove('d-none');
@@ -275,9 +284,9 @@ function renderUIWithDataFromAPI(data) {
   const btnActives = document.querySelectorAll('.btn-active');
   btnActives.forEach((item, index) => {
     item.addEventListener('click', () => {
-      const movideId = item.parentElement.parentElement.querySelector('.movieId').innerText;
+      const movieId = item.parentElement.parentElement.querySelector('.movieId').innerText;
       
-      changeMovieStatus(movideId, 'ACTIVE', (_page - 1) * itemInPage + index);
+      changeMovieStatus(movieId, 'ACTIVE', (_page - 1) * itemInPage + index);
 
       const btnInactive = item.parentElement.parentElement.querySelector('.btn-inactive');
       btnInactive.classList.remove('d-none');
@@ -311,8 +320,6 @@ function renderMoviesWithPagination(isClickNodePagination = false) {
     .then(async (result) => {
       const { message, status, data, errors } = result;
 
-      movies = data.items;
-
       await sleep(700);
       lazyloading.close();
       if (status != 200) {
@@ -334,6 +341,7 @@ function renderMoviesWithPagination(isClickNodePagination = false) {
         return;
       }
       renderUIWithDataFromAPI(data);
+      movies = data.items;
       renderPagination(data, renderMoviesWithPagination, saveStateWithQueryParam);
     })
     .catch((error) => console.error(error));

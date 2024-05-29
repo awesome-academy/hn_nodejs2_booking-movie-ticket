@@ -103,7 +103,7 @@ async function saveMovie() {
 
     Swal.fire({
       title: locale == 'vi' ? 'Thành công' : 'Success',
-      text: `Cập nhật phim ${movies[globalMoviesIndex].name} thành công`,
+      text: `${modalFlag == 0 ? 'Thêm' : 'Cập nhật'} phim ${movies[globalMoviesIndex].name} thành công`,
       icon: 'success',
     });
     bindingMovieInModal(globalMoviesIndex);

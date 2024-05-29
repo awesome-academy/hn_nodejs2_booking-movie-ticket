@@ -31,6 +31,8 @@ async function main() {
 
   app.locals.billRequestDto = {};
 
+  app.locals.resetPasswordToken = {};
+
   try {
     await AppDataSource.initialize();
   } catch (err) {

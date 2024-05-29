@@ -49,6 +49,10 @@ export class VerifyResetPassword {
     }
 
     email = Base64URL.urlDecode(email);
+    if (!req.app.locals.resetPasswordToken[email]) {
+      throw new AppException('Link Expired', StatusEnum.FORBIDDEN);
+    }
+
     const user: User = await this.userRepository.findOneBy({ email });
     if (!user) {
       throw new AppException('Forbidden', StatusEnum.FORBIDDEN);

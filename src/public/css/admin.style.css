@@ -65,3 +65,31 @@ td {
 .img-movie {
   object-fit: cover;
 }
+
+.manage-schedule-link {
+  cursor: pointer;
+}
+
+.manage-schedule-link:hover {
+  text-decoration: underline;
+}
+
+#modalManageSchedule {
+  .modal-dialog {
+    min-width: 60vw;
+  }
+  .modal-content {
+    width: 100%;
+  }
+}
+
+.movieIds,
+.roomIds {
+  height: 185px;
+  overflow: auto;
+  width: 94% !important;
+}
+
+.wapper-table-schedules {
+  position: relative;
+}

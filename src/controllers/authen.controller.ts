@@ -238,6 +238,8 @@ export class AuthenController {
       ),
     });
 
+    req.app.locals.resetPasswordToken[forgotPasswordDto.email] = token;
+
     res.render('authen/forgot-password', {
       email: forgotPasswordDto.email,
       errors: null,
@@ -292,6 +294,8 @@ export class AuthenController {
         password: Bcrypt.hash(resetPasswordDto.password),
       },
     );
+
+    delete req.app.locals.resetPasswordToken[email];
 
     res.render('authen/reset-password', {
       dto: resetPasswordDto,
