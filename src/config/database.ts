@@ -31,10 +31,20 @@ let dataBaseConfig: DataSourceOptions = {
   migrations: ['src/migrations/**/*.ts'],
 };
 
+process.env.NODE_ENV = process.env.NODE_ENV.toUpperCase();
+
 switch (process.env.NODE_ENV) {
   case AppEnvironmentConfig.DEV:
     dataBaseConfig = {
       ...dataBaseConfig,
+      logging: 'all',
+      logger: 'advanced-console',
+    };
+    break;
+  case AppEnvironmentConfig.TEST:
+    dataBaseConfig = {
+      ...dataBaseConfig,
+      database: process.env.DB_TEST_NAME,
       logging: 'all',
       logger: 'advanced-console',
     };
