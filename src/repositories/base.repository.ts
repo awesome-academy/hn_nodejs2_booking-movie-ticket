@@ -5,6 +5,10 @@ export abstract class BaseRepository<
   T extends ObjectLiteral,
 > extends Repository<T> {
   protected constructor(entity: EntityTarget<T>) {
-    super(entity, AppDataSource.createEntityManager());
+    super(
+      entity,
+      AppDataSource.createEntityManager(),
+      AppDataSource.createQueryRunner(),
+    );
   }
 }
