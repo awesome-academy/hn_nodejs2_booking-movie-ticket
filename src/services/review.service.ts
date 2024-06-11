@@ -212,7 +212,7 @@ export class ReviewService {
 
     const now = new Date().getTime();
     const schedule = new Date(
-      dayjs(bill['schedule'].startDate).format(DateFormat.DD_MM_YYYY) +
+      dayjs(bill['schedule'].startDate).format(DateFormat.YYYY_MM_DD) +
         ' ' +
         bill['schedule'].startTime,
     ).getTime();
